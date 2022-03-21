@@ -1,0 +1,40 @@
+﻿<tui-island>
+    <h1 class="title" style="text-align: center;">Регистрация</h1>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <p>
+        <tui-input formControlName="firstName"> Введите имя </tui-input>
+        <tui-field-error formControlName="firstName"></tui-field-error>
+    </p>
+    <p>
+        <tui-input formControlName="lastName"> Введите фамилию </tui-input>
+        <tui-field-error formControlName="lastName"></tui-field-error>
+    </p>
+    <p>
+        <tui-input formControlName="email"> Введите email </tui-input>
+        <tui-field-error formControlName="email"></tui-field-error>
+    </p>
+    <p>
+        <tui-input-password formControlName="password">
+        Введите пароль
+        </tui-input-password>
+        <tui-field-error formControlName="password"></tui-field-error>
+    </p>
+    <p>
+        <tui-input-password formControlName="confirmPassword">
+        Повторите пароль
+        </tui-input-password>
+        <tui-field-error formControlName="confirmPassword"></tui-field-error>
+    </p>
+    <p>
+        <tui-checkbox-labeled formControlName="acceptTerms">
+            Я согласен(-на) с
+            <a tuiLink routerLink="">Правилами и условиями</a>
+        </tui-checkbox-labeled>
+        <tui-field-error formControlName="acceptTerms"></tui-field-error>
+    </p>
+    <p>
+        <button tuiButton [disabled]="form.invalid">Регистрация</button>
+        <button tuiButton appearance="flat" routerLink="../login" class="tui-space_left-3">Войти</button>
+    </p>
+    </form>
+</tui-island>
