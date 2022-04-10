@@ -1,0 +1,22 @@
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+
+# .NET compiled files
+bin
+obj
+
+# Generated SQLite db
+WebApiDatabase.db
+
+# IDE temp directory
+.idea
+
+# Mac OS files
+.DS_Store
