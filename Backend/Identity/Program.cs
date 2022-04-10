@@ -16,7 +16,6 @@ namespace Identity
                 .ConfigureWebHostDefaults(x => 
                 {
                     x.UseStartup<Startup>();
-                    x.UseUrls("http://localhost:4000");
                 });
         }
     }

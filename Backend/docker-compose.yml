@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:13.3
+    environment:
+      PPOSTGRES_DB: "hostmusic_db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "root"
+    ports:
+      - "5432:5432"

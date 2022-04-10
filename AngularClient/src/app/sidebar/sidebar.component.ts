@@ -5,8 +5,7 @@ import { Account, Role } from '../_models';
 
 @Component({
   selector: 'sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.less']
+  templateUrl: './sidebar.component.html'
 })
 export class SidebarComponent {
 
