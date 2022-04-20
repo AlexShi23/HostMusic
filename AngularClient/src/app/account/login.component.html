@@ -1,0 +1,22 @@
+﻿<tui-island>
+    <h1 class="title" style="text-align: center;">Войти в аккаунт</h1>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <p>
+            <tui-input formControlName="email">Введите email</tui-input>
+            <tui-field-error formControlName="email"></tui-field-error>
+        </p>
+        <p>
+            <tui-input-password formControlName="password">
+                Введите пароль
+            </tui-input-password>
+            <tui-field-error formControlName="password"></tui-field-error>
+        </p>
+        <p>
+            <button tuiButton [disabled]="form.invalid">Войти</button>
+            <button tuiButton appearance="flat" routerLink="../register" class="tui-space_left-3">Регистрация</button>
+        </p>
+        <p style="text-align: center;">
+            <a tuiLink routerLink="../forgot-password">Забыли пароль?</a>
+        </p>
+    </form>
+</tui-island>
