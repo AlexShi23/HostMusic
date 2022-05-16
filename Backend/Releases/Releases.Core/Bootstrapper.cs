@@ -8,6 +8,7 @@ namespace HostMusic.Releases.Core
         public static IServiceCollection AddCore(this IServiceCollection services)
         {
             services.AddScoped<IReleaseService, ReleaseService>();
+            services.AddScoped<ITrackService, TrackService>();
             return services;
         }
     }

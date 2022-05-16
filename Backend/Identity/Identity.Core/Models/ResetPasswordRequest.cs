@@ -9,10 +9,10 @@ namespace HostMusic.Identity.Core.Models
 
         [Required]
         [MinLength(6)]
-        public string Password { get; set; }
+        public string Password { get; set; } = null!;
 
         [Required]
         [Compare("Password")]
-        public string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; } = null!;
     }
 }
