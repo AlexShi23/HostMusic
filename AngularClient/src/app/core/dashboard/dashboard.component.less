@@ -1,0 +1,214 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.head-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	grid-gap: 16px;
+	flex-wrap: wrap;
+}
+.head-title .left h1 {
+	font-size: 36px;
+	font-weight: 600;
+	margin-bottom: 10px;
+	color: var(--dark);
+}
+.head-title .left .breadcrumb {
+	display: flex;
+	align-items: center;
+	grid-gap: 16px;
+}
+.head-title .left .breadcrumb li {
+	color: var(--dark);
+}
+.head-title .left .breadcrumb li a {
+	color: var(--dark-grey);
+	pointer-events: none;
+}
+.head-title .left .breadcrumb li a.active {
+	color: var(--tui-primary);
+	pointer-events: unset;
+}
+.head-title .btn-download {
+	height: 36px;
+	padding: 0 16px;
+	border-radius: 36px;
+	background: var(--tui-primary);
+	color: var(--tui-base-02);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	grid-gap: 10px;
+	font-weight: 500;
+}
+
+.box-info {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	grid-gap: 24px;
+	margin-top: 36px;
+}
+.box-info li {
+	padding: 24px;
+	background: var(--tui-base-02);
+	border-radius: 20px;
+	display: flex;
+	align-items: center;
+	grid-gap: 24px;
+}
+.box-info li .bx {
+	width: 80px;
+	height: 80px;
+	border-radius: 10px;
+	font-size: 36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.box-info li:nth-child(1) .bx {
+	background: var(--light-blue);
+	color: var(--tui-primary);
+}
+.box-info li:nth-child(2) .bx {
+	background: var(--light-yellow);
+	color: var(--yellow);
+}
+.box-info li:nth-child(3) .bx {
+	background: var(--light-orange);
+	color: var(--orange);
+}
+.box-info li .text h3 {
+	font-size: 24px;
+	font-weight: 600;
+	color: var(--dark);
+}
+.box-info li .text p {
+	color: var(--dark);	
+}
+
+.table-data {
+	display: flex;
+	flex-wrap: wrap;
+	grid-gap: 24px;
+	margin-top: 24px;
+	width: 100%;
+	color: var(--dark);
+}
+.table-data > div {
+	border-radius: 20px;
+	background: var(--tui-base-02);
+	padding: 24px;
+	overflow-x: auto;
+}
+.table-data .head {
+	display: flex;
+	align-items: center;
+	grid-gap: 16px;
+	margin-bottom: 24px;
+}
+.table-data .head h3 {
+	margin-right: auto;
+	font-size: 24px;
+	font-weight: 600;
+}
+.table-data .head .bx {
+	cursor: pointer;
+}
+
+.table-data .order {
+	flex-grow: 1;
+	flex-basis: 500px;
+}
+.table-data .order table {
+	width: 100%;
+	border-collapse: collapse;
+}
+.table-data .order table th {
+	padding-bottom: 12px;
+	font-size: 13px;
+	text-align: left;
+	border-bottom: 1px solid var(--tui-base-03);
+}
+.table-data .order table td {
+	padding: 16px 0;
+}
+.table-data .order table tr td:first-child {
+	display: flex;
+	align-items: center;
+	grid-gap: 12px;
+	padding-left: 6px;
+}
+.table-data .order table td img {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+.table-data .order table tbody tr:hover {
+	background: var(--tui-base-03);
+}
+.table-data .order table tr td .status {
+	font-size: 10px;
+	padding: 6px 16px;
+	color: var(--tui-base-02);
+	border-radius: 20px;
+	font-weight: 700;
+}
+.table-data .order table tr td .status.completed {
+	background: var(--tui-primary);
+}
+.table-data .order table tr td .status.process {
+	background: var(--yellow);
+}
+.table-data .order table tr td .status.pending {
+	background: var(--orange);
+}
+
+
+.table-data .todo {
+	flex-grow: 1;
+	flex-basis: 300px;
+}
+.table-data .todo .todo-list {
+	width: 100%;
+}
+.table-data .todo .todo-list li {
+	margin-bottom: 16px;
+	background: var(--tui-base-03);
+	border-radius: 10px;
+	padding: 14px 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.table-data .todo .todo-list li .bx {
+	cursor: pointer;
+}
+.table-data .todo .todo-list li.completed {
+	border-left: 10px solid var(--tui-primary);
+}
+.table-data .todo .todo-list li.not-completed {
+	border-left: 10px solid var(--orange);
+}
+.table-data .todo .todo-list li:last-child {
+	margin-bottom: 0;
+}
+
+@media screen and (max-width: 576px) {
+	.box-info {
+		grid-template-columns: 1fr;
+	}
+
+	.table-data .head {
+		min-width: 420px;
+	}
+	.table-data .order table {
+		min-width: 420px;
+	}
+	.table-data .todo .todo-list {
+		min-width: 420px;
+	}
+}
