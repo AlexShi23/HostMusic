@@ -5,8 +5,8 @@
         <span class="text">HostMusic</span>
     </a>
     <ul class="side-menu">
-        <li class="active">
-            <a href="#">
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+            <a routerLink="">
                 <i class='bx'>
 					<tui-svg src="tuiIconStructureLarge" class="icon"></tui-svg>
 				</i>
@@ -35,16 +35,16 @@
                 <span class="text">Royalty</span>
             </a>
         </li>
-        <li>
-            <a routerLink="/profile" routerLinkActive="active">
+        <li routerLinkActive="active">
+            <a routerLink="/profile">
                 <i class='bx bx-user bx-sm'></i>
                 <span class="text">Profile</span>
             </a>
         </li>
     </ul>
     <ul class="side-menu bottom">
-        <li *ngIf="account.role === Role.Admin">
-            <a routerLink="/admin" routerLinkActive="active">
+        <li *ngIf="account.role === Role.Admin" routerLinkActive="active">
+            <a routerLink="/admin">
                 <i class='bx'>
 					<tui-svg src="tuiIconSettingsLarge" class="icon"></tui-svg>
 				</i>
