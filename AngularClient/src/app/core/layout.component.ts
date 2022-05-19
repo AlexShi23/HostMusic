@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
 import { Account, Role } from '@app/_models';
 import { AccountService } from '@app/_services';
 import { TuiHostedDropdownComponent } from '@taiga-ui/core';
@@ -17,18 +18,20 @@ export class LayoutComponent implements OnInit {
     themeForm: FormGroup;
 
     constructor(private formBuilder: FormBuilder,
-        private accountService: AccountService) {
+        private accountService: AccountService,
+        private cookieService: CookieService) {
         this.accountService.account.subscribe(x => this.account = x);
         this.menuClosed = true;
-        this.nightMode = false;
+        this.nightMode = cookieService.get('theme') != null ? (cookieService.get('theme') == "true") : false;
     }
     ngOnInit(): void {
         this.themeForm = this.formBuilder.group({
-            theme: [false]
+            theme: [this.nightMode]
         });
 
         this.themeForm.controls['theme'].valueChanges.subscribe(value => {
             this.nightMode = value;
+            this.cookieService.set('theme', value);
         });
     }
 
