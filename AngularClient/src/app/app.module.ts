@@ -12,7 +12,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor, appInitializer } from './_helpers';
 import { AccountService } from './_services';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home';
 import { of } from "rxjs";
 
 @NgModule({
@@ -36,8 +35,7 @@ import { of } from "rxjs";
         TuiDataListModule
     ],
     declarations: [
-        AppComponent,
-        HomeComponent],
+        AppComponent],
     providers: [
         { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AccountService] },
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

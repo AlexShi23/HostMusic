@@ -1,6 +1,6 @@
 <tui-theme-night *ngIf="nightMode"></tui-theme-night>
 <section [ngClass]="menuClosed ? 'sidebar hide' : 'sidebar'">
-    <a href="#" class="brand">
+    <a routerLink="" class="brand">
         <i class='bx bxs-smile icon'></i>
         <span class="text">HostMusic</span>
     </a>
@@ -96,7 +96,7 @@
 		</ng-template>
 		<ng-template #dropdown>
 			<tui-data-list style="overflow-y: hidden;">
-				<button tuiOption>Profile</button>
+				<button tuiOption routerLink="/profile">Profile</button>
 				<button tuiOption [icon]="tuiIconLogoutLarge" (click)="logout()">Logout</button>
 			</tui-data-list>
 		</ng-template>
