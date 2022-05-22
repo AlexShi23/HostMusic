@@ -1,0 +1,77 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="tui-row tui-row_sme">
+        <div class=" tui-col_3"></div>
+        <div class=" tui-col_6">
+            <h3 class="tui-text_h3">Create release</h3>
+            <div class="tui-form__row tui-form__row_multi-fields">
+                <div class="tui-form__multi-field">
+                    <tui-input formControlName="title">
+                        Release title
+                    </tui-input>
+                    <tui-field-error formControlName="title"></tui-field-error>
+                </div>
+                <div class="tui-form__multi-field">
+                    <tui-select formControlName="type">
+                        Type
+                        <input tuiTextfield placeholder="Choose release type" />
+                        <tui-data-list-wrapper
+                            *tuiDataList
+                            [items]="types"
+                        ></tui-data-list-wrapper>
+                    </tui-select>
+                    <tui-field-error formControlName="type"></tui-field-error>
+                </div>
+            </div>
+            <div class="tui-form__row tui-form__row_multi-fields">
+                <div class="tui-form__multi-field">
+                    <tui-input formControlName="artist">Artist</tui-input>
+                    <tui-field-error formControlName="artist"></tui-field-error>
+                </div>
+                <div class="tui-form__multi-field">
+                    <tui-select formControlName="genre">
+                        Genre
+                        <input tuiTextfield placeholder="Choose the main genre" />
+                        <tui-data-list-wrapper
+                            *tuiDataList
+                            [items]="genres"
+                        ></tui-data-list-wrapper>
+                    </tui-select>
+                    <tui-field-error formControlName="genre"></tui-field-error>
+                </div>
+            </div>
+            <div class="tui-form__row tui-form__row_multi-fields">
+                <div class="tui-form__multi-field">
+                    <tui-input formControlName="feat">Featuring</tui-input>
+                    <tui-field-error formControlName="feat"></tui-field-error>
+                </div>
+                <div class="tui-form__multi-field">
+                    <tui-select formControlName="subgenre">
+                        Subgenre
+                        <input tuiTextfield placeholder="Choose the subgenre" />
+                        <tui-data-list-wrapper
+                            *tuiDataList
+                            [items]="subgenres"
+                        ></tui-data-list-wrapper>
+                    </tui-select>
+                    <tui-field-error formControlName="subgenre"></tui-field-error>
+                </div>
+            </div>
+            <div class="tui-form__row tui-form__row_multi-fields">
+                <div class="tui-form__multi-field">
+                    <tui-input-date
+                        formControlName="date"
+                        [(ngModel)]="releaseDate"
+                        [min]="currentDay"
+                    >
+                        Choose a publishing date
+                    </tui-input-date>
+                    <tui-field-error formControlName="date"></tui-field-error>
+                </div>
+            </div>
+            <div class="tui-form__buttons">
+                <button tuiButton type="submit" class="tui-form__button">Сохранить</button>
+                <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="../">Отмена</button>
+            </div>
+        </div>
+    </div>
+</form>

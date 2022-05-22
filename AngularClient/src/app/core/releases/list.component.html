@@ -1,0 +1,121 @@
+<div class="head-title">
+    <div class="left">
+        <h1>Releases</h1>
+        <ul class="breadcrumb">
+            <li>
+                <a href="#">HostMusic</a>
+            </li>
+            <li><i class='bx bx-chevron-right' ></i></li>
+            <li>
+                <a class="active" href="#">Releases</a>
+            </li>
+        </ul>
+    </div>
+    <button
+        tuiButton
+        type="button"
+        size="m"
+        icon="tuiIconPlusLarge"
+        routerLink="add"
+    >
+        New release
+    </button>
+</div>
+
+<div class="table-data">
+    <div class="order">
+        <tui-input
+            icon="tuiIconSearchLarge"
+            [(ngModel)]="search"
+            >
+            Search
+        </tui-input>
+        <table class="tui-table tui-space_top-3">
+            <thead>
+                <tr class="tui-table__tr">
+                    <th class="tui-table__th" style="width:10%"><b>Cover</b></th>
+                    <th class="tui-table__th"><b>Release</b></th>
+                    <th class="tui-table__th"><b>Type</b></th>
+                    <th class="tui-table__th"><b>Date</b></th>
+                    <th class="tui-table__th"><b>Status</b></th>
+                    <th class="tui-table__th" style="width:10%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="tui-table__tr">
+                    <td class="tui-table__th"><img src="img/people.png"></td>
+                    <td class="tui-table__th">Release title</td>
+                    <td class="tui-table__th">Single</td>
+                    <td class="tui-table__th">20.05.2022</td>
+                    <td class="tui-table__th">Pending</td>
+                    <td class="tui-table__th" style="white-space: nowrap">
+                        <button tuiButton routerLink="edit/{{1}}" size="s">Изменить</button>
+                        <button tuiButton size="s" class="tui-space_left-3" appearance="accent">
+                            <span>Удалить</span>
+                        </button>
+                    </td>
+                </tr>
+                <tr class="tui-table__tr">
+                    <td class="tui-table__th"><img src="img/people.png"></td>
+                    <td class="tui-table__th">Release title</td>
+                    <td class="tui-table__th">Single</td>
+                    <td class="tui-table__th">20.05.2022</td>
+                    <td class="tui-table__th">Pending</td>
+                    <td class="tui-table__th" style="white-space: nowrap">
+                        <button tuiButton routerLink="edit/{{1}}" size="s">Изменить</button>
+                    </td>
+                </tr>
+                <tr class="tui-table__tr">
+                    <td class="tui-table__th"><img src="img/people.png"></td>
+                    <td class="tui-table__th">Release title</td>
+                    <td class="tui-table__th">Single</td>
+                    <td class="tui-table__th">20.05.2022</td>
+                    <td class="tui-table__th">Pending</td>
+                    <td class="tui-table__th" style="white-space: nowrap">
+                        <button tuiButton routerLink="edit/{{1}}" size="s">Изменить</button>
+                    </td>
+                </tr>
+                <tr class="tui-table__tr">
+                    <td class="tui-table__th"><img src="img/people.png"></td>
+                    <td class="tui-table__th">Release title</td>
+                    <td class="tui-table__th">Single</td>
+                    <td class="tui-table__th">20.05.2022</td>
+                    <td class="tui-table__th">Pending</td>
+                    <td class="tui-table__th" style="white-space: nowrap">
+                        <button tuiButton routerLink="edit/{{1}}" size="s">Изменить</button>
+                    </td>
+                </tr>
+                <tr class="tui-table__tr">
+                    <td class="tui-table__th"><img src="img/people.png"></td>
+                    <td class="tui-table__th">Release title</td>
+                    <td class="tui-table__th">Single</td>
+                    <td class="tui-table__th">20.05.2022</td>
+                    <td class="tui-table__th">Pending</td>
+                    <td class="tui-table__th" style="white-space: nowrap">
+                        <button tuiButton routerLink="edit/{{1}}" size="s">Изменить</button>
+                    </td>
+                </tr>
+                <tr class="tui-table__tr">
+                    <td class="tui-table__th"><img src="img/people.png"></td>
+                    <td class="tui-table__th">Release title</td>
+                    <td class="tui-table__th">Single</td>
+                    <td class="tui-table__th">20.05.2022</td>
+                    <td class="tui-table__th">Pending</td>
+                    <td class="tui-table__th" style="white-space: nowrap">
+                        <button tuiButton routerLink="edit/{{1}}" size="s">Изменить</button>
+                    </td>
+                </tr>
+                <tr class="tui-table__tr" *ngIf="!releases">
+                    <td colspan="6" class="text-center">
+                        <span class="spinner-border spinner-border-lg align-center"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <tui-pagination
+        [length]="length"
+        [index]="index"
+        (indexChange)="goToPage($event)"
+></tui-pagination>
+</div>
