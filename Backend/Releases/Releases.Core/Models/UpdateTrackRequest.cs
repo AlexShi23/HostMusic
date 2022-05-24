@@ -1,6 +1,7 @@
-namespace HostMusic.Releases.Core.Models;
-
-public class UpdateTrackRequest
+namespace HostMusic.Releases.Core.Models
 {
-    
+    public class UpdateTrackRequest
+    {
+
+    }
 }

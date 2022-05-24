@@ -97,6 +97,10 @@ namespace HostMusic.Identity.App.Controllers
             return Ok(new { message = "Password reset successful, you can now login" });
         }
 
+        /// <summary>
+        /// Get all users
+        /// </summary>
+        /// <returns>The list of users.</returns>
         [Authorize(Role.Admin)]
         [HttpGet]
         public ActionResult<IEnumerable<AccountResponse>> GetAll()
@@ -105,6 +109,10 @@ namespace HostMusic.Identity.App.Controllers
             return Ok(accounts);
         }
 
+        /// <summary>
+        /// Gets the user by id
+        /// </summary>
+        /// <returns>The one user.</returns>
         [HttpGet("{id:int}")]
         public ActionResult<AccountResponse> GetById(int id)
         {
@@ -115,6 +123,10 @@ namespace HostMusic.Identity.App.Controllers
             return Ok(account);
         }
 
+        /// <summary>
+        /// Create new user
+        /// </summary>
+        /// <returns>The account data.</returns>
         [Authorize(Role.Admin)]
         [HttpPost]
         public ActionResult<AccountResponse> Create(CreateRequest model)
@@ -123,6 +135,10 @@ namespace HostMusic.Identity.App.Controllers
             return Ok(account);
         }
 
+        /// <summary>
+        /// Update account data
+        /// </summary>
+        /// <returns>New account data.</returns>
         [HttpPut("{id:int}")]
         public ActionResult<AccountResponse> Update(int id, UpdateRequest model)
         {
@@ -136,6 +152,9 @@ namespace HostMusic.Identity.App.Controllers
             return Ok(account);
         }
 
+        /// <summary>
+        /// Delete user
+        /// </summary>
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {

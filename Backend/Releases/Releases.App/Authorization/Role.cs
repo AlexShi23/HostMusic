@@ -1,6 +1,8 @@
-namespace HostMusic.Releases.App.Authorization;
-
-public enum Role
+namespace HostMusic.Releases.App.Authorization
 {
-    Admin
+    public enum Role
+    {
+        Admin,
+        User
+    }
 }

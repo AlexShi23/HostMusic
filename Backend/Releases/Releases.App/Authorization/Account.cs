@@ -1,3 +1,5 @@
+using System;
+
 namespace HostMusic.Releases.App.Authorization
 {
     public class Account

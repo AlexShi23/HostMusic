@@ -1,4 +1,6 @@
-﻿namespace HostMusic.Releases.Data.Entities
+﻿using System;
+
+namespace HostMusic.Releases.Data.Entities
 {
     public class Track
     {
@@ -7,8 +9,9 @@
         public Release Release { get; set; } = null!;
         public int Index { get; set; }
         public string Title { get; set; } = null!;
-        public string? Subtitle { get; set; } = null!;
+        public string? Subtitle { get; set; }
         public string Artist { get; set; } = null!;
+        public string? Featuring { get; set; } 
         public string Path { get; set; } = null!;
         public TimeSpan Duration { get; set; }
         public bool? Explicit { get; set; }

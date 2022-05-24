@@ -1,10 +1,12 @@
-namespace Releases.Primitives;
-
-public enum ReleaseStatus
+namespace Releases.Primitives
 {
-    Draft = 0,
-    Moderation,
-    ModerationDone,
-    Distributed,
-    Published
+    public enum ReleaseStatus
+    {
+        Draft = 0,
+        Moderation,
+        ModerationDone,
+        Correcting,
+        Distributed,
+        Published
+    }
 }

@@ -1,6 +1,12 @@
-﻿using HostMusic.Releases.Core.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using HostMusic.Releases.Core.Models;
 using HostMusic.Releases.Data;
 using HostMusic.Releases.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using Releases.Primitives;
 
 namespace HostMusic.Releases.Core.Services
@@ -8,57 +14,68 @@ namespace HostMusic.Releases.Core.Services
     public class ReleaseService : IReleaseService
     {
         private readonly ReleasesContext _context;
-        public ReleaseService(ReleasesContext context)
+        private readonly IMapper _mapper;
+        public ReleaseService(ReleasesContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task Create(CreateReleaseRequest request)
+        public void Create(CreateReleaseRequest request, int creatorId)
         {
             var release = new Release
             {
                 Id = Guid.NewGuid(),
                 Type = request.Type,
                 Status = ReleaseStatus.Draft,
-                OwnerId = 123,
+                OwnerId = creatorId,
                 Title = request.Title,
                 Subtitle = request.Subtitle,
                 Artist = request.Artist,
+                Featuring = request.Featuring,
                 Genre = request.Genre,
                 Language = request.Language,
                 Country = request.Country,
                 CoverPath = request.CoverPath,
-                Explicit = request.Explicit,
                 ReleaseDate = request.ReleaseDate,
                 NumberOfPlays = 0,
-                CreatedAt = DateTime.Today
+                CreatedAt = DateTime.Today.ToUniversalTime()
             };
-            await _context.Releases.AddAsync(release);
-            await _context.SaveChangesAsync();
+            _context.Releases.Add(release);
+            _context.SaveChanges();
         }
 
-        public IEnumerable<ReleaseResponse> GetAll(int ownerId)
+        public async Task<IEnumerable<ReleaseResponse>> GetAll(int ownerId)
         {
-            var releases = _context.Releases.Where(r => r.OwnerId == ownerId);
+            var releases = await _context.Releases.Where(r => r.OwnerId == ownerId).ToListAsync();
+            return _mapper.Map<IList<ReleaseResponse>>(releases);
         }
 
-        public ReleaseResponse GetById(Guid id)
+        public async Task<ReleaseResponse> GetById(Guid id)
         {
-            var release = _context.Releases.Where(r => r.Id == id);
+            var release = await _context.Releases.FirstOrDefaultAsync(r => r.Id == id);
+            return _mapper.Map<ReleaseResponse>(release);
         }
 
         public void Update(Guid id, UpdateReleaseRequest request)
         {
-            throw new NotImplementedException();
+            var release =  _context.Releases.FirstOrDefault(r => r.Id == id);
+            if (release != null)
+            {
+                _mapper.Map(request, release);
+                release.UpdatedAt = DateTime.UtcNow;
+                _context.Releases.Update(release);
+                _context.SaveChanges();
+            }
         }
 
-        public void Delete(Guid id)
+        public async Task Delete(Guid id)
         {
-            var release = _context.Releases.FirstOrDefault(r => r.Id == id);
+            var release = await _context.Releases.FirstOrDefaultAsync(r => r.Id == id);
             if (release != null)
             {
                 _context.Releases.Remove(release);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }

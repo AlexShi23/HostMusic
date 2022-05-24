@@ -1,4 +1,5 @@
-﻿using HostMusic.Releases.Core.Services;
+﻿using System;
+using HostMusic.Releases.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HostMusic.Releases.Core
@@ -7,6 +8,7 @@ namespace HostMusic.Releases.Core
     {
         public static IServiceCollection AddCore(this IServiceCollection services)
         {
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IReleaseService, ReleaseService>();
             services.AddScoped<ITrackService, TrackService>();
             return services;

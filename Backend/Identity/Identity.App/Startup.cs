@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Text.Json.Serialization;
 using HostMusic.Identity.App.Middlewares;
 using HostMusic.Identity.Core;
@@ -36,7 +38,7 @@ namespace HostMusic.Identity.App
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "HostMusic.Identity.API",
+                    Title = "HostMusic Identity API",
                     Description = "Web API to provide authentication services"
                 });
 
@@ -53,6 +55,10 @@ namespace HostMusic.Identity.App
                         new OpenApiSecurityScheme{Reference = new OpenApiReference{Type = ReferenceType.SecurityScheme, Id = "Bearer"}}, Array.Empty<string>()
                     }
                 });
+                
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
             services.AddSmtp(Configuration);

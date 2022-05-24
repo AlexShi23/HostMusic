@@ -3,7 +3,6 @@
     public enum ReleaseType
     {
         Single = 0,
-        EP,
         Album
     }
 }

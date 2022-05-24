@@ -1,6 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using System.Text.Json.Serialization;
 using HostMusic.Releases.Core;
 using HostMusic.Releases.Data;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 namespace HostMusic.Releases.App
@@ -17,6 +23,7 @@ namespace HostMusic.Releases.App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddData();
+            services.AddHttpClient();
             services.AddCors();
             services.AddControllers().AddJsonOptions(x =>
             {
@@ -31,19 +38,9 @@ namespace HostMusic.Releases.App
                     Description = "Web API to operate with music releases"
                 });
 
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    In = ParameterLocation.Header,
-                    Description = "Please insert JWT with Bearer into field",
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey
-                });
-
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-                    {
-                        new OpenApiSecurityScheme{Reference = new OpenApiReference{Type = ReferenceType.SecurityScheme, Id = "Bearer"}}, Array.Empty<string>()
-                    }
-                });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
             
             services.AddCore();
@@ -60,7 +57,7 @@ namespace HostMusic.Releases.App
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());
-            
+
             app.UseEndpoints(x => x.MapControllers());
         }
     }
