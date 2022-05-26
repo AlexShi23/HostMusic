@@ -22,6 +22,10 @@ namespace HostMusic.Releases.Core
                         return x.DestinationMember.Name != "Type" || src.Type != null;
                     }
                 ));
+
+            CreateMap<Track, TrackResponse>();
+            CreateMap<CreateTrackRequest, Track>();
+            CreateMap<UpdateTrackRequest, Track>();
         }
     }
 }

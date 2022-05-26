@@ -6,7 +6,6 @@ namespace HostMusic.Releases.Data.Entities
     {
         public Guid Id { get; set; }
         public Guid ReleaseId { get; set; }
-        public Release Release { get; set; } = null!;
         public int Index { get; set; }
         public string Title { get; set; } = null!;
         public string? Subtitle { get; set; }

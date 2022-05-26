@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using HostMusic.Releases.App.Authorization;
 using HostMusic.Releases.Core.Models;
 using HostMusic.Releases.Core.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HostMusic.Releases.App.Controllers
@@ -38,6 +36,8 @@ namespace HostMusic.Releases.App.Controllers
         public async Task<ActionResult<ReleaseResponse>> GetById(Guid id)
         {
             var release = await _releaseService.GetById(id);
+            if (release == null)
+                return NotFound(new { message = "Release not found" });
             if (release.OwnerId == Account.Id || Account.Role == Role.Admin)
                 return Ok(release);
             return Unauthorized(new { message = "Unauthorized" });
@@ -68,8 +68,13 @@ namespace HostMusic.Releases.App.Controllers
         /// Update release
         /// </summary>
         [HttpPut("{id:guid}")]
-        public IActionResult Update(Guid id, UpdateReleaseRequest request)
+        public async Task<IActionResult> Update(Guid id, UpdateReleaseRequest request)
         {
+            var release = await _releaseService.GetById(id);
+            var validation = ValidateResponse(release);
+            if (validation != null)
+                return validation;
+            
             _releaseService.Update(id, request);
             return Ok(new { message = "Release updated successfully" });
         }
@@ -81,11 +86,21 @@ namespace HostMusic.Releases.App.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var release = await _releaseService.GetById(id);
-            if (release.OwnerId != Account.Id && Account.Role != Role.Admin)
-                return Unauthorized(new { message = "Unauthorized" });
+            var validation = ValidateResponse(release);
+            if (validation != null)
+                return validation;
             
             await _releaseService.Delete(id);
             return Ok(new { message = "Release deleted successfully" });;
+        }
+
+        private IActionResult? ValidateResponse(ReleaseResponse release)
+        {
+            if (release == null)
+                return NotFound(new { message = "Release not found" });
+            if (release.OwnerId != Account.Id && Account.Role != Role.Admin)
+                return Unauthorized(new { message = "Unauthorized" });
+            return null;
         }
     }
 }

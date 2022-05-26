@@ -27,8 +27,4 @@
       <ProjectReference Include="..\Releases.Data\Releases.Data.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Middlewares" />
-    </ItemGroup>
-
 </Project>

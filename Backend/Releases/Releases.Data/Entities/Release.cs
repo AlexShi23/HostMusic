@@ -18,7 +18,7 @@ namespace HostMusic.Releases.Data.Entities
         public string? Language { get; set; }
         public string Country { get; set; } = null!;
         public string CoverPath { get; set; } = null!;
-        // public List<Track> Tracks { get; set; } = null!;
+        public List<Track> Tracks { get; set; } = new();
         public TimeSpan Duration { get; set; }
         public bool? Explicit { get; set; }
         public DateTime ReleaseDate { get; set; }
