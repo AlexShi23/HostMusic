@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using HostMusic.Releases.App.Authorization;
 using HostMusic.Releases.Core.Models;
@@ -33,9 +34,9 @@ namespace HostMusic.Releases.App.Controllers
         /// </summary>
         /// <returns>One track.</returns>
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<TrackResponse>> GetById(Guid id)
+        public async Task<ActionResult<TrackResponse>> GetById([Required] Guid releaseId, Guid id)
         {
-            var track = await _trackService.GetById(id);
+            var track = await _trackService.GetById(releaseId, id);
             return Ok(track);
         }
 
@@ -43,8 +44,8 @@ namespace HostMusic.Releases.App.Controllers
         /// Get all tracks in release
         /// </summary>
         /// <returns>List of the tracks.</returns>
-        [HttpGet("{releaseId:guid}")]
-        public async Task<ActionResult<IEnumerable<TrackResponse>>> GetAllInRelease(Guid releaseId)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TrackResponse>>> GetAllInRelease([Required] Guid releaseId)
         {
             var tracks = await _trackService.GetAllInRelease(releaseId);
             return Ok(tracks);
@@ -54,7 +55,7 @@ namespace HostMusic.Releases.App.Controllers
         /// Add new track
         /// </summary>
         [HttpPost]
-        public IActionResult Create(Guid releaseId, CreateTrackRequest request)
+        public IActionResult Create([Required] Guid releaseId, CreateTrackRequest request)
         {
             _trackService.Create(releaseId, request, Account.Id);
             return Ok();
@@ -64,11 +65,11 @@ namespace HostMusic.Releases.App.Controllers
         /// Update track
         /// </summary>
         [HttpPut("{id:guid}")]
-        public async Task<IActionResult> Update(Guid id, UpdateTrackRequest request)
+        public async Task<IActionResult> Update([Required] Guid releaseId, Guid id, UpdateTrackRequest request)
         {
-            var release = await _trackService.GetById(id);
+            var release = await _trackService.GetById(releaseId, id);
 
-            _trackService.Update(id, request);
+            _trackService.Update(releaseId, id, request);
             return Ok(new { message = "Track updated successfully" });
         }
 
@@ -76,11 +77,11 @@ namespace HostMusic.Releases.App.Controllers
         /// Delete track
         /// </summary>
         [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete([Required] Guid releaseId, Guid id)
         {
-            var release = await _trackService.GetById(id);
+            var release = await _trackService.GetById(releaseId, id);
 
-            await _trackService.Delete(id);
+            await _trackService.Delete(releaseId, id);
             return Ok(new { message = "Track deleted successfully" });;
         }
     }

@@ -7,7 +7,6 @@ namespace HostMusic.Releases.Data
     public class ReleasesContext : DbContext
     {
         public DbSet<Release> Releases { get; set; } = null!;
-        public DbSet<Track> Tracks { get; set; } = null!;
 
         private readonly IConfiguration _configuration;
 

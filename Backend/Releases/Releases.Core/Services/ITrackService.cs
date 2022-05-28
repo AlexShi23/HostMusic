@@ -7,10 +7,10 @@ namespace HostMusic.Releases.Core.Services
 {
     public interface ITrackService
     {
+        Task<TrackResponse> GetById(Guid releaseId, Guid id);
         void Create(Guid releaseId, CreateTrackRequest request, int creatorId);
         Task<IEnumerable<TrackResponse>> GetAllInRelease(Guid releaseId);
-        Task<TrackResponse> GetById(Guid id);
-        void Update(Guid id, UpdateTrackRequest request);
-        Task Delete(Guid id);
+        void Update(Guid releaseId, Guid id, UpdateTrackRequest request);
+        Task Delete(Guid releaseId, Guid id);
     }
 }

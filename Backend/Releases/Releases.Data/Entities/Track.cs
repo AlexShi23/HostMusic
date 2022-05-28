@@ -1,9 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace HostMusic.Releases.Data.Entities
 {
+    [Owned]
     public class Track
     {
+        [Key]
         public Guid Id { get; set; }
         public Guid ReleaseId { get; set; }
         public int Index { get; set; }
