@@ -10,7 +10,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor, appInitializer } from './_helpers';
-import { AccountService } from './_services';
+import { AccountService, ReleaseService } from './_services';
 import { AppComponent } from './app.component';
 import { of } from "rxjs";
 
