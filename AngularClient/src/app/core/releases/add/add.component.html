@@ -13,7 +13,7 @@
                 <div class="tui-form__multi-field">
                     <tui-select formControlName="type">
                         Type
-                        <input tuiTextfield placeholder="Choose release type" />
+                        <input tuiTextfield placeholder="Choose release type"/>
                         <tui-data-list-wrapper
                             *tuiDataList
                             [items]="types"
@@ -24,13 +24,23 @@
             </div>
             <div class="tui-form__row tui-form__row_multi-fields">
                 <div class="tui-form__multi-field">
+                    <tui-input formControlName="subtitle">Subtitle</tui-input>
+                    <tui-field-error formControlName="subtitle"></tui-field-error>
+                </div>
+                <div class="tui-form__multi-field">
                     <tui-input formControlName="artist">Artist</tui-input>
                     <tui-field-error formControlName="artist"></tui-field-error>
+                </div>
+            </div>
+            <div class="tui-form__row tui-form__row_multi-fields">
+                <div class="tui-form__multi-field">
+                    <tui-input formControlName="feat">Featuring</tui-input>
+                    <tui-field-error formControlName="feat"></tui-field-error>
                 </div>
                 <div class="tui-form__multi-field">
                     <tui-select formControlName="genre">
                         Genre
-                        <input tuiTextfield placeholder="Choose the main genre" />
+                        <input tuiTextfield placeholder="Choose the main genre"/>
                         <tui-data-list-wrapper
                             *tuiDataList
                             [items]="genres"
@@ -41,22 +51,16 @@
             </div>
             <div class="tui-form__row tui-form__row_multi-fields">
                 <div class="tui-form__multi-field">
-                    <tui-input formControlName="feat">Featuring</tui-input>
-                    <tui-field-error formControlName="feat"></tui-field-error>
-                </div>
-                <div class="tui-form__multi-field">
-                    <tui-select formControlName="subgenre">
-                        Subgenre
-                        <input tuiTextfield placeholder="Choose the subgenre" />
+                    <tui-select formControlName="country">
+                        Country
+                        <input tuiTextfield placeholder="Choose the country"/>
                         <tui-data-list-wrapper
                             *tuiDataList
-                            [items]="subgenres"
+                            [items]="countries"
                         ></tui-data-list-wrapper>
                     </tui-select>
-                    <tui-field-error formControlName="subgenre"></tui-field-error>
+                    <tui-field-error formControlName="country"></tui-field-error>
                 </div>
-            </div>
-            <div class="tui-form__row tui-form__row_multi-fields">
                 <div class="tui-form__multi-field">
                     <tui-input-date
                         formControlName="date"
@@ -69,7 +73,8 @@
                 </div>
             </div>
             <div class="tui-form__buttons">
-                <button tuiButton type="submit" class="tui-form__button">Сохранить</button>
+                <button tuiButton type="submit" class="tui-form__button">Отправить</button>
+                <button tuiButton appearance="accent" type="button" class="tui-form__button">Сохранить черновик</button>
                 <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="../">Отмена</button>
             </div>
         </div>

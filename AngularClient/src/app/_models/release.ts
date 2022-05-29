@@ -12,7 +12,6 @@ export class Release {
     artist: string;
     featuring?: string;
     genre: string;
-    language?: string;
     country: string;
     coverPath: string;
     tracks: Track[];
