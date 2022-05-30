@@ -3,11 +3,16 @@ using System.IO;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using HostMusic.Releases.Core;
+using HostMusic.Releases.Core.Services;
 using HostMusic.Releases.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using tusdotnet;
+using tusdotnet.Models;
+using tusdotnet.Models.Configuration;
+using tusdotnet.Stores;
 
 namespace HostMusic.Releases.App
 {
@@ -22,6 +27,8 @@ namespace HostMusic.Releases.App
         
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            
             services.AddData();
             services.AddHttpClient();
             services.AddCors();
@@ -51,6 +58,22 @@ namespace HostMusic.Releases.App
             app.UseSwagger();
             app.UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v1/swagger.json", "HostMusic Releases API"));
             app.UseRouting();
+            
+            app.UseTus(httpContext => new DefaultTusConfiguration
+            {
+                Store = new TusDiskStore(@$"{Configuration.GetSection("AppConfig").GetValue<string>("FileSavePath")}\files\"),
+                UrlPath = "/upload",
+                MaxAllowedUploadSizeInBytes = 100 * 1024 * 1024,
+                MaxAllowedUploadSizeInBytesLong = 100 * 1024 * 1024,
+                Events = new Events
+                {
+                    OnFileCompleteAsync = async eventContext =>
+                    {
+                        var fileSaveService = httpContext.RequestServices.GetService<FileSaveService>();
+                        await fileSaveService.SaveFileUsingTus(eventContext);
+                    }
+                }
+            });
             
             app.UseCors(x => x
                 .SetIsOriginAllowed(origin => true)

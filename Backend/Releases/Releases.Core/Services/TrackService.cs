@@ -1,7 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using HostMusic.Releases.Core.Models;
 using HostMusic.Releases.Data;
 using HostMusic.Releases.Data.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace HostMusic.Releases.Core.Services
@@ -24,7 +30,7 @@ namespace HostMusic.Releases.Core.Services
             return _mapper.Map<TrackResponse>(track);
         }
 
-        public void Create(Guid releaseId, CreateTrackRequest request, int creatorId)
+        public void Create(Guid releaseId, CreateTrackRequest request)
         {
             var release = _context.Releases.First(x => x.Id == releaseId);
             var track = new Track
@@ -45,7 +51,7 @@ namespace HostMusic.Releases.Core.Services
             _context.Releases.Update(release);
             _context.SaveChanges();
         }
-        
+
         public async Task<IEnumerable<TrackResponse>> GetAllInRelease(Guid releaseId)
         {
             var release = await _context.Releases.SingleAsync(x => x.Id == releaseId);
