@@ -1,7 +1,7 @@
 ﻿import { NgDompurifySanitizer } from "@tinkoff/ng-dompurify";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { TuiRootModule, TuiDialogModule, TuiNotificationsModule, TuiButtonModule, TuiThemeNightModule, TuiModeModule, TUI_SANITIZER } from "@taiga-ui/core";
-import { TuiTabsModule } from '@taiga-ui/kit';
+import { TuiRootModule, TuiDialogModule, TuiNotificationsModule, TuiButtonModule, TuiThemeNightModule, TuiModeModule, TuiSvgModule, TuiHostedDropdownModule, TuiDataListModule, TUI_SANITIZER } from "@taiga-ui/core";
+import { TuiTabsModule, TuiAvatarModule, TuiToggleModule } from '@taiga-ui/kit';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { TUI_LANGUAGE, TUI_RUSSIAN_LANGUAGE } from '@taiga-ui/i18n';
 import { BrowserModule } from '@angular/platform-browser';
@@ -10,11 +10,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor, appInitializer } from './_helpers';
-import { AccountService } from './_services';
+import { AccountService, ReleaseService } from './_services';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home';
-import { of } from "rxjs";;
-import { SidebarComponent } from './sidebar/sidebar.component'
+import { of } from "rxjs";
 
 @NgModule({
     imports: [
@@ -29,13 +27,15 @@ import { SidebarComponent } from './sidebar/sidebar.component'
         TuiTabsModule,
         TuiButtonModule,
         TuiThemeNightModule,
-        TuiModeModule
+        TuiModeModule,
+        TuiSvgModule,
+        TuiAvatarModule,
+        TuiToggleModule,
+        TuiHostedDropdownModule,
+        TuiDataListModule
     ],
     declarations: [
-        AppComponent,
-        HomeComponent
-,
-        SidebarComponent    ],
+        AppComponent],
     providers: [
         { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AccountService] },
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

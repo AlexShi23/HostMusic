@@ -1,0 +1,258 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+a {
+	text-decoration: none;
+}
+
+li {
+	list-style: none;
+}
+
+html {
+	overflow-x: hidden;
+}
+
+body {
+	background: var(--tui-base-02);
+	overflow-x: hidden;
+}
+
+/* SIDEBAR */
+.sidebar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 250px;
+	height: 100%;
+	background: var(--tui-base-02);
+	z-index: 2000;
+	transition: .3s ease;
+	overflow-x: hidden;
+	scrollbar-width: none;
+}
+.sidebar::--webkit-scrollbar {
+	display: none;
+}
+.sidebar.hide {
+	width: 68px;
+}
+.sidebar .brand {
+	font-size: 24px;
+	font-weight: 700;
+	height: 56px;
+	display: flex;
+	align-items: center;
+	color: var(--tui-primary);
+	position: relative;
+	background: var(--tui-base-02);
+	z-index: 500;
+	box-sizing: content-box;
+}
+.sidebar .brand .bx {
+	min-width: 68px;
+	display: flex;
+	justify-content: center;
+}
+.sidebar .side-menu {
+	margin-top: 25px;
+	padding: 0px 14px;
+}
+.sidebar .side-menu li {
+	height: 40px;
+	margin-bottom: 10px;
+	background: transparent;
+	border-radius: 6px;
+}
+.sidebar .side-menu li.active {
+	background-color: var(--tui-primary);
+	position: relative;
+}
+
+.sidebar .side-menu li.active a:hover{
+	color: var(--tui-base-01);
+	background-color: var(--tui-primary);
+	position: relative;
+}
+
+.sidebar .side-menu li a {
+	width: 100%;
+	height: 40px;
+    background-color: transparent;
+	display: flex;
+	align-items: center;
+	border-radius: 6px;
+	font-size: 17px;
+	color: var(--tui-text-01);
+	white-space: nowrap;
+	overflow-x: hidden;
+}
+
+.sidebar .side-menu li.active a {
+	color: var(--tui-base-01);
+}
+.sidebar.hide .side-menu li a {
+	transition: width .3s ease;
+}
+.sidebar .side-menu li a.logout {
+	color: var(--tui-accent-active)
+}
+.sidebar .side-menu li a:hover {
+	background: var(--tui-secondary-hover);
+	color: var(--tui-primary);
+}
+.sidebar .side-menu li a .bx {
+	min-width: calc(60px  - ((4px + 6px) * 2));
+	display: flex;
+	justify-content: center;
+}
+/* SIDEBAR */
+
+/* CONTENT */
+#content {
+	position: relative;
+	width: calc(100% - 250px);
+	left: 250px;
+	transition: .3s ease;
+}
+.sidebar.hide ~ #content {
+	width: calc(100% - 68px);
+	left: 68px;
+}
+
+/* NAVBAR */
+#navbar {
+	position: relative;
+	width: calc(100% - 250px);
+	left: 250px;
+	transition: .3s ease;
+}
+.sidebar.hide ~ #navbar {
+	width: calc(100% - 68px);
+	left: 68px;
+}
+
+/* NAVBAR */
+#navbar nav {
+	height: 56px;
+	background: var(--tui-base-02);
+	padding: 0 24px;
+	display: flex;
+	align-items: center;
+	grid-gap: 24px;
+	font-family: var(--lato);
+	position: sticky;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+#navbar nav::before {
+	content: '';
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	bottom: -40px;
+	left: 0;
+	border-radius: 50%;
+	box-shadow: -20px -20px 0 var(--tui-base-02);
+}
+#navbar nav a {
+	color: var(--dark);
+}
+#navbar nav .icon {
+	cursor: pointer;
+	margin-right: auto;
+	color: var(--dark);
+}
+#navbar nav .nav-link {
+	font-size: 16px;
+	transition: .3s ease;
+}
+#navbar nav .nav-link:hover {
+	color: var(--tui-primary);
+}
+#navbar nav .notification {
+	font-size: 20px;
+	position: relative;
+}
+#navbar nav .notification .num {
+	position: absolute;
+	top: -6px;
+	right: -6px;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	border: 2px solid var(--tui-base-02);
+	background: var(--tui-accent-active);
+	color: var(--tui-base-02);
+	font-weight: 700;
+	font-size: 12px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+/* NAVBAR */
+
+
+/* MAIN */
+#content main {
+	width: 100%;
+	padding: 36px 24px;
+	font-family: var(--poppins);
+	max-height: calc(100vh - 56px);
+	overflow-y: auto;
+}
+
+@media screen and (max-width: 768px) {
+	.sidebar {
+		width: 200px;
+	}
+
+	#content {
+		width: calc(100% - 68px);
+		left: 200px;
+	}
+
+	#navbar {
+		width: calc(100% - 68px);
+		left: 200px;
+	}
+
+	#navbar nav .nav-link {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 576px) {
+	#navbar nav form .form-input input {
+		display: none;
+	}
+
+	#navbar nav form .form-input button {
+		width: auto;
+		height: auto;
+		background: transparent;
+		border-radius: none;
+		color: var(--dark);
+	}
+
+	#navbar nav form.show .form-input input {
+		display: block;
+		width: 100%;
+	}
+	#navbar nav form.show .form-input button {
+		width: 36px;
+		height: 100%;
+		border-radius: 0 36px 36px 0;
+		color: var(--tui-base-02);
+		background: var(--tui-accent-active)
+	}
+
+	#navbar nav form.show ~ .notification,
+	#navbar nav form.show ~ .profile {
+		display: none;
+	}
+}
