@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TuiInputModule, TuiInputPasswordModule, TuiFieldErrorModule, TuiDataListWrapperModule, TuiSelectModule, TuiPaginationModule, TuiInputDateModule } from '@taiga-ui/kit';
+import { TuiInputModule, TuiInputPasswordModule, TuiFieldErrorModule, TuiDataListWrapperModule, TuiSelectModule, TuiPaginationModule,
+    TuiInputDateModule, TuiFilesModule, TuiInputFilesModule, TuiProgressModule } from '@taiga-ui/kit';
 import { TuiButtonModule, TuiLinkModule, TuiDataListModule } from '@taiga-ui/core';
 
 import { ReleasesRoutingModule } from './releases-routing.module';
@@ -11,6 +13,7 @@ import { EditComponent } from './edit/edit.component';
 @NgModule({
     imports: [
         FormsModule,
+        CommonModule,
         ReactiveFormsModule,
         ReleasesRoutingModule,
         TuiButtonModule,
@@ -22,7 +25,10 @@ import { EditComponent } from './edit/edit.component';
         TuiSelectModule,
         TuiDataListModule,
         TuiInputDateModule,
-        TuiPaginationModule
+        TuiPaginationModule,
+        TuiFilesModule,
+        TuiInputFilesModule,
+        TuiProgressModule
     ],
     declarations: [
         ListComponent,

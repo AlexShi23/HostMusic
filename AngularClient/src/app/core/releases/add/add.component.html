@@ -34,8 +34,8 @@
             </div>
             <div class="tui-form__row tui-form__row_multi-fields">
                 <div class="tui-form__multi-field">
-                    <tui-input formControlName="feat">Featuring</tui-input>
-                    <tui-field-error formControlName="feat"></tui-field-error>
+                    <tui-input formControlName="featuring">Featuring</tui-input>
+                    <tui-field-error formControlName="featuring"></tui-field-error>
                 </div>
                 <div class="tui-form__multi-field">
                     <tui-select formControlName="genre">
@@ -63,13 +63,40 @@
                 </div>
                 <div class="tui-form__multi-field">
                     <tui-input-date
-                        formControlName="date"
+                        formControlName="releaseDate"
                         [(ngModel)]="releaseDate"
                         [min]="currentDay"
                     >
                         Choose a publishing date
                     </tui-input-date>
-                    <tui-field-error formControlName="date"></tui-field-error>
+                    <tui-field-error formControlName="releaseDate"></tui-field-error>
+                </div>
+            </div>
+            <div class="tui-form__row tui-form__row_multi-fields">
+                <div class="tui-form__multi-field">
+                    <tui-input-files
+                        *ngIf="!this.form.controls.cover.value"
+                        accept="image/*"
+                        [label]="'of release cover'"
+                        [formControl]="this.form.controls.cover"
+                        (reject)="onReject($event)"
+                    ></tui-input-files>
+                    
+                    <tui-files class="tui-space_top-1">
+                        <tui-file
+                            *ngIf="this.form.controls.cover.valueChanges | async as file"
+                            [file]="file"
+                            size="l"
+                            (removed)="removeFile()"
+                        ></tui-file>
+                    
+                        <tui-file
+                            *ngIf="rejectedFiles$ | async as file"
+                            state="error"
+                            [file]="file"
+                            (removed)="clearRejected()"
+                        ></tui-file>
+                    </tui-files>
                 </div>
             </div>
             <div class="tui-form__buttons">

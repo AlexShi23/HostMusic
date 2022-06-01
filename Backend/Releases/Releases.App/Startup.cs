@@ -1,15 +1,16 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using HostMusic.Releases.Core;
-using HostMusic.Releases.Core.Services;
 using HostMusic.Releases.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using tusdotnet;
+using tusdotnet.Interfaces;
 using tusdotnet.Models;
 using tusdotnet.Models.Configuration;
 using tusdotnet.Stores;
@@ -58,10 +59,17 @@ namespace HostMusic.Releases.App
             app.UseSwagger();
             app.UseSwaggerUI(x => x.SwaggerEndpoint("/swagger/v1/swagger.json", "HostMusic Releases API"));
             app.UseRouting();
+
+            app.UseCors(builder => builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin()
+                .WithExposedHeaders(tusdotnet.Helpers.CorsHelper.GetExposedHeaders())
+            );
             
             app.UseTus(httpContext => new DefaultTusConfiguration
             {
-                Store = new TusDiskStore(@$"{Configuration.GetSection("AppConfig").GetValue<string>("FileSavePath")}\files\"),
+                Store = new TusDiskStore(@$"{Configuration.GetSection("AppSettings").GetValue<string>("FileSavePath")}\files\"),
                 UrlPath = "/upload",
                 MaxAllowedUploadSizeInBytes = 100 * 1024 * 1024,
                 MaxAllowedUploadSizeInBytesLong = 100 * 1024 * 1024,
@@ -69,17 +77,23 @@ namespace HostMusic.Releases.App
                 {
                     OnFileCompleteAsync = async eventContext =>
                     {
-                        var fileSaveService = httpContext.RequestServices.GetService<FileSaveService>();
-                        await fileSaveService.SaveFileUsingTus(eventContext);
+                        var file = await eventContext.GetFileAsync();
+
+                        var metadata = await file.GetMetadataAsync(eventContext.CancellationToken);
+                        var fileName = file.Id + "." + metadata["filename"].GetString(System.Text.Encoding.UTF8).Split(".").Last();
+
+                        await using (var createdFile = File.Create(Path.Combine(
+                            Configuration.GetSection("AppSettings").GetValue<string>("FileSavePath"), fileName)))
+                        await using (var stream = await file.GetContentAsync(eventContext.CancellationToken))
+                        {
+                            await stream.CopyToAsync(createdFile);
+                        }
+
+                        var terminationStore = (ITusTerminationStore)eventContext.Store;
+                        await terminationStore.DeleteFileAsync(file.Id, eventContext.CancellationToken);
                     }
                 }
             });
-            
-            app.UseCors(x => x
-                .SetIsOriginAllowed(origin => true)
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
 
             app.UseEndpoints(x => x.MapControllers());
         }

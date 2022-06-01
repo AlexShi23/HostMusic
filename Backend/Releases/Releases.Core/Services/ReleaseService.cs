@@ -25,7 +25,6 @@ namespace HostMusic.Releases.Core.Services
         {
             var release = new Release
             {
-                Id = Guid.NewGuid(),
                 Type = request.Type,
                 Status = ReleaseStatus.Draft,
                 OwnerId = creatorId,
@@ -34,10 +33,9 @@ namespace HostMusic.Releases.Core.Services
                 Artist = request.Artist,
                 Featuring = request.Featuring,
                 Genre = request.Genre,
-                Language = request.Language,
                 Country = request.Country,
-                CoverPath = request.CoverPath,
-                ReleaseDate = request.ReleaseDate,
+                CoverPath = request.Cover,
+                ReleaseDate = request.ReleaseDate.ToUniversalTime(),
                 NumberOfPlays = 0,
                 CreatedAt = DateTime.Today.ToUniversalTime()
             };

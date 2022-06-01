@@ -11,7 +11,6 @@ namespace HostMusic.Releases.Core
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IReleaseService, ReleaseService>();
             services.AddScoped<ITrackService, TrackService>();
-            services.AddScoped<IFileSaveService, FileSaveService>();
             return services;
         }
     }

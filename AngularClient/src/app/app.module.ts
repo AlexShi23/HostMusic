@@ -10,7 +10,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor, appInitializer } from './_helpers';
-import { AccountService, ReleaseService } from './_services';
+import { AccountService, ReleaseService, TrackService, UploadService } from './_services';
 import { AppComponent } from './app.component';
 import { of } from "rxjs";
 
@@ -41,7 +41,10 @@ import { of } from "rxjs";
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         { provide: TUI_LANGUAGE, useValue: of(TUI_RUSSIAN_LANGUAGE) },
-        { provide: TUI_SANITIZER, useClass: NgDompurifySanitizer }
+        { provide: TUI_SANITIZER, useClass: NgDompurifySanitizer },
+        ReleaseService,
+        TrackService,
+        UploadService
     ],
     bootstrap: [AppComponent]
 })

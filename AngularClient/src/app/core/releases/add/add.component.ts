@@ -1,22 +1,31 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ReleaseService } from "@app/_services";
+import { FileStatus, ReleaseService, UploadService } from "@app/_services";
 import { TuiDay } from "@taiga-ui/cdk";
 import { TuiNotification } from "@taiga-ui/core";
-import { first } from "rxjs/operators";
+import { TuiFileLike } from "@taiga-ui/kit";
+import { Observable, Subject } from "rxjs";
+import { first, share, switchMap } from "rxjs/operators";
 
 @Component({ templateUrl: './add.component.html' })
 export class AddComponent implements OnInit {
     form: FormGroup;
-    
+    uploadProgress: Observable<FileStatus[]>;
+    fileId: string;
+    rejectedFiles$ = new Subject<TuiFileLike | null>();
     currentDay = TuiDay.currentLocal().append(new TuiDay(0, 0, 1));
     releaseDate: TuiDay | null = null;
     notificationsService: any;
 
+    types = ['Single', 'Album'];
+    genres = ['Hip-hop', 'Pop', 'Rock'];
+    countries = ['Russia', 'Kazhakhstan'];
+
     constructor(
         private formBuilder: FormBuilder,
         private releaseService: ReleaseService,
+        private uploadService: UploadService,
         private route: ActivatedRoute,
         private router: Router
     ) {}
@@ -27,15 +36,42 @@ export class AddComponent implements OnInit {
             type: ['', Validators.required],
             subtitle: [''],
             artist: ['', Validators.required],
-            feat: [''],
+            featuring: [''],
             genre: ['', Validators.required],
             country: ['', Validators.required],
-            date: ['', Validators.required]
+            releaseDate: ['', Validators.required],
+            cover: [null, Validators.required]
         });
+        this.uploadProgress = this.uploadService.uploadProgress;
+        
+    }
+ 
+    onReject(file: TuiFileLike | readonly TuiFileLike[]): void {
+        this.rejectedFiles$.next(file as TuiFileLike);
+    }
+ 
+    removeFile(): void {
+        this.form.controls.cover.setValue(null);
+    }
+ 
+    clearRejected(): void {
+        this.rejectedFiles$.next(null);
     }
     
     onSubmit(): void {
-        this.createRelease();
+        this.uploadService.uploadFile(this.form.controls.cover.value, this.form.controls.cover.value.name);
+        let id: string;
+        this.uploadProgress.subscribe({
+            next: (vl) => {
+                if (vl[0].uuid != null) {
+                    id = vl[0].uuid;
+                }
+            },
+            complete: () => {
+                this.form.controls.cover.setValue('C:\\AspNetCoreLargeFileExample\\' + id + '.' + this.form.controls.cover.value.name.split('.').pop());
+                this.createRelease();
+            }
+        });
     }
 
     private createRelease() {
