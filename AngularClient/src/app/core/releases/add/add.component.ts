@@ -68,7 +68,7 @@ export class AddComponent implements OnInit {
                 }
             },
             complete: () => {
-                this.form.controls.cover.setValue('C:\\AspNetCoreLargeFileExample\\' + id + '.' + this.form.controls.cover.value.name.split('.').pop());
+                this.form.controls.cover.setValue(id + '.' + this.form.controls.cover.value.name.split('.').pop());
                 this.createRelease();
             }
         });

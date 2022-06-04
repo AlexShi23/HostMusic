@@ -43,7 +43,7 @@
             </thead>
             <tbody>
                 <tr class="tui-table__tr" *ngFor="let release of releases">
-                    <td class="tui-table__th"><img src="img/people.png"></td>
+                    <td class="tui-table__th"><img [src]="this.getFilePath(release.coverPath)"></td>
                     <td class="tui-table__th">{{release.artist}} - {{release.title}}</td>
                     <td class="tui-table__th">{{release.type}}</td>
                     <td class="tui-table__th">{{release.releaseDate}}</td>

@@ -28,4 +28,24 @@
       <ProjectReference Include="..\Releases.Data\Releases.Data.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Resources\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Resources\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Resources\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources" />
+    </ItemGroup>
+
 </Project>

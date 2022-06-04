@@ -8,6 +8,7 @@ using HostMusic.Releases.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 using tusdotnet;
 using tusdotnet.Interfaces;
@@ -67,9 +68,16 @@ namespace HostMusic.Releases.App
                 .WithExposedHeaders(tusdotnet.Helpers.CorsHelper.GetExposedHeaders())
             );
             
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
+            
             app.UseTus(httpContext => new DefaultTusConfiguration
             {
-                Store = new TusDiskStore(@$"{Configuration.GetSection("AppSettings").GetValue<string>("FileSavePath")}\files\"),
+                Store = new TusDiskStore(Path.Combine(Directory.GetCurrentDirectory(), "Resources", "files")),
                 UrlPath = "/upload",
                 MaxAllowedUploadSizeInBytes = 100 * 1024 * 1024,
                 MaxAllowedUploadSizeInBytesLong = 100 * 1024 * 1024,
@@ -83,7 +91,7 @@ namespace HostMusic.Releases.App
                         var fileName = file.Id + "." + metadata["filename"].GetString(System.Text.Encoding.UTF8).Split(".").Last();
 
                         await using (var createdFile = File.Create(Path.Combine(
-                            Configuration.GetSection("AppSettings").GetValue<string>("FileSavePath"), fileName)))
+                                         Directory.GetCurrentDirectory(), "Resources", fileName)))
                         await using (var stream = await file.GetContentAsync(eventContext.CancellationToken))
                         {
                             await stream.CopyToAsync(createdFile);
