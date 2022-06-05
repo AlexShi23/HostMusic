@@ -1,9 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Inject, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FileStatus, ReleaseService, UploadService } from "@app/_services";
 import { TuiDay } from "@taiga-ui/cdk";
-import { TuiNotification } from "@taiga-ui/core";
+import { TuiNotification, TuiNotificationsService } from '@taiga-ui/core';
 import { TuiFileLike } from "@taiga-ui/kit";
 import { Observable, Subject } from "rxjs";
 import { first, share, switchMap } from "rxjs/operators";
@@ -16,7 +16,6 @@ export class AddComponent implements OnInit {
     rejectedFiles$ = new Subject<TuiFileLike | null>();
     currentDay = TuiDay.currentLocal().append(new TuiDay(0, 0, 1));
     releaseDate: TuiDay | null = null;
-    notificationsService: any;
 
     types = ['Single', 'Album'];
     genres = ['Hip-hop', 'Pop', 'Rock'];
@@ -27,7 +26,9 @@ export class AddComponent implements OnInit {
         private releaseService: ReleaseService,
         private uploadService: UploadService,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        @Inject(TuiNotificationsService)
+        private readonly notificationsService: TuiNotificationsService
     ) {}
 
     ngOnInit(): void {
@@ -59,6 +60,10 @@ export class AddComponent implements OnInit {
     }
     
     onSubmit(): void {
+        if (this.form.invalid) {
+            return;
+        }
+
         this.uploadService.uploadFile(this.form.controls.cover.value, this.form.controls.cover.value.name);
         let id: string;
         this.uploadProgress.subscribe({
@@ -66,10 +71,10 @@ export class AddComponent implements OnInit {
                 if (vl[0].uuid != null) {
                     id = vl[0].uuid;
                 }
-            },
-            complete: () => {
-                this.form.controls.cover.setValue(id + '.' + this.form.controls.cover.value.name.split('.').pop());
-                this.createRelease();
+                if (vl[0].progress == 100) {
+                    this.form.controls.cover.setValue(id + '.' + this.form.controls.cover.value.name.split('.').pop());
+                    this.createRelease();
+                }
             }
         });
     }

@@ -44,13 +44,14 @@
             <tbody>
                 <tr class="tui-table__tr" *ngFor="let release of releases">
                     <td class="tui-table__th"><img [src]="this.getFilePath(release.coverPath)"></td>
-                    <td class="tui-table__th">{{release.artist}} - {{release.title}}</td>
+                    <td class="tui-table__th"><b>{{release.artist}}</b>
+                        {{release.featuring}} - {{release.title}} <i>({{release.subtitle}})</i></td>
                     <td class="tui-table__th">{{release.type}}</td>
-                    <td class="tui-table__th">{{release.releaseDate}}</td>
+                    <td class="tui-table__th">{{this.formatDate(release.releaseDate)}}</td>
                     <td class="tui-table__th">{{release.status}}</td>
                     <td class="tui-table__th" style="white-space: nowrap">
-                        <button tuiButton routerLink="edit/{{1}}" size="s">Изменить</button>
-                        <button tuiButton size="s" class="tui-space_left-3" appearance="accent">
+                        <button tuiButton routerLink="edit/{{1}}" size="s" style="margin-right: 10px;">Изменить</button>
+                        <button tuiButton size="s" appearance="accent">
                             <span>Удалить</span>
                         </button>
                     </td>

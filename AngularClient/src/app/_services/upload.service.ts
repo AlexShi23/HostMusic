@@ -5,6 +5,7 @@ import {Upload} from 'tus-js-client';
 export interface FileStatus {
 	filename: string;
 	hash: string;
+	progress: number;
 	uuid: string;
 }
 
@@ -20,7 +21,7 @@ export class UploadService {
 	fileStatusArr: FileStatus[] = [];
 
 	uploadFile(file: File, filename: string) {
-		const fileStatus: FileStatus = {filename, hash: '', uuid: ''};
+		const fileStatus: FileStatus = {filename, progress: 0, hash: '', uuid: ''};
 		this.fileStatusArr.push(fileStatus);
 
 		this.uploadStatus.next(this.fileStatusArr);
@@ -35,20 +36,25 @@ export class UploadService {
 			},
 			onError: async (error) => {
 				console.log(error);
-				this.uploadStatus.complete();
+				//this.uploadStatus.complete();
 				return false;
 			},
 			onChunkComplete: (chunkSize, bytesAccepted, bytesTotal) => {
 				this.fileStatusArr.forEach(value => {
 				if (value.filename === filename) {
+					value.progress = Math.floor(bytesAccepted / bytesTotal * 100);
 					value.uuid = upload.url.split('/').slice(-1)[0];
 				}
 				});
 				this.uploadStatus.next(this.fileStatusArr);
 			},
 			onSuccess: async () => {
+				this.fileStatusArr.forEach(value => {
+					if (value.filename === filename) {
+						value.progress = 100;
+					}
+				});
 				this.uploadStatus.next(this.fileStatusArr);
-				this.uploadStatus.complete();
 				return true;
 			}
 		});

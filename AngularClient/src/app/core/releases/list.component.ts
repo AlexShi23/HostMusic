@@ -9,8 +9,8 @@ import { environment } from '@environments/environment';
 export class ListComponent implements OnInit {
     search = '';
     releases: Release[];
-    length = 64;
-    index = 10;
+    length: number;
+    index = 1;
 
     constructor(private releaseService: ReleaseService) {}
 
@@ -18,6 +18,7 @@ export class ListComponent implements OnInit {
         this.releaseService.getAll()
             .pipe(first())
             .subscribe(releases => this.releases = releases);
+        length = this.releases.length / 10;
     }
  
     goToPage(index: number): void {
@@ -27,5 +28,9 @@ export class ListComponent implements OnInit {
 
     getFilePath(filename: string) {
         return `${environment.releasesUrl}/Resources/${filename}`;
+    }
+
+    formatDate(date: Date) {
+        return date.toString().split('T')[0];
     }
 }
