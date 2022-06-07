@@ -91,7 +91,7 @@ namespace HostMusic.Releases.App.Controllers
                 return validation;
             
             await _releaseService.Delete(id);
-            return Ok(new { message = "Release deleted successfully" });;
+            return Ok(new { message = "Release deleted successfully" });
         }
 
         private IActionResult? ValidateResponse(ReleaseResponse release)

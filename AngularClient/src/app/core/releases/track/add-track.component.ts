@@ -1,49 +1,28 @@
-import { Component, Inject, OnInit } from "@angular/core";
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
-import { FileStatus, ReleaseService, UploadService } from "@app/_services";
-import { TuiDay } from "@taiga-ui/cdk";
+import { FileStatus, TrackService, UploadService } from '@app/_services';
 import { TuiNotification, TuiNotificationsService } from '@taiga-ui/core';
-import { TuiFileLike } from "@taiga-ui/kit";
-import { Observable, Subject } from "rxjs";
-import { first, share, switchMap } from "rxjs/operators";
+import { TuiFileLike } from '@taiga-ui/kit';
+import { Observable, Subject } from 'rxjs';
+import { first } from 'rxjs/operators';
 
-@Component({ templateUrl: './add.component.html' })
-export class AddComponent implements OnInit {
+@Component({ selector: 'track', templateUrl: 'add-track.component.html' })
+export class AddTrackComponent implements OnInit {
     form: FormGroup;
     uploadProgress: Observable<FileStatus[]>;
     fileId: string;
-    tracksCount: number;
     rejectedFiles$ = new Subject<TuiFileLike | null>();
-    currentDay = TuiDay.currentLocal().append(new TuiDay(0, 0, 1));
-    releaseDate: TuiDay | null = null;
-
-    types = ['Single', 'Album'];
-    genres = ['Hip-hop', 'Pop', 'Rock'];
-    countries = ['Russia', 'Kazhakhstan'];
 
     constructor(
         private formBuilder: FormBuilder,
-        private releaseService: ReleaseService,
+        private trackService: TrackService,
         private uploadService: UploadService,
-        private route: ActivatedRoute,
-        private router: Router,
         @Inject(TuiNotificationsService)
         private readonly notificationsService: TuiNotificationsService
     ) {}
 
     ngOnInit(): void {
         this.form = this.formBuilder.group({
-            title: ['', Validators.required],
-            type: ['', Validators.required],
-            subtitle: [''],
-            artist: ['', Validators.required],
-            featuring: [''],
-            genre: ['', Validators.required],
-            country: ['', Validators.required],
-            releaseDate: ['', Validators.required],
-            cover: [null, Validators.required],
-
             trackTitle: ['', Validators.required],
             trackSubtitle: [''],
             trackArtist: ['', Validators.required],
@@ -53,9 +32,8 @@ export class AddComponent implements OnInit {
             explicit: [null]
         });
         this.uploadProgress = this.uploadService.uploadProgress;
-        
     }
- 
+
     onReject(file: TuiFileLike | readonly TuiFileLike[]): void {
         this.rejectedFiles$.next(file as TuiFileLike);
     }
@@ -73,7 +51,7 @@ export class AddComponent implements OnInit {
             return;
         }
 
-        this.uploadService.uploadFile(this.form.controls.cover.value, this.form.controls.cover.value.name);
+        this.uploadService.uploadFile(this.form.controls.track.value, this.form.controls.track.value.name);
         let id: string;
         this.uploadProgress.subscribe({
             next: (vl) => {
@@ -81,22 +59,21 @@ export class AddComponent implements OnInit {
                     id = vl[0].uuid;
                 }
                 if (vl[0].progress == 100) {
-                    this.form.controls.cover.setValue(id + '.' + this.form.controls.cover.value.name.split('.').pop());
-                    this.createRelease();
+                    this.form.controls.track.setValue(id + '.' + this.form.controls.cover.value.name.split('.').pop());
+                    this.createTrack();
                 }
             }
         });
     }
 
-    private createRelease() {
-        this.releaseService.create(this.form.value)
+    private createTrack() {
+        this.trackService.create(this.form.value)
             .pipe(first())
             .subscribe({
                 next: () => { this.notificationsService
                     .show('Релиз успешно создан', {
                         status: TuiNotification.Success
                     }).subscribe()
-                    this.router.navigate(['../'], { relativeTo: this.route });
                 },
                 error: error => { this.notificationsService
                     .show(error, {

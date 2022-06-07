@@ -22,7 +22,7 @@ export class ReleaseService {
         this.release = this.releaseSubject.asObservable();
     }
 
-    public get accountValue(): Release {
+    public get releaseValue(): Release {
         return this.releaseSubject.value;
     }
 

@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TuiInputModule, TuiInputPasswordModule, TuiFieldErrorModule, TuiDataListWrapperModule, TuiSelectModule, TuiPaginationModule,
-    TuiInputDateModule, TuiFilesModule, TuiInputFilesModule, TuiProgressModule } from '@taiga-ui/kit';
+    TuiInputDateModule, TuiFilesModule, TuiInputFilesModule, TuiProgressModule, TuiTextAreaModule, TuiCheckboxLabeledModule } from '@taiga-ui/kit';
 import { TuiButtonModule, TuiLinkModule, TuiDataListModule } from '@taiga-ui/core';
 
 import { ReleasesRoutingModule } from './releases-routing.module';
 import { ListComponent } from './list.component';
 import { AddComponent } from './add/add.component';
 import { EditComponent } from './edit/edit.component';
+import { AddTrackComponent } from './track/add-track.component';
 
 @NgModule({
     imports: [
@@ -28,12 +29,15 @@ import { EditComponent } from './edit/edit.component';
         TuiPaginationModule,
         TuiFilesModule,
         TuiInputFilesModule,
-        TuiProgressModule
+        TuiProgressModule,
+        TuiTextAreaModule,
+        TuiCheckboxLabeledModule
     ],
     declarations: [
         ListComponent,
         AddComponent,
-        EditComponent
+        EditComponent,
+        AddTrackComponent
     ]
 })
 export class ReleasesModule { }
