@@ -45,4 +45,8 @@ export class ReleaseService {
     delete(id: string) {
         return this.http.delete(`${baseUrl}/${id}`);
     }
+
+    search(query: string) {
+        return this.http.get(`${baseUrl}/search?query=${query}`);
+    }
 }

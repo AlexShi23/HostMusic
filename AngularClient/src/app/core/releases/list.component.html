@@ -24,12 +24,15 @@
 
 <div class="table-data">
     <div class="order">
-        <tui-input
-            icon="tuiIconSearchLarge"
-            [(ngModel)]="search"
-            >
-            Search
-        </tui-input>
+        <form [formGroup]="searchForm">
+            <tui-input
+                icon="tuiIconSearchLarge"
+                [(ngModel)]="search"
+                formControlName="search"
+                >
+                Search
+            </tui-input>
+        </form>
         <table class="tui-table tui-space_top-3">
             <thead>
                 <tr class="tui-table__tr">

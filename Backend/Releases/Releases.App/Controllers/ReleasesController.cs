@@ -93,6 +93,16 @@ namespace HostMusic.Releases.App.Controllers
             await _releaseService.Delete(id);
             return Ok(new { message = "Release deleted successfully" });
         }
+        
+        /// <summary>
+        /// Search releases
+        /// </summary>
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<ReleaseResponse>>> Search([FromQuery] string query)
+        {
+            var releases = await _releaseService.Search(query, Account.Id);
+            return Ok(releases);
+        }
 
         private IActionResult? ValidateResponse(ReleaseResponse release)
         {

@@ -76,5 +76,14 @@ namespace HostMusic.Releases.Core.Services
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<ReleaseResponse>> Search(string query, int ownerId)
+        {
+            var releases = await _context.Releases.Where(r => r.OwnerId == ownerId &&
+                (r.Title.ToLower().Contains(query.ToLower()) ||
+                r.Artist.ToLower().Contains(query.ToLower())))
+                .ToListAsync();
+            return _mapper.Map<IList<ReleaseResponse>>(releases);
+        }
     }
 }
