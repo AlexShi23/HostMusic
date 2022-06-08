@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FileStatus, ReleaseService, UploadService } from "@app/_services";
 import { TuiDay } from "@taiga-ui/cdk";
@@ -35,7 +35,7 @@ export class AddComponent implements OnInit {
     ngOnInit(): void {
         this.form = this.formBuilder.group({
             title: ['', Validators.required],
-            type: ['', Validators.required],
+            type: ['Single', Validators.required],
             subtitle: [''],
             artist: ['', Validators.required],
             featuring: [''],
@@ -43,17 +43,23 @@ export class AddComponent implements OnInit {
             country: ['', Validators.required],
             releaseDate: ['', Validators.required],
             cover: [null, Validators.required],
-
-            trackTitle: ['', Validators.required],
-            trackSubtitle: [''],
-            trackArtist: ['', Validators.required],
-            trackFeaturing: [''],
-            track: [null, Validators.required],
-            lyrics: [''],
-            explicit: [null]
+            tracks: this.formBuilder.array([
+                this.formBuilder.group({
+                    trackTitle: ['', Validators.required],
+                    trackSubtitle: [''],
+                    trackArtist: ['', Validators.required],
+                    trackFeaturing: [''],
+                    track: [null, Validators.required],
+                    lyrics: [''],
+                    explicit: [null]
+                })
+            ])
         });
         this.uploadProgress = this.uploadService.uploadProgress;
-        
+    }
+
+    get tracksArray(): FormArray {
+        return this.form.controls.tracks as FormArray;
     }
  
     onReject(file: TuiFileLike | readonly TuiFileLike[]): void {
@@ -86,6 +92,24 @@ export class AddComponent implements OnInit {
                 }
             }
         });
+    }
+
+    addTrack(): void {
+        this.tracksArray.push(
+            this.formBuilder.group({
+                trackTitle: ['', Validators.required],
+                trackSubtitle: [''],
+                trackArtist: ['', Validators.required],
+                trackFeaturing: [''],
+                track: [null, Validators.required],
+                lyrics: [''],
+                explicit: [null]
+            })
+        );
+    }
+
+    deleteTrack(index: number): void {
+        this.tracksArray.removeAt(index);
     }
 
     private createRelease() {

@@ -9,7 +9,6 @@ import { ReleasesRoutingModule } from './releases-routing.module';
 import { ListComponent } from './list.component';
 import { AddComponent } from './add/add.component';
 import { EditComponent } from './edit/edit.component';
-import { AddTrackComponent } from './track/add-track.component';
 
 @NgModule({
     imports: [
@@ -36,8 +35,7 @@ import { AddTrackComponent } from './track/add-track.component';
     declarations: [
         ListComponent,
         AddComponent,
-        EditComponent,
-        AddTrackComponent
+        EditComponent
     ]
 })
 export class ReleasesModule { }
