@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using HostMusic.Releases.Core;
 using HostMusic.Releases.Data;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;

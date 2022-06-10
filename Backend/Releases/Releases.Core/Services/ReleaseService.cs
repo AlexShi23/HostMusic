@@ -21,7 +21,7 @@ namespace HostMusic.Releases.Core.Services
             _mapper = mapper;
         }
 
-        public void Create(CreateReleaseRequest request, int creatorId)
+        public Guid Create(CreateReleaseRequest request, int creatorId)
         {
             var release = new Release
             {
@@ -36,11 +36,34 @@ namespace HostMusic.Releases.Core.Services
                 Country = request.Country,
                 CoverPath = request.Cover,
                 ReleaseDate = request.ReleaseDate.ToUniversalTime(),
+                NumberOfTracks = request.Tracks.Count,
                 NumberOfPlays = 0,
                 CreatedAt = DateTime.Today.ToUniversalTime()
             };
+
+            var tracks = request.Tracks.Select(track => new Track
+                {
+                    Id = Guid.NewGuid(),
+                    Index = track.Index,
+                    ReleaseId = release.Id,
+                    Title = track.Title,
+                    Subtitle = track.Subtitle,
+                    Artist = track.Artist,
+                    Featuring = track.Featuring,
+                    TrackPath = track.TrackPath,
+                    Duration = default,
+                    Explicit = track.Explicit,
+                    Lyrics = track.Lyrics,
+                    NumberOfPlays = 0
+                })
+                .ToList();
+
+            release.Tracks = tracks;
+            
             _context.Releases.Add(release);
             _context.SaveChanges();
+
+            return release.Id;
         }
 
         public async Task<IEnumerable<ReleaseResponse>> GetAll(int ownerId)

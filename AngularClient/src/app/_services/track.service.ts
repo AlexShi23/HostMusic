@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-
-import { environment } from '@environments/environment';
-import { Release, Track } from '@app/_models';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-const baseUrl = `${environment.apiUrl}/tracks`;
+import { environment } from '@environments/environment';
+import { Track } from '@app/_models';
+
+const baseUrl = `${environment.releasesUrl}/Tracks`;
 
 @Injectable({ providedIn: 'root' })
 export class TrackService {

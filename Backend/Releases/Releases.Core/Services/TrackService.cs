@@ -30,19 +30,18 @@ namespace HostMusic.Releases.Core.Services
             return _mapper.Map<TrackResponse>(track);
         }
 
-        public void Create(Guid releaseId, CreateTrackRequest request)
+        public void Create(CreateTrackRequest request)
         {
-            var release = _context.Releases.First(x => x.Id == releaseId);
+            var release = _context.Releases.First();
             var track = new Track
             {
-                ReleaseId = releaseId,
                 Index = request.Index,
                 Title = request.Title,
                 Subtitle = request.Subtitle,
                 Artist = request.Artist,
                 Featuring = request.Featuring,
                 Explicit = request.Explicit,
-                Path = "111",
+                TrackPath = request.TrackPath,
                 Lyrics = request.Lyrics,
                 NumberOfPlays = 0
             };

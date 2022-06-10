@@ -58,10 +58,10 @@ namespace HostMusic.Releases.App.Controllers
         /// Create new release
         /// </summary>
         [HttpPost]
-        public IActionResult Create(CreateReleaseRequest request)
+        public ActionResult<Guid> Create(CreateReleaseRequest request)
         {
-            _releaseService.Create(request, Account.Id);
-            return Ok(new { message = "Release created successfully" });
+            var releaseId = _releaseService.Create(request, Account.Id);
+            return Ok(releaseId);
         }
 
         /// <summary>

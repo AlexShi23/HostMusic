@@ -2,7 +2,7 @@
     <div class="tui-row tui-row_sme">
         <div class=" tui-col_3"></div>
         <div class=" tui-col_6">
-            <h3 class="tui-text_h3">Create release</h3>
+            <h3 class="tui-text_h3" style="margin-top: 0;">Create release</h3>
             <div class="tui-form__row tui-form__row_multi-fields">
                 <div class="tui-form__multi-field">
                     <tui-input formControlName="title">
@@ -107,63 +107,64 @@
                     <h4 class="tui-text_h4" style="margin: 0">Track №{{i+1}}</h4>
                     <div class="tui-form__row tui-form__row_multi-fields">
                         <div class="tui-form__multi-field">
-                            <tui-input formControlName="trackTitle">
+                            <tui-input formControlName="title">
                                 Track title
                             </tui-input>
-                            <tui-field-error formControlName="trackTitle"></tui-field-error>
+                            <tui-field-error formControlName="title"></tui-field-error>
                         </div>
                         <div class="tui-form__multi-field">
-                            <tui-input formControlName="trackSubtitle">
+                            <tui-input formControlName="subtitle">
                                 Track subtitle
                             </tui-input>
-                            <tui-field-error formControlName="trackSubtitle"></tui-field-error>
+                            <tui-field-error formControlName="subtitle"></tui-field-error>
                         </div>
                     </div>
                     <div class="tui-form__row tui-form__row_multi-fields">
                         <div class="tui-form__multi-field">
-                            <tui-input formControlName="trackArtist">
+                            <tui-input formControlName="artist">
                                 Artist
                             </tui-input>
-                            <tui-field-error formControlName="trackArtist"></tui-field-error>
+                            <tui-field-error formControlName="artist"></tui-field-error>
                         </div>
                         <div class="tui-form__multi-field">
-                            <tui-input formControlName="trackFeaturing">
+                            <tui-input formControlName="featuring">
                                 Featuring
                             </tui-input>
-                            <tui-field-error formControlName="trackFeaturing"></tui-field-error>
+                            <tui-field-error formControlName="featuring"></tui-field-error>
                         </div>
                     </div>
                     <div class="tui-form__row tui-form__row_multi-fields">
                         <div class="tui-form__multi-field">
                             <tui-input-files
-                                *ngIf="!trackForm.controls.track.value"
+                                *ngIf="!trackForm.controls.trackPath.value"
                                 accept="audio/wav"
                                 [link] = "'Choose .wav file'"
                                 [label]="'of the track'"
-                                [formControl]="trackForm.controls.track"
-                                (reject)="onReject($event)"
+                                [formControl]="trackForm.controls.trackPath"
+                                [maxFileSize]="100000000"
+                                (reject)="onTrackReject($event, i)"
                             ></tui-input-files>
                             
                             <tui-files class="tui-space_top-1">
                                 <tui-file
-                                    *ngIf="trackForm.controls.track.valueChanges | async as file"
+                                    *ngIf="trackForm.controls.trackPath.valueChanges | async as file"
                                     [file]="file"
                                     size="l"
-                                    (removed)="removeFile()"
+                                    (removed)="removeTrackFile(i)"
                                 ></tui-file>
                             
                                 <tui-file
-                                    *ngIf="rejectedFiles$ | async as file"
+                                    *ngIf="rejectedTrackFiles$[i] | async as file"
                                     state="error"
                                     [file]="file"
-                                    (removed)="clearRejected()"
+                                    (removed)="clearTrackRejected(i)"
                                 ></tui-file>
                             </tui-files>
                         </div>
                     </div>
                     <div class="tui-form__row tui-form__row_multi-fields">
                         <div class="tui-form__multi-field">
-                            <tui-text-area formControlName="lirycs">
+                            <tui-text-area formControlName="lyrics">
                                 Type a lyrics of the track
                             </tui-text-area>
                         </div>

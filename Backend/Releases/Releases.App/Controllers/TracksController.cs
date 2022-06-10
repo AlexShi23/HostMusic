@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using HostMusic.Releases.App.Authorization;
 using HostMusic.Releases.Core.Models;
 using HostMusic.Releases.Core.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HostMusic.Releases.App.Controllers
@@ -56,9 +55,9 @@ namespace HostMusic.Releases.App.Controllers
         /// Add new track
         /// </summary>
         [HttpPost]
-        public IActionResult Create([Required] Guid releaseId, CreateTrackRequest request)
+        public IActionResult Create(CreateTrackRequest request)
         {
-            _trackService.Create(releaseId, request);
+            _trackService.Create(request);
             return Ok();
         }
 
