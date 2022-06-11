@@ -1,0 +1,43 @@
+
+@import '@taiga-ui/core/styles/taiga-ui-local';
+:host {
+    .text-body-m();
+    display: flex;
+    align-items: flex-start;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+.title {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    width: 150px;
+    min-width: 150px;
+    white-space: nowrap;
+    color: var(--tui-text-02);
+    &_dotted:after {
+        content: '';
+        flex-grow: 1;
+        align-self: flex-end;
+        margin-left: 5px;
+        padding-bottom: 0.467em;
+        background-image: linear-gradient(to right, currentColor 25%, transparent 0%);
+        background-repeat: repeat-x;
+        background-position: top;
+        background-size: 5px 1px;
+    }
+}
+.content-block {
+    flex-grow: 1;
+    padding-left: 8px;
+}
+.default {
+    color: var(--tui-text-02);
+}
+.content {
+    word-break: break-all;
+    word-break: break-word;
+}
+.save-spaces {
+    white-space: pre-wrap;
+}

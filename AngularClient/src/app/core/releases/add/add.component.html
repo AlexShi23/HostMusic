@@ -3,218 +3,220 @@
         <div class=" tui-col_3"></div>
         <div class=" tui-col_6">
             <h3 class="tui-text_h3" style="margin-top: 0;">Create release</h3>
-            <div class="tui-form__row tui-form__row_multi-fields">
-                <div class="tui-form__multi-field">
-                    <tui-input formControlName="title">
-                        Release title
-                    </tui-input>
-                    <tui-field-error formControlName="title"></tui-field-error>
-                </div>
-                <div class="tui-form__multi-field">
-                    <tui-select formControlName="type">
-                        Type
-                        <input tuiTextfield placeholder="Choose release type"/>
-                        <tui-data-list-wrapper
-                            *tuiDataList
-                            [items]="types"
-                        ></tui-data-list-wrapper>
-                    </tui-select>
-                    <tui-field-error formControlName="type"></tui-field-error>
-                </div>
-            </div>
-            <div class="tui-form__row tui-form__row_multi-fields">
-                <div class="tui-form__multi-field">
-                    <tui-input formControlName="subtitle">Subtitle</tui-input>
-                    <tui-field-error formControlName="subtitle"></tui-field-error>
-                </div>
-                <div class="tui-form__multi-field">
-                    <tui-input formControlName="artist">Artist</tui-input>
-                    <tui-field-error formControlName="artist"></tui-field-error>
-                </div>
-            </div>
-            <div class="tui-form__row tui-form__row_multi-fields">
-                <div class="tui-form__multi-field">
-                    <tui-input formControlName="featuring">Featuring</tui-input>
-                    <tui-field-error formControlName="featuring"></tui-field-error>
-                </div>
-                <div class="tui-form__multi-field">
-                    <tui-select formControlName="genre">
-                        Genre
-                        <input tuiTextfield placeholder="Choose the main genre"/>
-                        <tui-data-list-wrapper
-                            *tuiDataList
-                            [items]="genres"
-                        ></tui-data-list-wrapper>
-                    </tui-select>
-                    <tui-field-error formControlName="genre"></tui-field-error>
-                </div>
-            </div>
-            <div class="tui-form__row tui-form__row_multi-fields">
-                <div class="tui-form__multi-field">
-                    <tui-select formControlName="country">
-                        Country
-                        <input tuiTextfield placeholder="Choose the country"/>
-                        <tui-data-list-wrapper
-                            *tuiDataList
-                            [items]="countries"
-                        ></tui-data-list-wrapper>
-                    </tui-select>
-                    <tui-field-error formControlName="country"></tui-field-error>
-                </div>
-                <div class="tui-form__multi-field">
-                    <tui-input-date
-                        formControlName="releaseDate"
-                        [(ngModel)]="releaseDate"
-                        [min]="currentDay"
-                    >
-                        Choose a publishing date
-                    </tui-input-date>
-                    <tui-field-error formControlName="releaseDate"></tui-field-error>
-                </div>
-            </div>
-            <div class="tui-form__row tui-form__row_multi-fields">
-                <div class="tui-form__multi-field">
-                    <tui-input-files
-                        *ngIf="!this.form.controls.cover.value"
-                        accept="image/*"
-                        [link] = "'Choose file'"
-                        [label]="'of release cover'"
-                        [formControl]="this.form.controls.cover"
-                        (reject)="onReject($event)"
-                    ></tui-input-files>
-                    
-                    <tui-files class="tui-space_top-1">
-                        <tui-file
-                            *ngIf="this.form.controls.cover.valueChanges | async as file"
-                            [file]="file"
-                            size="l"
-                            (removed)="removeFile()"
-                        ></tui-file>
-                    
-                        <tui-file
-                            *ngIf="rejectedFiles$ | async as file"
-                            state="error"
-                            [file]="file"
-                            (removed)="clearRejected()"
-                        ></tui-file>
-                    </tui-files>
-                </div>
-            </div>
-            <h3 class="tui-text_h3">Add track(s)</h3>
-            
-            <ng-container *ngFor="let trackForm of tracksArray.controls; index as i">
-                <form class="tui-form__row" [formGroup]="trackForm">
-                    <h4 class="tui-text_h4" style="margin: 0">Track №{{i+1}}</h4>
-                    <div class="tui-form__row tui-form__row_multi-fields">
-                        <div class="tui-form__multi-field">
-                            <tui-input formControlName="title">
-                                Track title
-                            </tui-input>
-                            <tui-field-error formControlName="title"></tui-field-error>
-                        </div>
-                        <div class="tui-form__multi-field">
-                            <tui-input formControlName="subtitle">
-                                Track subtitle
-                            </tui-input>
-                            <tui-field-error formControlName="subtitle"></tui-field-error>
-                        </div>
+            <tui-island>
+                <div class="tui-form__row tui-form__row_multi-fields">
+                    <div class="tui-form__multi-field">
+                        <tui-input formControlName="title">
+                            Release title
+                        </tui-input>
+                        <tui-field-error formControlName="title"></tui-field-error>
                     </div>
-                    <div class="tui-form__row tui-form__row_multi-fields">
-                        <div class="tui-form__multi-field">
-                            <tui-input formControlName="artist">
-                                Artist
-                            </tui-input>
-                            <tui-field-error formControlName="artist"></tui-field-error>
-                        </div>
-                        <div class="tui-form__multi-field">
-                            <tui-input formControlName="featuring">
-                                Featuring
-                            </tui-input>
-                            <tui-field-error formControlName="featuring"></tui-field-error>
-                        </div>
+                    <div class="tui-form__multi-field">
+                        <tui-select formControlName="type">
+                            Type
+                            <input tuiTextfield placeholder="Choose release type"/>
+                            <tui-data-list-wrapper
+                                *tuiDataList
+                                [items]="types"
+                            ></tui-data-list-wrapper>
+                        </tui-select>
+                        <tui-field-error formControlName="type"></tui-field-error>
                     </div>
-                    <div class="tui-form__row tui-form__row_multi-fields">
-                        <div class="tui-form__multi-field">
-                            <tui-input-files
-                                *ngIf="!trackForm.controls.trackPath.value"
-                                accept="audio/wav"
-                                [link] = "'Choose .wav file'"
-                                [label]="'of the track'"
-                                [formControl]="trackForm.controls.trackPath"
-                                [maxFileSize]="100000000"
-                                (reject)="onTrackReject($event, i)"
-                            ></tui-input-files>
-                            
-                            <tui-files class="tui-space_top-1">
-                                <tui-file
-                                    *ngIf="trackForm.controls.trackPath.valueChanges | async as file"
-                                    [file]="file"
-                                    size="l"
-                                    (removed)="removeTrackFile(i)"
-                                ></tui-file>
-                            
-                                <tui-file
-                                    *ngIf="rejectedTrackFiles$[i] | async as file"
-                                    state="error"
-                                    [file]="file"
-                                    (removed)="clearTrackRejected(i)"
-                                ></tui-file>
-                            </tui-files>
+                </div>
+                <div class="tui-form__row tui-form__row_multi-fields">
+                    <div class="tui-form__multi-field">
+                        <tui-input formControlName="subtitle">Subtitle</tui-input>
+                        <tui-field-error formControlName="subtitle"></tui-field-error>
+                    </div>
+                    <div class="tui-form__multi-field">
+                        <tui-input formControlName="artist">Artist</tui-input>
+                        <tui-field-error formControlName="artist"></tui-field-error>
+                    </div>
+                </div>
+                <div class="tui-form__row tui-form__row_multi-fields">
+                    <div class="tui-form__multi-field">
+                        <tui-input formControlName="featuring">Featuring</tui-input>
+                        <tui-field-error formControlName="featuring"></tui-field-error>
+                    </div>
+                    <div class="tui-form__multi-field">
+                        <tui-select formControlName="genre">
+                            Genre
+                            <input tuiTextfield placeholder="Choose the main genre"/>
+                            <tui-data-list-wrapper
+                                *tuiDataList
+                                [items]="genres"
+                            ></tui-data-list-wrapper>
+                        </tui-select>
+                        <tui-field-error formControlName="genre"></tui-field-error>
+                    </div>
+                </div>
+                <div class="tui-form__row tui-form__row_multi-fields">
+                    <div class="tui-form__multi-field">
+                        <tui-select formControlName="country">
+                            Country
+                            <input tuiTextfield placeholder="Choose the country"/>
+                            <tui-data-list-wrapper
+                                *tuiDataList
+                                [items]="countries"
+                            ></tui-data-list-wrapper>
+                        </tui-select>
+                        <tui-field-error formControlName="country"></tui-field-error>
+                    </div>
+                    <div class="tui-form__multi-field">
+                        <tui-input-date
+                            formControlName="releaseDate"
+                            [(ngModel)]="releaseDate"
+                            [min]="currentDay"
+                        >
+                            Choose a publishing date
+                        </tui-input-date>
+                        <tui-field-error formControlName="releaseDate"></tui-field-error>
+                    </div>
+                </div>
+                <div class="tui-form__row tui-form__row_multi-fields">
+                    <div class="tui-form__multi-field">
+                        <tui-input-files
+                            *ngIf="!this.form.controls.cover.value"
+                            accept="image/*"
+                            [link] = "'Choose file'"
+                            [label]="'of release cover'"
+                            [formControl]="this.form.controls.cover"
+                            (reject)="onReject($event)"
+                        ></tui-input-files>
+                        
+                        <tui-files class="tui-space_top-1">
+                            <tui-file
+                                *ngIf="this.form.controls.cover.valueChanges | async as file"
+                                [file]="file"
+                                size="l"
+                                (removed)="removeFile()"
+                            ></tui-file>
+                        
+                            <tui-file
+                                *ngIf="rejectedFiles$ | async as file"
+                                state="error"
+                                [file]="file"
+                                (removed)="clearRejected()"
+                            ></tui-file>
+                        </tui-files>
+                    </div>
+                </div>
+                <h3 class="tui-text_h3">Add track(s)</h3>
+                
+                <ng-container *ngFor="let trackForm of tracksArray.controls; index as i">
+                    <form class="tui-form__row" [formGroup]="trackForm">
+                        <h4 class="tui-text_h4" style="margin: 0">Track №{{i+1}}</h4>
+                        <div class="tui-form__row tui-form__row_multi-fields">
+                            <div class="tui-form__multi-field">
+                                <tui-input formControlName="title">
+                                    Track title
+                                </tui-input>
+                                <tui-field-error formControlName="title"></tui-field-error>
+                            </div>
+                            <div class="tui-form__multi-field">
+                                <tui-input formControlName="subtitle">
+                                    Track subtitle
+                                </tui-input>
+                                <tui-field-error formControlName="subtitle"></tui-field-error>
+                            </div>
                         </div>
-                    </div>
-                    <div class="tui-form__row tui-form__row_multi-fields">
-                        <div class="tui-form__multi-field">
-                            <tui-text-area formControlName="lyrics">
-                                Type a lyrics of the track
-                            </tui-text-area>
+                        <div class="tui-form__row tui-form__row_multi-fields">
+                            <div class="tui-form__multi-field">
+                                <tui-input formControlName="artist">
+                                    Artist
+                                </tui-input>
+                                <tui-field-error formControlName="artist"></tui-field-error>
+                            </div>
+                            <div class="tui-form__multi-field">
+                                <tui-input formControlName="featuring">
+                                    Featuring
+                                </tui-input>
+                                <tui-field-error formControlName="featuring"></tui-field-error>
+                            </div>
                         </div>
-                    </div>
-                    <div class="tui-form__row tui-form__row_multi-fields" style="
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        grid-gap: 16px;
-                        flex-wrap: wrap;
-                    ">
-                        <tui-checkbox-labeled
-                            formControlName="explicit"
-                            size="l"
-                            class="tui-space_bottom-3"
-                        >Track has explicit lyrics</tui-checkbox-labeled>
-                        <button
-                            *ngIf="this.tracksArray.length > 1 &&
-                                this.form.controls.type.value != 'Single'"
-                            tuiButton
-                            class="tui-space_left-2"
-                            appearance="flat"
-                            icon="tuiIconTrashLarge"
-                            tuiMode="onLight"
-                            type="button"
-                            size="l"
-                            (click)="deleteTrack(i)"
-                        >Delete track</button>
-                    </div>
-                </form>
-            </ng-container>
+                        <div class="tui-form__row tui-form__row_multi-fields">
+                            <div class="tui-form__multi-field">
+                                <tui-input-files
+                                    *ngIf="!trackForm.controls.trackPath.value"
+                                    accept="audio/wav"
+                                    [link] = "'Choose .wav file'"
+                                    [label]="'of the track'"
+                                    [formControl]="trackForm.controls.trackPath"
+                                    [maxFileSize]="100000000"
+                                    (reject)="onTrackReject($event, i)"
+                                ></tui-input-files>
+                                
+                                <tui-files class="tui-space_top-1">
+                                    <tui-file
+                                        *ngIf="trackForm.controls.trackPath.valueChanges | async as file"
+                                        [file]="file"
+                                        size="l"
+                                        (removed)="removeTrackFile(i)"
+                                    ></tui-file>
+                                
+                                    <tui-file
+                                        *ngIf="rejectedTrackFiles$[i] | async as file"
+                                        state="error"
+                                        [file]="file"
+                                        (removed)="clearTrackRejected(i)"
+                                    ></tui-file>
+                                </tui-files>
+                            </div>
+                        </div>
+                        <div class="tui-form__row tui-form__row_multi-fields">
+                            <div class="tui-form__multi-field">
+                                <tui-text-area formControlName="lyrics">
+                                    Type a lyrics of the track
+                                </tui-text-area>
+                            </div>
+                        </div>
+                        <div class="tui-form__row tui-form__row_multi-fields" style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            grid-gap: 16px;
+                            flex-wrap: wrap;
+                        ">
+                            <tui-checkbox-labeled
+                                formControlName="explicit"
+                                size="l"
+                                class="tui-space_bottom-3"
+                            >Track has explicit lyrics</tui-checkbox-labeled>
+                            <button
+                                *ngIf="this.tracksArray.length > 1 &&
+                                    this.form.controls.type.value != 'Single'"
+                                tuiButton
+                                class="tui-space_left-2"
+                                appearance="flat"
+                                icon="tuiIconTrashLarge"
+                                tuiMode="onLight"
+                                type="button"
+                                size="l"
+                                (click)="deleteTrack(i)"
+                            >Delete track</button>
+                        </div>
+                    </form>
+                </ng-container>
 
-            <button
-                *ngIf="this.form.controls.type.value != 'Single'"
-                tuiButton
-                appearance="secondary"
-                class="tui-space_top-3"
-                type="button"
-                size="l"
-                icon="tuiIconPlusLarge"
-                (click)="addTrack()"
-            >
-                Add track
-            </button>
+                <button
+                    *ngIf="this.form.controls.type.value != 'Single'"
+                    tuiButton
+                    appearance="secondary"
+                    class="tui-space_top-3"
+                    type="button"
+                    size="l"
+                    icon="tuiIconPlusLarge"
+                    (click)="addTrack()"
+                >
+                    Add track
+                </button>
 
-            <div class="tui-form__buttons">
-                <button tuiButton type="submit" class="tui-form__button">Отправить</button>
-                <button tuiButton appearance="accent" type="button" class="tui-form__button">Сохранить черновик</button>
-                <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="../">Отмена</button>
-            </div>
+                <div class="tui-form__buttons">
+                    <button tuiButton type="submit" class="tui-form__button">Send to moderation</button>
+                    <button tuiButton appearance="accent" type="button" class="tui-form__button">Save as draft</button>
+                    <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="../">Cancel</button>
+                </div>
+            </tui-island>
         </div>
     </div>
 </form>

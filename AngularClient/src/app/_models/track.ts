@@ -6,7 +6,7 @@ export class Track {
     subtitle?: string;
     artist: string;
     featuring?: string;
-    path: string;
+    trackPath: string;
     duration?: TimeRanges;
     explicit: boolean;
     lyrics?: string;

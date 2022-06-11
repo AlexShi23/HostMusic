@@ -45,17 +45,17 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="tui-table__tr" *ngFor="let release of releases">
+                <tr class="tui-table__tr" *ngFor="let release of releases" routerLink="view/{{release.id}}">
                     <td class="tui-table__th"><img [src]="this.getFilePath(release.coverPath)"></td>
-                    <td class="tui-table__th"><b>{{release.artist}}</b>
-                        {{release.featuring}} - {{release.title}} <i>({{release.subtitle}})</i></td>
+                    <td class="tui-table__th"><b>{{release.artist}}
+                        {{this.getFeatText(release.featuring)}}</b> - {{release.title}} <i>{{getSubtitleText(release.subtitle)}}</i></td>
                     <td class="tui-table__th">{{release.type}}</td>
                     <td class="tui-table__th">{{this.formatDate(release.releaseDate)}}</td>
-                    <td class="tui-table__th">{{release.status}}</td>
+                    <td class="tui-table__th"><tui-badge [status]="this.getBadge(release.status)" [value]="release.status"></tui-badge></td>
                     <td class="tui-table__th" style="white-space: nowrap">
-                        <button tuiButton routerLink="edit/{{1}}" size="s" style="margin-right: 10px;">Изменить</button>
-                        <button tuiButton size="s" appearance="accent">
-                            <span>Удалить</span>
+                        <button tuiButton routerLink="edit/{{release.id}}" icon="tuiIconDraft" size="s" style="margin-right: 10px;">Edit</button>
+                        <button tuiButton size="s" icon="tuiIconTrash" appearance="accent">
+                            <span>Delete</span>
                         </button>
                     </td>
                 </tr>
