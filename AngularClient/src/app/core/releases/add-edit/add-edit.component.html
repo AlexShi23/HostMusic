@@ -2,7 +2,8 @@
     <div class="tui-row tui-row_sme">
         <div class=" tui-col_3"></div>
         <div class=" tui-col_6">
-            <h3 class="tui-text_h3" style="margin-top: 0;">Create release</h3>
+            <h3 *ngIf="isAddMode" class="tui-text_h3" style="margin-top: 0;">Create release</h3>
+            <h3 *ngIf="!isAddMode" class="tui-text_h3" style="margin-top: 0;">Edit release</h3>
             <tui-island>
                 <div class="tui-form__row tui-form__row_multi-fields">
                     <div class="tui-form__multi-field">
@@ -74,6 +75,11 @@
                     </div>
                 </div>
                 <div class="tui-form__row tui-form__row_multi-fields">
+                    <div *ngIf="!this.isAddMode && this.coverPath != null && !this.form.controls.cover.value" class="tui-form__multi-field">
+                        <tui-island>
+                            <img style="width: 100%; height: 100%" [src]="this.getFilePath(this.coverPath)">
+                        </tui-island>
+                    </div>
                     <div class="tui-form__multi-field">
                         <tui-input-files
                             *ngIf="!this.form.controls.cover.value"
@@ -101,7 +107,8 @@
                         </tui-files>
                     </div>
                 </div>
-                <h3 class="tui-text_h3">Add track(s)</h3>
+                <h3 *ngIf="isAddMode"class="tui-text_h3">Add track(s)</h3>
+                <h3 *ngIf="!isAddMode" class="tui-text_h3">Edit track(s)</h3>
                 
                 <ng-container *ngFor="let trackForm of tracksArray.controls; index as i">
                     <form class="tui-form__row" [formGroup]="trackForm">
@@ -135,6 +142,36 @@
                             </div>
                         </div>
                         <div class="tui-form__row tui-form__row_multi-fields">
+                            <div *ngIf="!isAddMode && this.trackPaths[i+1] != null &&
+                                !this.form.get('tracks')['controls'][i].controls.trackPath.value" class="tui-form__multi-field">
+                                <div class="tui-player">
+                                    <audio
+                                        #audio
+                                        tuiMedia
+                                        [src]="this.getFilePath(this.trackPaths[i+1])"
+                                        [(currentTime)]="currentTime[i]"
+                                        [(paused)]="paused[i]"
+                                    ></audio>
+                                    <button
+                                        tuiIconButton
+                                        type="button"
+                                        shape="rounded"
+                                        appearance="secondary"
+                                        title="Play/Pause"
+                                        [icon]="getIcon(i)"
+                                        (click)="toggleState(i)"
+                                    ></button>
+                                    <div>
+                                        <input
+                                            tuiSlider
+                                            type="range"
+                                            class="slider"
+                                            [max]="audio.duration"
+                                            [value]="currentTime[i]"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                             <div class="tui-form__multi-field">
                                 <tui-input-files
                                     *ngIf="!trackForm.controls.trackPath.value"
@@ -170,13 +207,7 @@
                                 </tui-text-area>
                             </div>
                         </div>
-                        <div class="tui-form__row tui-form__row_multi-fields" style="
-                            display: flex;
-                            align-items: center;
-                            justify-content: space-between;
-                            grid-gap: 16px;
-                            flex-wrap: wrap;
-                        ">
+                        <div class="tui-form__row tui-form__row_multi-fields between">
                             <tui-checkbox-labeled
                                 formControlName="explicit"
                                 size="l"
@@ -214,7 +245,7 @@
                 <div class="tui-form__buttons">
                     <button tuiButton type="submit" class="tui-form__button">Send to moderation</button>
                     <button tuiButton appearance="accent" type="button" class="tui-form__button">Save as draft</button>
-                    <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="../">Cancel</button>
+                    <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="/releases">Cancel</button>
                 </div>
             </tui-island>
         </div>

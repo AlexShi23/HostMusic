@@ -13,7 +13,7 @@ namespace HostMusic.Releases.Core.Models
         public string Genre { get; set; } = null!;
         public string? Language { get; set; } = null!;
         public string Country { get; set; } = null!;
-        // public string CoverPath { get; set; } = null!;
+        public string Cover { get; set; } = null!;
         public DateTime ReleaseDate { get; set; }
     }
 }
