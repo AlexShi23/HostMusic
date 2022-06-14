@@ -149,10 +149,10 @@ export class AddEditComponent implements OnInit {
             let id: string;
             this.uploadProgress.subscribe({
                 next: (vl) => {
-                    if (vl[0].uuid != null) {
-                        id = vl[0].uuid;
+                    if (vl[vl.length - 1].uuid != null) {
+                        id = vl[vl.length - 1].uuid;
                     }
-                    if (vl[0].progress == 100) {
+                    if (vl[vl.length - 1].progress == 100) {
                         this.form.controls.cover.setValue(id + '.' + this.form.controls.cover.value.name.split('.').pop());
                         this.createTracks();
                     }
@@ -240,14 +240,14 @@ export class AddEditComponent implements OnInit {
         } else {
             this.uploadService.uploadFile(this.form.get('tracks')['controls'][i].controls.trackPath.value,
                 this.form.get('tracks')['controls'][i].controls.trackPath.value.name);
-            let id: string;
+            let trackId: string;
             this.uploadProgress.subscribe({
                 next: (vl) => {
-                    if (vl[0].uuid != null) {
-                        id = vl[0].uuid;
+                    if (vl[vl.length - 1].uuid != null) {
+                        trackId = vl[vl.length - 1].uuid;
                     }
-                    if (vl[0].progress == 100) {
-                        this.form.get('tracks')['controls'][i].controls.trackPath.setValue(id + '.' +
+                    if (vl[vl.length - 1].progress == 100) {
+                        this.form.get('tracks')['controls'][i].controls.trackPath.setValue(trackId + '.' +
                             this.form.get('tracks')['controls'][i].controls.trackPath.value.name.split('.').pop());
                         this.uploadTrack(i + 1);
                     }
