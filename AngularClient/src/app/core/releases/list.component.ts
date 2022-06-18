@@ -13,6 +13,9 @@ export class ListComponent implements OnInit {
     releases: Release[];
     length: number = 1;
     index = 1;
+    deletedReleaseId: string;
+    deletedRelease: Release;
+    open = false;
     readonly searchForm = new FormGroup({
         search: new FormControl(),
     });
@@ -82,5 +85,19 @@ export class ListComponent implements OnInit {
             case Status.Published:
                 return 'success';
         }
+    }
+
+    showDeleteDialog(id: string): void {
+        this.open = true;
+        this.deletedReleaseId = id;
+        this.deletedRelease = this.releases.find(x => x.id == this.deletedReleaseId);
+    }
+
+    deleteRelease(): void {
+        this.releaseService.delete(this.deletedReleaseId)
+            .pipe(first())
+            .subscribe(() => {
+                this.releases = this.releases.filter(x => x.id !== this.deletedReleaseId)
+            });
     }
 }

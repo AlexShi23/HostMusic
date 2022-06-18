@@ -45,16 +45,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="tui-table__tr" *ngFor="let release of releases" routerLink="view/{{release.id}}">
-                    <td class="tui-table__th"><img [src]="this.getFilePath(release.coverPath)"></td>
-                    <td class="tui-table__th"><b>{{release.artist}}
+                <tr class="tui-table__tr" *ngFor="let release of releases">
+                    <td class="tui-table__th" routerLink="view/{{release.id}}"><img [src]="this.getFilePath(release.coverPath)"></td>
+                    <td class="tui-table__th" routerLink="view/{{release.id}}"><b>{{release.artist}}
                         {{this.getFeatText(release.featuring)}}</b> - {{release.title}} <i>{{getSubtitleText(release.subtitle)}}</i></td>
-                    <td class="tui-table__th">{{release.type}}</td>
-                    <td class="tui-table__th">{{this.formatDate(release.releaseDate)}}</td>
-                    <td class="tui-table__th"><tui-badge [status]="this.getBadge(release.status)" [value]="release.status"></tui-badge></td>
+                    <td class="tui-table__th" routerLink="view/{{release.id}}">{{release.type}}</td>
+                    <td class="tui-table__th" routerLink="view/{{release.id}}">{{this.formatDate(release.releaseDate)}}</td>
+                    <td class="tui-table__th" routerLink="view/{{release.id}}"><tui-badge [status]="this.getBadge(release.status)" [value]="release.status"></tui-badge></td>
                     <td class="tui-table__th" style="white-space: nowrap">
                         <button tuiButton routerLink="edit/{{release.id}}" icon="tuiIconDraft" size="s" style="margin-right: 10px;">Edit</button>
-                        <button tuiButton size="s" icon="tuiIconTrash" appearance="accent">
+                        <button tuiButton (click)="showDeleteDialog(release.id)" size="s" icon="tuiIconTrash" appearance="accent">
                             <span>Delete</span>
                         </button>
                     </td>
@@ -73,3 +73,27 @@
         (indexChange)="goToPage($event)"
 ></tui-pagination>
 </div>
+
+<ng-template
+    let-observer
+    [tuiDialogOptions]="$any({ label: 'Do you really want to remove this release?', size: 's' })"
+    [(tuiDialog)]="open"
+>
+    <p style="margin-bottom: 0.5rem;">Release "{{this.deletedRelease.artist}} - {{this.deletedRelease.title}}" will be deleted</p>
+    <div>
+        <button
+            tuiButton
+            appearance="accent"
+            (click)="this.deleteRelease(); observer.complete()"
+        >
+            Yes
+        </button>
+        <button
+            tuiButton
+            style="margin-left: 10px;"
+            (click)="observer.complete()"
+        >
+            Cancel
+        </button>
+    </div>
+</ng-template>
