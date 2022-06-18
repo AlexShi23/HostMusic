@@ -13,6 +13,7 @@ export class ListComponent implements OnInit {
     releases: Release[];
     length: number = 1;
     index = 1;
+    loading: boolean;
     deletedReleaseId: string;
     deletedRelease: Release;
     open = false;
@@ -28,6 +29,7 @@ export class ListComponent implements OnInit {
             distinctUntilChanged(),
             switchMap(value => {
                 if (value.length > 0) {
+                    this.loading = true;
                     return from(this.releaseService.search(value)).pipe(
                         catchError(err => of([]))
                     )
@@ -39,14 +41,17 @@ export class ListComponent implements OnInit {
                 next: (resp: Release[]) => {
                     this.releases = resp;
                     length = this.releases.length / 10;
+                    this.loading = false;
             }
           })
         
+        this.loading = true;
         this.releaseService.getAll()
             .pipe(first())
             .subscribe(releases => {
                 this.releases = releases;
                 length = this.releases.length / 10;
+                this.loading = false;
             });
         
     }

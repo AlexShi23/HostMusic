@@ -14,6 +14,7 @@ import { delay, first, share, switchMap } from "rxjs/operators";
 export class AddEditComponent implements OnInit {
     form: FormGroup;
     uploadProgress: Observable<FileStatus[]>;
+    skeletonVisible = false;
     coverPath: string;
     trackPaths: string[];
     fileId: string;
@@ -72,9 +73,11 @@ export class AddEditComponent implements OnInit {
         this.rejectedTrackFiles$.push(new Subject<TuiFileLike | null>());
 
         if (!this.isAddMode) {
+            this.skeletonVisible = true;
             this.releaseService.getById(this.id)
                 .pipe(first())
                 .subscribe(x => {
+                    this.showSkeleton();
                     this.coverPath = x.coverPath;
                     delete x.coverPath;
                     delete x.numberOfPlays;
@@ -266,5 +269,9 @@ export class AddEditComponent implements OnInit {
  
     toggleState(index: number): void {
         this.paused[index] = !this.paused[index];
+    }
+
+    showSkeleton(): void {
+        this.skeletonVisible = !this.skeletonVisible;
     }
 }

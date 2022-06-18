@@ -13,69 +13,71 @@
             ></button>
         </div> 
         <tui-island>
-            <div class="tui-row">
-                <div class="tui-col_6">
-                    <img [src]="this.getFilePath(release.coverPath)">
+            <tui-loader [showLoader]="loading" size="l">
+                <div class="tui-row">
+                    <div class="tui-col_6">
+                        <img [src]="this.getFilePath(release.coverPath)">
+                    </div>
+                    <div class="tui-col_6">
+                        <h2 style="margin-top: 10px;">Main information</h2>
+                        <field-set-item class="tui-form__row" title="Title">
+                            <div>{{this.release.title}}</div>
+                        </field-set-item>
+                        <field-set-item class="tui-form__row" title="Subtitle">
+                            <div>{{this.release.subtitle}}</div>
+                        </field-set-item>
+                        <field-set-item class="tui-form__row" title="Artist">
+                            <div>{{this.release.artist}}</div>
+                        </field-set-item>
+                        <field-set-item class="tui-form__row" title="Featuring">
+                            <div>{{this.release.featuring}}</div>
+                        </field-set-item>
+                        <field-set-item class="tui-form__row" title="Genre">
+                            <div>{{this.release.genre}}</div>
+                        </field-set-item>
+                        <field-set-item class="tui-form__row" title="Country">
+                            <div>{{this.release.country}}</div>
+                        </field-set-item>
+                        <field-set-item class="tui-form__row"title="Release date">
+                            <div>{{this.formatDate(this.release.releaseDate)}}</div>
+                        </field-set-item>
+                        <field-set-item class="tui-form__row"title="Status">
+                            <tui-badge [status]="this.getBadge(release.status)" [value]="release.status"></tui-badge>
+                        </field-set-item>
+                    </div>
                 </div>
-                <div class="tui-col_6">
-                    <h2 style="margin-top: 10px;">Main information</h2>
-                    <field-set-item class="tui-form__row" title="Title">
-                        <div>{{this.release.title}}</div>
-                    </field-set-item>
-                    <field-set-item class="tui-form__row" title="Subtitle">
-                        <div>{{this.release.subtitle}}</div>
-                    </field-set-item>
-                    <field-set-item class="tui-form__row" title="Artist">
-                        <div>{{this.release.artist}}</div>
-                    </field-set-item>
-                    <field-set-item class="tui-form__row" title="Featuring">
-                        <div>{{this.release.featuring}}</div>
-                    </field-set-item>
-                    <field-set-item class="tui-form__row" title="Genre">
-                        <div>{{this.release.genre}}</div>
-                    </field-set-item>
-                    <field-set-item class="tui-form__row" title="Country">
-                        <div>{{this.release.country}}</div>
-                    </field-set-item>
-                    <field-set-item class="tui-form__row"title="Release date">
-                        <div>{{this.formatDate(this.release.releaseDate)}}</div>
-                    </field-set-item>
-                    <field-set-item class="tui-form__row"title="Status">
-                        <tui-badge [status]="this.getBadge(release.status)" [value]="release.status"></tui-badge>
-                    </field-set-item>
-                </div>
-            </div>
-            <div class="tui-row">
-                <div class="tui-col_12">
-                    <div class="tui-player tui-space_top-4" *ngFor="let track of release.tracks; index as i">
-                        <audio
-                            #audio
-                            tuiMedia
-                            [src]="this.getFilePath(track.trackPath)"
-                            [(currentTime)]="currentTime[i]"
-                            [(paused)]="paused[i]"
-                        ></audio>
-                        <button
-                            tuiIconButton
-                            type="button"
-                            shape="rounded"
-                            appearance="secondary"
-                            title="Play/Pause"
-                            [icon]="getIcon(i)"
-                            (click)="toggleState(i)"
-                        ></button>
-                        <div>
-                            <b>{{i+1}}. {{track.artist}} {{this.getFeatText(track.featuring)}}</b> — {{track.title}}
-                            <i>{{getSubtitleText(track.subtitle)}}</i> {{track.explicit ? '🅴' : ''}}
-                            <tui-slider
-                                class="slider"
-                                [max]="audio.duration"
-                                [(ngModel)]="currentTime[i]"
-                            ></tui-slider>
+                <div class="tui-row">
+                    <div class="tui-col_12">
+                        <div class="tui-player tui-space_top-4" *ngFor="let track of release.tracks; index as i">
+                            <audio
+                                #audio
+                                tuiMedia
+                                [src]="this.getFilePath(track.trackPath)"
+                                [(currentTime)]="currentTime[i]"
+                                [(paused)]="paused[i]"
+                            ></audio>
+                            <button
+                                tuiIconButton
+                                type="button"
+                                shape="rounded"
+                                appearance="secondary"
+                                title="Play/Pause"
+                                [icon]="getIcon(i)"
+                                (click)="toggleState(i)"
+                            ></button>
+                            <div>
+                                <b>{{i+1}}. {{track.artist}} {{this.getFeatText(track.featuring)}}</b> — {{track.title}}
+                                <i>{{getSubtitleText(track.subtitle)}}</i> {{track.explicit ? '🅴' : ''}}
+                                <tui-slider
+                                    class="slider"
+                                    [max]="audio.duration"
+                                    [(ngModel)]="currentTime[i]"
+                                ></tui-slider>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </tui-loader>
         </tui-island>
     </div>
 </div>

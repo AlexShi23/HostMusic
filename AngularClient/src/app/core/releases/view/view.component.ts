@@ -13,6 +13,7 @@ export class ViewComponent implements OnInit {
     release: Release;
     currentTime: number[];
     paused: boolean[];
+    loading = true;
 
     constructor(
         private route: ActivatedRoute,
@@ -23,11 +24,13 @@ export class ViewComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        this.loading = true;
         this.id = this.route.snapshot.params['id'];
         this.releaseService.getById(this.id)
             .pipe(first())
             .subscribe(release => {
                 this.release = release;
+                this.loading = false;
                 this.currentTime = new Array<number>(release.numberOfTracks).fill(0);
                 this.paused = new Array<boolean>(release.numberOfTracks).fill(true);
             });

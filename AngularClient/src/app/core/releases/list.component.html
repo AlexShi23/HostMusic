@@ -34,37 +34,39 @@
             </tui-input>
         </form>
         <table class="tui-table tui-space_top-3">
-            <thead>
-                <tr class="tui-table__tr">
-                    <th class="tui-table__th" style="width:10%"><b>Cover</b></th>
-                    <th class="tui-table__th"><b>Release</b></th>
-                    <th class="tui-table__th"><b>Type</b></th>
-                    <th class="tui-table__th"><b>Date</b></th>
-                    <th class="tui-table__th"><b>Status</b></th>
-                    <th class="tui-table__th" style="width:10%"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="tui-table__tr" *ngFor="let release of releases">
-                    <td class="tui-table__th" routerLink="view/{{release.id}}"><img [src]="this.getFilePath(release.coverPath)"></td>
-                    <td class="tui-table__th" routerLink="view/{{release.id}}"><b>{{release.artist}}
-                        {{this.getFeatText(release.featuring)}}</b> - {{release.title}} <i>{{getSubtitleText(release.subtitle)}}</i></td>
-                    <td class="tui-table__th" routerLink="view/{{release.id}}">{{release.type}}</td>
-                    <td class="tui-table__th" routerLink="view/{{release.id}}">{{this.formatDate(release.releaseDate)}}</td>
-                    <td class="tui-table__th" routerLink="view/{{release.id}}"><tui-badge [status]="this.getBadge(release.status)" [value]="release.status"></tui-badge></td>
-                    <td class="tui-table__th" style="white-space: nowrap">
-                        <button tuiButton routerLink="edit/{{release.id}}" icon="tuiIconDraft" size="s" style="margin-right: 10px;">Edit</button>
-                        <button tuiButton (click)="showDeleteDialog(release.id)" size="s" icon="tuiIconTrash" appearance="accent">
-                            <span>Delete</span>
-                        </button>
-                    </td>
-                </tr>
-                <tr class="tui-table__tr" *ngIf="!releases">
-                    <td colspan="6" class="text-center">
-                        <span class="spinner-border spinner-border-lg align-center"></span>
-                    </td>
-                </tr>
-            </tbody>
+            <tui-loader [showLoader]="loading" size="l">
+                <thead>
+                    <tr class="tui-table__tr">
+                        <th class="tui-table__th" style="width:10%"><b>Cover</b></th>
+                        <th class="tui-table__th"><b>Release</b></th>
+                        <th class="tui-table__th"><b>Type</b></th>
+                        <th class="tui-table__th"><b>Date</b></th>
+                        <th class="tui-table__th"><b>Status</b></th>
+                        <th class="tui-table__th" style="width:10%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="tui-table__tr" *ngFor="let release of releases">
+                        <td class="tui-table__th" routerLink="view/{{release.id}}"><img [src]="this.getFilePath(release.coverPath)"></td>
+                        <td class="tui-table__th" routerLink="view/{{release.id}}"><b>{{release.artist}}
+                            {{this.getFeatText(release.featuring)}}</b> - {{release.title}} <i>{{getSubtitleText(release.subtitle)}}</i></td>
+                        <td class="tui-table__th" routerLink="view/{{release.id}}">{{release.type}}</td>
+                        <td class="tui-table__th" routerLink="view/{{release.id}}">{{this.formatDate(release.releaseDate)}}</td>
+                        <td class="tui-table__th" routerLink="view/{{release.id}}"><tui-badge [status]="this.getBadge(release.status)" [value]="release.status"></tui-badge></td>
+                        <td class="tui-table__th" style="white-space: nowrap">
+                            <button tuiButton routerLink="edit/{{release.id}}" icon="tuiIconDraft" size="s" style="margin-right: 10px;">Edit</button>
+                            <button tuiButton (click)="showDeleteDialog(release.id)" size="s" icon="tuiIconTrash" appearance="accent">
+                                <span>Delete</span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="tui-table__tr" *ngIf="!releases">
+                        <td colspan="6" class="text-center">
+                            <span class="spinner-border spinner-border-lg align-center"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </tui-loader>
         </table>
     </div>
     <tui-pagination
