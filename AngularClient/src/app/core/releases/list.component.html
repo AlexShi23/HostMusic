@@ -54,8 +54,8 @@
                         <td class="tui-table__th" routerLink="view/{{release.id}}">{{this.formatDate(release.releaseDate)}}</td>
                         <td class="tui-table__th" routerLink="view/{{release.id}}"><tui-badge [status]="this.getBadge(release.status)" [value]="release.status"></tui-badge></td>
                         <td class="tui-table__th" style="white-space: nowrap">
-                            <button tuiButton routerLink="edit/{{release.id}}" icon="tuiIconDraft" size="s" style="margin-right: 10px;">Edit</button>
-                            <button tuiButton (click)="showDeleteDialog(release.id)" size="s" icon="tuiIconTrash" appearance="accent">
+                            <button *ngIf="release.status == 'Draft' || release.status == 'Correcting'" tuiButton routerLink="edit/{{release.id}}" icon="tuiIconDraft" size="s" style="margin-right: 10px;">Edit</button>
+                            <button *ngIf="release.status == 'Draft' || release.status == 'Correcting'" tuiButton (click)="showDeleteDialog(release.id)" size="s" icon="tuiIconTrash" appearance="accent">
                                 <span>Delete</span>
                             </button>
                         </td>

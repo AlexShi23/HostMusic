@@ -26,7 +26,7 @@ namespace HostMusic.Releases.Core.Services
             var release = new Release
             {
                 Type = request.Type,
-                Status = ReleaseStatus.Draft,
+                Status = request.IsDraft ? ReleaseStatus.Draft : ReleaseStatus.Moderation,
                 OwnerId = creatorId,
                 Title = request.Title,
                 Subtitle = request.Subtitle,
@@ -69,7 +69,7 @@ namespace HostMusic.Releases.Core.Services
         public async Task<IEnumerable<ReleaseResponse>> GetAll(int ownerId)
         {
             var releases = await _context.Releases.Where(r => r.OwnerId == ownerId)
-                .OrderBy(r => r.CreatedAt).ToListAsync();
+                .OrderByDescending(r => r.Status).ThenByDescending(r => r.CreatedAt).ToListAsync();
             return _mapper.Map<IList<ReleaseResponse>>(releases);
         }
 
@@ -88,6 +88,7 @@ namespace HostMusic.Releases.Core.Services
                 if (request.Cover != null)
                     release.CoverPath = request.Cover;
                 release.UpdatedAt = DateTime.UtcNow;
+                release.Status = request.IsDraft ? ReleaseStatus.Draft : ReleaseStatus.Moderation;
                 _context.Releases.Update(release);
                 _context.SaveChanges();
             }

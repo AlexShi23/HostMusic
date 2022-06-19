@@ -67,7 +67,8 @@ export class AddEditComponent implements OnInit {
                     explicit: [null],
                     lyrics: ['']
                 })
-            ])
+            ]),
+            isDraft: [false]
         });
         this.uploadProgress = this.uploadService.uploadProgress;
         this.rejectedTrackFiles$.push(new Subject<TuiFileLike | null>());
@@ -144,6 +145,15 @@ export class AddEditComponent implements OnInit {
             return;
         }
 
+        this.startSending();
+    }
+
+    saveAsDraft(): void {
+        this.form.controls.isDraft.setValue(true);
+        this.startSending();
+    }
+
+    startSending(): void {
         if (!this.isAddMode && !this.form.controls.cover.value) {
             this.form.controls.cover.setValue(this.coverPath);
             this.createTracks();
