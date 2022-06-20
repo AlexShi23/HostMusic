@@ -40,11 +40,18 @@ namespace HostMusic.Identity.App.Controllers
             SetTokenCookie(response.RefreshToken);
             return Ok(response);
         }
+        
+        [HttpPost("current-account")]
+        public ActionResult<AccountResponse> CurrentAccount()
+        {
+            var account = _accountService.GetById(Account.Id);
+            return Ok(account);
+        }
 
         [HttpPost("revoke-token")]
-        public IActionResult RevokeToken(RevokeTokenRequest model)
+        public IActionResult RevokeToken()
         {
-            var token = model.Token ?? Request.Cookies["refreshToken"];
+            var token = Request.Cookies["refreshToken"];
 
             if (string.IsNullOrEmpty(token))
                 return BadRequest(new { message = "Token is required" });

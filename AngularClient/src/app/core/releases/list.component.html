@@ -33,8 +33,8 @@
                 Search
             </tui-input>
         </form>
-        <table class="tui-table tui-space_top-3">
-            <tui-loader [showLoader]="loading" size="l">
+        <tui-loader [showLoader]="loading" size="l">
+            <table class="tui-table tui-space_top-3">
                 <thead>
                     <tr class="tui-table__tr">
                         <th class="tui-table__th" style="width:10%"><b>Cover</b></th>
@@ -66,8 +66,8 @@
                         </td>
                     </tr>
                 </tbody>
-            </tui-loader>
-        </table>
+            </table>
+        </tui-loader>
     </div>
     <tui-pagination
         [length]="length"

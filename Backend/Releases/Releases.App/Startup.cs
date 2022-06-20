@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using HostMusic.Releases.App.Middlewares;
 using HostMusic.Releases.Core;
 using HostMusic.Releases.Data;
 using Microsoft.AspNetCore.Builder;
@@ -48,6 +49,20 @@ namespace HostMusic.Releases.App
                     Description = "Web API to operate with music releases"
                 });
 
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                    {
+                        new OpenApiSecurityScheme{Reference = new OpenApiReference{Type = ReferenceType.SecurityScheme, Id = "Bearer"}}, Array.Empty<string>()
+                    }
+                });
+                
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
@@ -63,12 +78,12 @@ namespace HostMusic.Releases.App
             app.UseRouting();
 
             app.UseCors(builder => builder
+                .SetIsOriginAllowed(origin => true)
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-                .AllowAnyOrigin()
                 .WithExposedHeaders(tusdotnet.Helpers.CorsHelper.GetExposedHeaders())
             );
-            
+
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions
             {
@@ -104,6 +119,8 @@ namespace HostMusic.Releases.App
                 }
             });
 
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+            app.UseMiddleware<AuthMiddleware>();
             app.UseEndpoints(x => x.MapControllers());
         }
     }

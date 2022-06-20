@@ -19,14 +19,7 @@ namespace HostMusic.Releases.App.Controllers
             _releaseService = releaseService;
         }
 
-        public static Account Account => new()
-        {
-            Id = 1,
-            Email = "123@mail.ru",
-            FirstName = "aaa",
-            LastName = "bbb",
-            Role = Role.Admin
-        };
+        public Account Account => (Account)HttpContext.Items["Account"];
 
         /// <summary>
         /// Get release by id
