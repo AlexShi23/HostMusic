@@ -8,6 +8,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 const adminModule = () => import('./admin/admin.module').then(x => x.AdminModule);
 const profileModule = () => import('./profile/profile.module').then(x => x.ProfileModule);
+const releasesModule = () => import('./releases/releases.module').then(x => x.ReleasesModule);
 
 const routes: Routes = [
     {
@@ -16,6 +17,7 @@ const routes: Routes = [
             { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
             { path: 'admin', loadChildren: adminModule, canActivate: [AuthGuard], data: { roles: [Role.Admin] } },
             { path: 'profile', loadChildren: profileModule, canActivate: [AuthGuard] },
+            { path: 'releases', loadChildren: releasesModule, canActivate: [AuthGuard] }
         ]
     }
 ];

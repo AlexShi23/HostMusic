@@ -36,6 +36,7 @@ export class AccountService {
     }
 
     logout() {
+        let jwtToken = this.accountValue.jwtToken;
         this.http.post<any>(`${baseUrl}/revoke-token`, {}, { withCredentials: true }).subscribe();
         this.stopRefreshTokenTimer();
         this.accountSubject.next(null);

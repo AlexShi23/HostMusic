@@ -10,8 +10,8 @@ namespace HostMusic.Identity.Core.Models
         private string _role;
         private string _email;
         
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FirstName { get; set; } = null!;
+        public string LastName { get; set; } = null!;
 
         [EnumDataType(typeof(Role))]
         public string Role

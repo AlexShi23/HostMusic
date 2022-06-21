@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TuiButtonModule, TuiDataListModule, TuiDialogModule, TuiHostedDropdownModule, TuiModeModule, TuiNotificationsModule, TuiRootModule, TuiSvgModule, TuiThemeNightModule } from '@taiga-ui/core';
 import { TuiAvatarModule, TuiTabsModule, TuiToggleModule } from '@taiga-ui/kit';
+import { TuiLineChartModule, TuiAxesModule } from '@taiga-ui/addon-charts';
 import { CommonModule } from '@angular/common';
 
 import { AdminModule } from './admin/admin.module';
@@ -28,7 +29,9 @@ import { LayoutComponent } from './layout.component';
         TuiAvatarModule,
         TuiToggleModule,
         TuiHostedDropdownModule,
-        TuiDataListModule
+        TuiDataListModule,
+        TuiLineChartModule,
+        TuiAxesModule
     ],
     declarations: [
         LayoutComponent,

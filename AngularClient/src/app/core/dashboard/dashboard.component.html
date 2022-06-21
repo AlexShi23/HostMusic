@@ -16,6 +16,7 @@
         type="button"
         size="m"
         icon="tuiIconPlusLarge"
+        routerLink="releases/add"
     >
         New release
     </button>
@@ -23,7 +24,7 @@
 
 <ul class="box-info">
     <li>
-        <i class='bx bxs-calendar-check' ></i>
+        <i class='bx bx-headphone'></i>
         <span class="text">
             <h3>1020</h3>
             <p>Listenings</p>
@@ -45,8 +46,33 @@
     </li>
 </ul>
 
-
 <div class="table-data">
+    <div class="todo">
+        <div class="head">
+            <h3>Listeners</h3>
+            <i class='bx bx-plus' ></i>
+            <i class='bx bx-filter' ></i>
+        </div>
+        <tui-axes
+            class="axes"
+            [verticalLines]="4"
+            [horizontalLines]="2"
+            [axisXLabels]="axisXLabels"
+        >
+            <tui-line-chart
+                [x]="0"
+                [y]="0"
+                [width]="400"
+                [height]="210"
+                [dots]="true"
+                [value]="values"
+                [filled]="true"
+                [smoothingFactor]="50"
+                [xStringify]="stringify"
+                [yStringify]="stringify"
+            ></tui-line-chart>
+        </tui-axes>
+    </div>
     <div class="order">
         <div class="head">
             <h3>Recent releases</h3>
@@ -104,34 +130,5 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-    <div class="todo">
-        <div class="head">
-            <h3>Todos</h3>
-            <i class='bx bx-plus' ></i>
-            <i class='bx bx-filter' ></i>
-        </div>
-        <ul class="todo-list">
-            <li class="completed">
-                <p>Todo List</p>
-                <i class='bx bx-dots-vertical-rounded' ></i>
-            </li>
-            <li class="completed">
-                <p>Todo List</p>
-                <i class='bx bx-dots-vertical-rounded' ></i>
-            </li>
-            <li class="not-completed">
-                <p>Todo List</p>
-                <i class='bx bx-dots-vertical-rounded' ></i>
-            </li>
-            <li class="completed">
-                <p>Todo List</p>
-                <i class='bx bx-dots-vertical-rounded' ></i>
-            </li>
-            <li class="not-completed">
-                <p>Todo List</p>
-                <i class='bx bx-dots-vertical-rounded' ></i>
-            </li>
-        </ul>
     </div>
 </div>
