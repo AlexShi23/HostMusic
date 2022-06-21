@@ -29,8 +29,8 @@ export class AddEditComponent implements OnInit {
     paused: boolean[];
 
     types = ['Single', 'Album'];
-    genres = ['Hip-hop', 'Pop', 'Rock'];
-    countries = ['Russia', 'Kazhakhstan'];
+    genres = ['Hip-hop', 'Pop', 'Rock', 'Alternative', 'Indie', 'Electronic', 'Ethnic'];
+    countries = ['Russia', 'Belarus', 'Kazhakhstan'];
 
     constructor(
         private formBuilder: FormBuilder,

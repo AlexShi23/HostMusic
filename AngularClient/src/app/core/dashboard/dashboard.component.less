@@ -121,11 +121,17 @@
 .table-data .order {
 	flex-grow: 1;
 	flex-basis: 500px;
+	height: 470px;
 }
 .table-data .order table {
 	width: 100%;
 	border-collapse: collapse;
 }
+
+.table-data .order table td {
+	padding: 16px 0;
+}
+
 .table-data .order table th {
 	padding-bottom: 12px;
 	font-size: 13px;
@@ -135,16 +141,10 @@
 .table-data .order table td {
 	padding: 16px 0;
 }
-.table-data .order table tr td:first-child {
-	display: flex;
-	align-items: center;
-	grid-gap: 12px;
-	padding-left: 6px;
-}
+
 .table-data .order table td img {
-	width: 36px;
-	height: 36px;
-	border-radius: 50%;
+	width: 39px;
+	height: 39px;
 	object-fit: cover;
 }
 .table-data .order table tbody tr:hover {
