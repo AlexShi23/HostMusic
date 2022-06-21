@@ -1,6 +1,8 @@
 # HostMusic
 My coursework 2022. Web service for music distribution to the streaming services.
 
+![alt text](https://i.ibb.co/0FX9BNh/2022-06-22-02-18-32.png)
+
 ## Dependencies for running locally
 
 * [Node JS](https://nodejs.org/en/)
@@ -14,10 +16,6 @@ My coursework 2022. Web service for music distribution to the streaming services
     cd Backend
     docker-compose build
     docker-compose up
-
-### Locally on any OS
-
-    ---
 
 ## How to run frontend
 
