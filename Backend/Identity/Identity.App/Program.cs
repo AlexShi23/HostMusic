@@ -1,4 +1,3 @@
-using HostMusic.Identity.App;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 

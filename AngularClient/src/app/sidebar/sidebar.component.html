@@ -1,6 +1,0 @@
-<tui-tabs *ngIf="account" class="tui-space_left-5">
-    <a tuiTab routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-    <a tuiTab routerLink="/profile" routerLinkActive="active">Profile</a>
-    <a tuiTab *ngIf="account.role === Role.Admin" routerLink="/admin" routerLinkActive="active">Admin</a>
-    <a tuiTab (click)="logout()">Logout</a>
-</tui-tabs>

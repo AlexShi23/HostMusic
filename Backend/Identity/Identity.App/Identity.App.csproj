@@ -8,6 +8,11 @@
         <RootNamespace>HostMusic.Identity.App</RootNamespace>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\HostMusic.Identity.App.xml</DocumentationFile>
+      <NoWarn>1701;1702;1591</NoWarn>
+    </PropertyGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\Identity.Core\Identity.Core.csproj" />
       <ProjectReference Include="..\Identity.Data\Identity.Data.csproj" />

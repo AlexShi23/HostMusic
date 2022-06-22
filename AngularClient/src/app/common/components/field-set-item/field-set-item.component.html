@@ -1,0 +1,17 @@
+<div class="title" [ngClass]="{'title_dotted':title , '':!title }">
+    {{ title }}
+    <tui-tooltip
+        class="tui-space_left-1"
+        [content]="tooltip"
+        *ngIf="tooltip"
+        direction="bottom-right"
+    ></tui-tooltip>
+</div>
+<div class="content-block">
+    <span class="default" *ngIf="content.children.length === 0"
+        >{{default}}</span
+    >
+    <div class="content" [ngClass]="{'save-spaces': saveSpaces}" #content>
+        <ng-content></ng-content>
+    </div>
+</div>

@@ -1,0 +1,110 @@
+<tui-theme-night *ngIf="nightMode"></tui-theme-night>
+<section [ngClass]="menuClosed ? 'sidebar hide' : 'sidebar'">
+    <a routerLink="" class="brand">
+        <i class='bx bxs-smile icon'></i>
+        <span class="text">HostMusic</span>
+    </a>
+    <ul class="side-menu">
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+            <a routerLink="">
+                <i class='bx'>
+					<tui-svg src="tuiIconStructureLarge" class="icon"></tui-svg>
+				</i>
+                <span class="text">Dashboard</span>
+            </a>
+        </li>
+        <li routerLinkActive="active">
+            <a routerLink="/releases">
+                <i class='bx'>
+					<tui-svg src="tuiIconMusicLarge" class="icon"></tui-svg>
+				</i>
+                <span class="text">Releases</span>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class='bx'>
+					<tui-svg src="tuiIconChartLineLarge" class="icon"></tui-svg>
+				</i>
+                <span class="text">Statistics</span>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class='bx bx-wallet bx-sm'></i>
+                <span class="text">Royalty</span>
+            </a>
+        </li>
+        <li routerLinkActive="active">
+            <a routerLink="/profile">
+                <i class='bx bx-user bx-sm'></i>
+                <span class="text">Profile</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="side-menu bottom">
+        <li *ngIf="account.role === Role.Admin" routerLinkActive="active">
+            <a routerLink="/admin">
+                <i class='bx'>
+					<tui-svg src="tuiIconSettingsLarge" class="icon"></tui-svg>
+				</i>
+                <span class="text">Admin</span>
+            </a>
+        </li>
+        <li (click)="logout()">
+            <a class="logout">
+                <i class='bx'>
+					<tui-svg src="tuiIconLogoutLarge" class="icon"></tui-svg>
+				</i>
+                <span class="text">Logout</span>
+            </a>
+        </li>
+    </ul>
+</section>
+
+<section id="navbar">
+	<nav>
+		<tui-svg src="tuiIconMenuLarge" class="icon" (click)="changeMenuClosed()"></tui-svg>
+        <label for="theme" class="themeLabel">Night mode</label>
+        <form [formGroup]="themeForm">
+            <tui-toggle
+                formControlName="theme"
+                size="l"
+            ></tui-toggle>
+        </form>
+		<a href="#" class="notification">
+			<i class='bx bxs-bell' ></i>
+		</a>
+		<tui-hosted-dropdown
+			tuiDropdownAlign="left"
+			[content]="dropdown"
+		>
+			<button tuiButton type="button" size="s" appearance="flat" [iconRight]="icon">
+				<tui-avatar
+					text="a a"
+					size="s"
+					[rounded]="true"
+				></tui-avatar>
+			</button>
+		</tui-hosted-dropdown>
+		<ng-template #icon>
+			<tui-svg
+				src="tuiIconChevronDown"
+				class="icon"
+				[class.icon_rotated]="open"
+			></tui-svg>
+		</ng-template>
+		<ng-template #dropdown>
+			<tui-data-list style="overflow-y: hidden;">
+				<button tuiOption routerLink="/profile">Profile</button>
+				<button tuiOption [icon]="tuiIconLogoutLarge" (click)="logout()">Logout</button>
+			</tui-data-list>
+		</ng-template>
+	</nav>
+</section>
+
+<section id="content">
+    <main>
+        <router-outlet></router-outlet>
+    </main>
+</section>
