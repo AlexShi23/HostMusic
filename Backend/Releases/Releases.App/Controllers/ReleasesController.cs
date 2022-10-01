@@ -96,6 +96,16 @@ namespace HostMusic.Releases.App.Controllers
             var releases = await _releaseService.Search(query, Account.Id);
             return Ok(releases);
         }
+        
+        /// <summary>
+        /// Moderate release
+        /// </summary>
+        [HttpPatch("{id:guid}/moderate")]
+        public async Task<IActionResult> ModerateRelease(Guid id, ModerationRequest request)
+        {
+            await _releaseService.Moderate(id, request);
+            return Ok(new { message = "Release moderated successfully" });
+        }
 
         private IActionResult? ValidateResponse(ReleaseResponse release)
         {

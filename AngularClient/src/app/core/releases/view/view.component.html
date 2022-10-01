@@ -2,13 +2,15 @@
     <div class=" tui-col_3"></div>
     <div class=" tui-col_6">
         <div class="between">
-            <h3 class="tui-text_h3">Release card</h3>
+            <h3 class="tui-text_h3" style="margin-top: 0;">Release card</h3>
             <button
                 tuiIconButton
                 type="button"
+                size="m"
                 appearance="secondary"
                 title="Play/Pause"
                 icon="tuiIconEditLarge"
+                style="margin-bottom: auto;"
                 routerLink="/releases/edit/{{id}}"
             ></button>
         </div>
@@ -77,7 +79,46 @@
                         </div>
                     </div>
                 </div>
+                <tui-notification *ngIf="release && isCorrectingCase()" status="error" class="tui-space_top-5">
+                    Your release was declined. Moderator's comment: 
+                    <b>{{release.moderationComment}}.</b>
+                    Сorrect this remark and send the release for review again.
+                </tui-notification>
+                <div *ngIf="release && isModerationCase()" class="tui-form__buttons between">
+                    <button tuiButton icon="tuiIconLikeLarge" class="tui-form__button" (click)="this.approveRelease()">Moderation passed</button>
+                    <button tuiButton appearance="accent" icon="tuiIconDislikeLarge" type="button" (click)="this.showModerationDialog()" class="tui-form__button">Moderation failed</button>
+                </div>
             </tui-island>
         </tui-loader>
     </div>
 </div>
+
+<ng-template
+    let-observer
+    [tuiDialogOptions]="{label: 'Moderation failed', size: 'm'}"
+    [(tuiDialog)]="dialogOpen"
+>
+    <form
+        [formGroup]="moderationForm"
+        (ngSubmit)="observer.complete()"
+    >
+        <p>Explain why this release is not suitable for publication</p>
+        <tui-text-area
+            tuiAutoFocus
+            formControlName="moderationComment"
+        >
+            Your comment
+        </tui-text-area>
+        <p>
+            <button
+                tuiButton
+                appearance="accent"
+                icon="tuiIconDislikeLarge"
+                (click)="this.declineRelease()"
+                type="submit"
+            >
+                Decline
+            </button>
+        </p>
+    </form>
+</ng-template>

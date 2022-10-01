@@ -13,5 +13,6 @@ namespace HostMusic.Releases.Core.Services
         void Update(Guid id, UpdateReleaseRequest request);
         Task Delete(Guid id);
         Task<IEnumerable<ReleaseResponse>> Search(string query, int ownerId);
+        Task Moderate(Guid id, ModerationRequest request);
     }
 }

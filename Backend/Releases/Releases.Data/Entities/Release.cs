@@ -24,6 +24,8 @@ namespace HostMusic.Releases.Data.Entities
         public DateTime ReleaseDate { get; set; }
         public int NumberOfTracks { get; set; }
         public int NumberOfPlays { get; set; }
+        public bool? ModerationPassed { get; set; }
+        public string? ModerationComment { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? ReleasedAt { get; set; }

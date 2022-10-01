@@ -48,4 +48,8 @@ export class ReleaseService {
     search(query: string) {
         return this.http.get(`${baseUrl}/search?query=${query}`);
     }
+
+    moderate(id, params) {
+        return this.http.patch(`${baseUrl}/${id}/moderate`, params);
+    }
 }
