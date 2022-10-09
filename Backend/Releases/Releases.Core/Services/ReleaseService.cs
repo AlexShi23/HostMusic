@@ -69,6 +69,13 @@ namespace HostMusic.Releases.Core.Services
             return _mapper.Map<IList<ReleaseResponse>>(releases);
         }
 
+        public async Task<IEnumerable<ReleaseResponse>> GetAllOnModeration()
+        {
+            var releases = await _context.Releases.Where(r => r.Status == ReleaseStatus.Moderation)
+                .ToListAsync();
+            return _mapper.Map<IList<ReleaseResponse>>(releases);
+        }
+
         public async Task<ReleaseResponse> GetById(Guid id)
         {
             var release = await _context.Releases.FirstOrDefaultAsync(r => r.Id == id);

@@ -29,6 +29,10 @@ export class ReleaseService {
         return this.http.get<Release[]>(baseUrl);
     }
 
+    getAllOnModeration() {
+        return this.http.get<Release[]>(`${baseUrl}/moderation`);
+    }
+
     getById(id: string) {
         return this.http.get<Release>(`${baseUrl}/${id}`);
     }

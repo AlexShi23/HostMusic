@@ -16,6 +16,12 @@
         </div>
         <tui-loader [showLoader]="loading" size="l">
             <tui-island size="l">
+                <tui-notification *ngIf="release && isCorrectingCase()" status="error" class="tui-space_bottom-5">
+                    Your release was declined. Moderator's comment: 
+                    <b>{{release.moderationComment}}.</b>
+                    Сorrect this remark and send the release for review again.
+                </tui-notification>
+
                 <div *ngIf="release" class="tui-row">
                     <div class="tui-col_6">
                         <img [src]="this.getFilePath(release.coverPath)">
@@ -79,11 +85,6 @@
                         </div>
                     </div>
                 </div>
-                <tui-notification *ngIf="release && isCorrectingCase()" status="error" class="tui-space_top-5">
-                    Your release was declined. Moderator's comment: 
-                    <b>{{release.moderationComment}}.</b>
-                    Сorrect this remark and send the release for review again.
-                </tui-notification>
                 <div *ngIf="release && isModerationCase()" class="tui-form__buttons between">
                     <button tuiButton icon="tuiIconLikeLarge" class="tui-form__button" (click)="this.approveRelease()">Moderation passed</button>
                     <button tuiButton appearance="accent" icon="tuiIconDislikeLarge" type="button" (click)="this.showModerationDialog()" class="tui-form__button">Moderation failed</button>

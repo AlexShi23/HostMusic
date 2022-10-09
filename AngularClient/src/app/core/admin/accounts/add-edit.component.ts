@@ -26,7 +26,8 @@ export class AddEditComponent implements OnInit {
 
     roles = [
         'User',
-        'Admin'
+        'Admin',
+        'Moderator'
     ];
 
     ngOnInit() {

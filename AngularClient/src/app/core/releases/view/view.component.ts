@@ -1,8 +1,8 @@
-import { Component, Inject, OnInit } from "@angular/core";
+import { Component, Inject, Input, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { first } from "rxjs/operators";
-import { Release, Status } from "@app/_models";
-import { ReleaseService } from "@app/_services";
+import { Release, Role, Status } from "@app/_models";
+import { AccountService, ReleaseService } from "@app/_services";
 import { TuiDialogService, TuiNotification, TuiNotificationsService } from "@taiga-ui/core";
 import { environment } from "@environments/environment";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
@@ -11,6 +11,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
             styleUrls: ['view.component.less'] })
 export class ViewComponent implements OnInit {
     id: string;
+    role: Role;
     release: Release;
     currentTime: number[];
     paused: boolean[];
@@ -23,12 +24,14 @@ export class ViewComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
+        private accountService: AccountService,
         private releaseService: ReleaseService,
         @Inject(TuiDialogService)
         private readonly dialogService: TuiDialogService,
         @Inject(TuiNotificationsService)
         private readonly notificationsService: TuiNotificationsService
     ) {
+        this.accountService.account.subscribe(x => this.role = x.role);
         this.router.routeReuseStrategy.shouldReuseRoute = () => {
             return false;
         };
@@ -87,7 +90,7 @@ export class ViewComponent implements OnInit {
     }
 
     isModerationCase(): boolean {
-        return this.release.status === Status.Moderation;
+        return this.release.status === Status.Moderation && this.role === Role.Moderator;
     }
 
     isCorrectingCase(): boolean {
