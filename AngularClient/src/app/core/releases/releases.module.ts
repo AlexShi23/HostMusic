@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TuiInputModule, TuiInputPasswordModule, TuiFieldErrorModule, TuiDataListWrapperModule, TuiSelectModule, TuiPaginationModule,
     TuiInputDateModule, TuiFilesModule, TuiInputFilesModule, TuiProgressModule, TuiTextAreaModule, TuiCheckboxLabeledModule, TuiIslandModule,
     TuiSliderModule, TuiBadgeModule } from '@taiga-ui/kit';
-import { TuiButtonModule, TuiLinkModule, TuiDataListModule, TuiTooltipModule, TuiHintModule, TuiDialogModule, TuiLoaderModule } from '@taiga-ui/core';
+import { TuiButtonModule, TuiLinkModule, TuiDataListModule, TuiTooltipModule, TuiHintModule, TuiDialogModule, TuiLoaderModule, TuiNotificationModule } from '@taiga-ui/core';
 import {TuiMediaModule} from '@taiga-ui/cdk';
 
 import { ReleasesRoutingModule } from './releases-routing.module';
@@ -41,7 +41,8 @@ import { ViewComponent } from './view/view.component';
         TuiHintModule,
         TuiBadgeModule,
         TuiDialogModule,
-        TuiLoaderModule
+        TuiLoaderModule,
+        TuiNotificationModule
     ],
     declarations: [
         FieldSetItemComponent,

@@ -9,9 +9,11 @@ namespace HostMusic.Releases.Core.Services
     {
         Guid Create(CreateReleaseRequest request, int creatorId);
         Task<IEnumerable<ReleaseResponse>> GetAll(int ownerId);
+        Task<IEnumerable<ReleaseResponse>> GetAllOnModeration();
         Task<ReleaseResponse> GetById(Guid id);
         void Update(Guid id, UpdateReleaseRequest request);
         Task Delete(Guid id);
         Task<IEnumerable<ReleaseResponse>> Search(string query, int ownerId);
+        Task Moderate(Guid id, ModerationRequest request);
     }
 }

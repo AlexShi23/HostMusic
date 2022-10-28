@@ -1,27 +1,41 @@
-import { Component, Inject, OnInit } from "@angular/core";
+import { Component, Inject, Input, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { first } from "rxjs/operators";
-import { Release, Status } from "@app/_models";
-import { ReleaseService } from "@app/_services";
-import { TuiNotificationsService } from "@taiga-ui/core";
+import { Release, Role, Status } from "@app/_models";
+import { AccountService, ReleaseService } from "@app/_services";
+import { TuiDialogService, TuiNotification, TuiNotificationsService } from "@taiga-ui/core";
 import { environment } from "@environments/environment";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 @Component({ templateUrl: './view.component.html',
             styleUrls: ['view.component.less'] })
 export class ViewComponent implements OnInit {
     id: string;
+    role: Role;
     release: Release;
     currentTime: number[];
     paused: boolean[];
+    dialogOpen = false;
+    moderationForm = new FormGroup({
+        moderationComment: new FormControl(``, Validators.required),
+    });
     loading = true;
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
+        private accountService: AccountService,
         private releaseService: ReleaseService,
+        @Inject(TuiDialogService)
+        private readonly dialogService: TuiDialogService,
         @Inject(TuiNotificationsService)
         private readonly notificationsService: TuiNotificationsService
-    ) {}
+    ) {
+        this.accountService.account.subscribe(x => this.role = x.role);
+        this.router.routeReuseStrategy.shouldReuseRoute = () => {
+            return false;
+        };
+    }
 
     ngOnInit(): void {
         this.loading = true;
@@ -73,5 +87,56 @@ export class ViewComponent implements OnInit {
             case Status.Published:
                 return 'success';
         }
+    }
+
+    isModerationCase(): boolean {
+        return this.release.status === Status.Moderation && this.role === Role.Moderator;
+    }
+
+    isCorrectingCase(): boolean {
+        return this.release.status === Status.Correcting;
+    }
+
+    showModerationDialog(): void {
+        this.dialogOpen = true;
+    }
+
+    approveRelease(): void {
+        this.releaseService.moderate(this.id, { moderationPassed: true, moderationComment: null })
+            .pipe(first())
+            .subscribe({
+                next: (id: string) => {
+                    this.notificationsService
+                    .show('Релиз прошёл модерацию', {
+                        status: TuiNotification.Success
+                    }).subscribe()
+                    this.router.navigate(['../'], { relativeTo: this.route });
+                },
+                error: error => { this.notificationsService
+                    .show(error, {
+                        status: TuiNotification.Error
+                    }).subscribe();
+                }
+            });
+    }
+
+    declineRelease(): void {
+        this.releaseService.moderate(this.id,
+            { moderationPassed: false, moderationComment: this.moderationForm.controls.moderationComment.value })
+            .pipe(first())
+            .subscribe({
+                next: (id: string) => {
+                    this.notificationsService
+                    .show('Вы успешно отклонили релиз', {
+                        status: TuiNotification.Success
+                    }).subscribe()
+                    this.router.navigate(['../'], { relativeTo: this.route });
+                },
+                error: error => { this.notificationsService
+                    .show(error, {
+                        status: TuiNotification.Error
+                    }).subscribe();
+                }
+            });
     }
 }

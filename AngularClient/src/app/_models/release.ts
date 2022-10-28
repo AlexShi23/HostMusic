@@ -20,4 +20,6 @@ export class Release {
     releaseDate: Date;
     numberOfTracks: number;
     numberOfPlays: number;
+    moderationPassed?: boolean;
+    moderationComment?: string;
 }

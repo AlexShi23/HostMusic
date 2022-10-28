@@ -36,7 +36,7 @@ namespace HostMusic.Releases.App.Middlewares
                 Created = accountDto.Created,
                 IsVerified = accountDto.IsVerified,
                 Updated = accountDto.Updated,
-                Role = accountDto.Role.ToLower() == "admin" ? Role.Admin : Role.User
+                Role = Enum.Parse<Role>(accountDto.Role.ToLower(), true)
             };
             context.Items["Account"] = account;
 

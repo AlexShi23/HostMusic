@@ -25,5 +25,7 @@ namespace HostMusic.Releases.Core.Models
         public DateTime ReleaseDate { get; set; }
         public int NumberOfTracks { get; set; }
         public int NumberOfPlays { get; set; }
+        public bool? ModerationPassed { get; set; }
+        public string? ModerationComment { get; set; }
     }
 }

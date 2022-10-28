@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using HostMusic.Releases.Core.Models;
 using HostMusic.Releases.Data;
 using HostMusic.Releases.Data.Entities;
@@ -73,6 +69,13 @@ namespace HostMusic.Releases.Core.Services
             return _mapper.Map<IList<ReleaseResponse>>(releases);
         }
 
+        public async Task<IEnumerable<ReleaseResponse>> GetAllOnModeration()
+        {
+            var releases = await _context.Releases.Where(r => r.Status == ReleaseStatus.Moderation)
+                .ToListAsync();
+            return _mapper.Map<IList<ReleaseResponse>>(releases);
+        }
+
         public async Task<ReleaseResponse> GetById(Guid id)
         {
             var release = await _context.Releases.FirstOrDefaultAsync(r => r.Id == id);
@@ -111,6 +114,20 @@ namespace HostMusic.Releases.Core.Services
                 r.Artist.ToLower().Contains(query.ToLower())))
                 .ToListAsync();
             return _mapper.Map<IList<ReleaseResponse>>(releases);
+        }
+
+        public async Task Moderate(Guid id, ModerationRequest request)
+        {
+            var release = await _context.Releases.FindAsync(id);
+            
+            if (release != null)
+            {
+                release.ModerationPassed = request.ModerationPassed;
+                release.ModerationComment = request.ModerationComment;
+                release.Status = request.ModerationPassed ? ReleaseStatus.ModerationDone : ReleaseStatus.Correcting;
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 }

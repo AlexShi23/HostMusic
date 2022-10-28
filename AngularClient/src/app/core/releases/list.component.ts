@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { Release, Status } from "@app/_models";
-import { ReleaseService } from "@app/_services";
+import { Release, Role, Status } from "@app/_models";
+import { AccountService, ReleaseService } from "@app/_services";
 import { catchError, debounceTime, distinctUntilChanged, first, switchMap } from "rxjs/operators";
 import { environment } from '@environments/environment';
 import { FormControl, FormGroup } from "@angular/forms";
@@ -9,6 +9,7 @@ import { from, of } from "rxjs";
 @Component({ templateUrl: 'list.component.html',
             styleUrls: ['list.component.less'] })
 export class ListComponent implements OnInit {
+    role: Role;
     search = '';
     releases: Release[];
     length: number = 1;
@@ -21,7 +22,11 @@ export class ListComponent implements OnInit {
         search: new FormControl(),
     });
 
-    constructor(private releaseService: ReleaseService) {}
+    constructor(
+        private releaseService: ReleaseService,
+        private accountService: AccountService) {
+            this.accountService.account.subscribe(x => this.role = x.role);
+        }
 
     ngOnInit() {
         this.searchForm.controls.search.valueChanges.pipe(
@@ -34,7 +39,9 @@ export class ListComponent implements OnInit {
                         catchError(err => of([]))
                     )
                 } else {
-                    return from(this.releaseService.getAll());
+                    return this.role == Role.Moderator ? 
+                        from(this.releaseService.getAllOnModeration()) :
+                        from(this.releaseService.getAll());
                 }
             })
             ).subscribe({
@@ -46,14 +53,23 @@ export class ListComponent implements OnInit {
           })
         
         this.loading = true;
-        this.releaseService.getAll()
+        if (this.role == Role.Moderator) {
+            this.releaseService.getAllOnModeration()
             .pipe(first())
             .subscribe(releases => {
                 this.releases = releases;
                 length = this.releases.length / 10;
                 this.loading = false;
             });
-        
+        } else {
+            this.releaseService.getAll()
+            .pipe(first())
+            .subscribe(releases => {
+                this.releases = releases;
+                length = this.releases.length / 10;
+                this.loading = false;
+            });
+        }
     }
  
     goToPage(index: number): void {

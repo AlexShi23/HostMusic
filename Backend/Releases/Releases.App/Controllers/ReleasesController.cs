@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using HostMusic.Releases.App.Authorization;
 using HostMusic.Releases.Core.Models;
 using HostMusic.Releases.Core.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HostMusic.Releases.App.Controllers
@@ -31,7 +32,7 @@ namespace HostMusic.Releases.App.Controllers
             var release = await _releaseService.GetById(id);
             if (release == null)
                 return NotFound(new { message = "Release not found" });
-            if (release.OwnerId == Account.Id || Account.Role == Role.Admin)
+            if (release.OwnerId == Account.Id || Account.Role is Role.Admin or Role.Moderator)
                 return Ok(release);
             return Unauthorized(new { message = "Unauthorized" });
         }
@@ -96,13 +97,33 @@ namespace HostMusic.Releases.App.Controllers
             var releases = await _releaseService.Search(query, Account.Id);
             return Ok(releases);
         }
+        
+        /// <summary>
+        /// Moderate release
+        /// </summary>
+        [HttpPatch("{id:guid}/moderate")]
+        public async Task<IActionResult> ModerateRelease(Guid id, ModerationRequest request)
+        {
+            await _releaseService.Moderate(id, request);
+            return Ok(new { message = "Release moderated successfully" });
+        }
+
+        /// <summary>
+        /// Get all releases on moderation
+        /// </summary>
+        [HttpGet("moderation")]
+        public async Task<ActionResult<IEnumerable<ReleaseResponse>>> GetAllOnModeration()
+        {
+            var releases = await _releaseService.GetAllOnModeration();
+            return Ok(releases);
+        }
 
         private IActionResult? ValidateResponse(ReleaseResponse release)
         {
             if (release == null)
                 return NotFound(new { message = "Release not found" });
-            if (release.OwnerId != Account.Id && Account.Role != Role.Admin)
-                return Unauthorized(new { message = "Unauthorized" });
+            if (release.OwnerId != Account.Id && Account.Role is Role.User)
+                return StatusCode(StatusCodes.Status403Forbidden);
             return null;
         }
     }
