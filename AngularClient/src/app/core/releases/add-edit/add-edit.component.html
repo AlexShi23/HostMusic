@@ -1,7 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="tui-row tui-row_sme">
-        <div class=" tui-col_3"></div>
-        <div class=" tui-col_6">
+        <div class="center-container tui-col_6">
             <h3 *ngIf="isAddMode" class="tui-text_h3"
                 [class.tui-skeleton]="skeletonVisible"
                 [class.tui-skeleton_short]="skeletonVisible"

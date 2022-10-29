@@ -85,6 +85,11 @@ namespace HostMusic.Releases.App
             );
 
             app.UseStaticFiles();
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Resources/files");
+            if(!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
