@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { environment } from '@environments/environment';
-import { Release } from '@app/_models';
+import { Release, ReleasesPage } from '@app/_models';
 
 const baseUrl = `${environment.releasesUrl}/releases`;
 
@@ -25,12 +25,12 @@ export class ReleaseService {
         return this.releaseSubject.value;
     }
 
-    getAll() {
-        return this.http.get<Release[]>(baseUrl);
+    getAll(page: number) {
+        return this.http.get<ReleasesPage>(`${baseUrl}/${page}`);
     }
 
-    getAllOnModeration() {
-        return this.http.get<Release[]>(`${baseUrl}/moderation`);
+    getAllOnModeration(page: number) {
+        return this.http.get<ReleasesPage>(`${baseUrl}/moderation/${page}`);
     }
 
     getById(id: string) {
@@ -49,8 +49,8 @@ export class ReleaseService {
         return this.http.delete(`${baseUrl}/${id}`);
     }
 
-    search(query: string) {
-        return this.http.get(`${baseUrl}/search?query=${query}`);
+    search(query: string, page: number) {
+        return this.http.get(`${baseUrl}/search?query=${query}&page=${page}`);
     }
 
     moderate(id, params) {

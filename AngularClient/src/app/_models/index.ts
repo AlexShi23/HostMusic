@@ -3,4 +3,5 @@ export * from './role';
 export * from './release';
 export * from './track';
 export * from './releaseType';
+export * from './releasesPage';
 export * from './status';

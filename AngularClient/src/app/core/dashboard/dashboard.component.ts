@@ -32,12 +32,12 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
         this.loading = true;
-        this.releaseService.getAll()
+        this.releaseService.getAll(1)
             .pipe(first())
-            .subscribe(releases => {
-                this.releases = releases;
+            .subscribe(releasesPage => {
+                this.releases = releasesPage.releases;
                 this.loading = false;
-                if (releases.length > 4) {
+                if (releasesPage.releases.length > 4) {
                     this.listenings = 1034;
                     this.listeners = 178;
                     this.sales = 123;
