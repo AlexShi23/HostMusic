@@ -1,4 +1,5 @@
 ﻿using Amazon.S3.Transfer;
+using HostMusic.AmazonS3.Factory;
 using HostMusic.AmazonS3.Provider;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,8 +12,11 @@ public static class Bootstrapper
     {
         var config = configuration.GetSection("S3");
         services.Configure<AmazonS3Options>(config);
+        
         services.AddScoped<ITransferUtility, TransferUtility>();
         services.AddScoped<IAmazonS3Provider, AmazonS3Provider>();
+        services.AddScoped<IAmazonS3ClientFactory, AmazonS3ClientFactory>();
+        services.AddScoped(p => p.GetService<IAmazonS3ClientFactory>()!.Create());
         return services;
     }
 }

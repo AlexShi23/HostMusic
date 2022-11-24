@@ -9,12 +9,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Exceptions" />
-      <Folder Include="Factory" />
-      <Folder Include="Models" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
         <HintPath>..\..\..\..\..\..\.dotnet\shared\Microsoft.AspNetCore.App\6.0.3\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
       </Reference>

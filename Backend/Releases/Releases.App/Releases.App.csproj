@@ -25,6 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\utils\AmazonS3\AmazonS3.csproj" />
       <ProjectReference Include="..\Releases.Core\Releases.Core.csproj" />
       <ProjectReference Include="..\Releases.Data\Releases.Data.csproj" />
     </ItemGroup>
