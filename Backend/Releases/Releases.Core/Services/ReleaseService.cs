@@ -62,18 +62,38 @@ namespace HostMusic.Releases.Core.Services
             return release.Id;
         }
 
-        public async Task<IEnumerable<ReleaseResponse>> GetAll(int ownerId)
+        public async Task<ReleasesPageResponse> GetAll(int ownerId, int page)
         {
-            var releases = await _context.Releases.Where(r => r.OwnerId == ownerId)
-                .OrderByDescending(r => r.Status).ThenByDescending(r => r.CreatedAt).ToListAsync();
-            return _mapper.Map<IList<ReleaseResponse>>(releases);
+            const float itemsOnPageCount = 10f;
+            var pagesCount = Math.Ceiling(
+                _context.Releases.Count(r => r.OwnerId == ownerId) / itemsOnPageCount);
+            
+            var releases = await _context.Releases
+                .Where(r => r.OwnerId == ownerId)
+                .OrderByDescending(r => r.Status)
+                .ThenByDescending(r => r.CreatedAt)
+                .Skip((page - 1) * (int)itemsOnPageCount)
+                .Take((int)itemsOnPageCount)
+                .ToListAsync();
+            var releasesResponse = _mapper.Map<List<ReleaseResponse>>(releases);
+
+            return new ReleasesPageResponse(releasesResponse, (int)pagesCount);
         }
 
-        public async Task<IEnumerable<ReleaseResponse>> GetAllOnModeration()
+        public async Task<ReleasesPageResponse> GetAllOnModeration(int page)
         {
-            var releases = await _context.Releases.Where(r => r.Status == ReleaseStatus.Moderation)
+            const float itemsOnPageCount = 10f;
+            var pagesCount = Math.Ceiling(
+                _context.Releases.Count(r => r.Status == ReleaseStatus.Moderation) / itemsOnPageCount);
+            
+            var releases = await _context.Releases
+                .Where(r => r.Status == ReleaseStatus.Moderation)
+                .Skip((page - 1) * (int)itemsOnPageCount)
+                .Take((int)itemsOnPageCount)
                 .ToListAsync();
-            return _mapper.Map<IList<ReleaseResponse>>(releases);
+            var releasesResponse = _mapper.Map<List<ReleaseResponse>>(releases);
+
+            return new ReleasesPageResponse(releasesResponse, (int)pagesCount);
         }
 
         public async Task<ReleaseResponse> GetById(Guid id)
@@ -107,13 +127,24 @@ namespace HostMusic.Releases.Core.Services
             }
         }
 
-        public async Task<IEnumerable<ReleaseResponse>> Search(string query, int ownerId)
+        public async Task<ReleasesPageResponse> Search(string query, int ownerId, int page)
         {
+            const float itemsOnPageCount = 3f;
+            var pagesCount = Math.Ceiling(
+                _context.Releases.Count(r => 
+                    r.OwnerId == ownerId &&
+                    (r.Title.ToLower().Contains(query.ToLower()) ||
+                    r.Artist.ToLower().Contains(query.ToLower()))) / itemsOnPageCount);
+            
             var releases = await _context.Releases.Where(r => r.OwnerId == ownerId &&
                 (r.Title.ToLower().Contains(query.ToLower()) ||
                 r.Artist.ToLower().Contains(query.ToLower())))
+                .Skip((page - 1) * (int)itemsOnPageCount)
+                .Take((int)itemsOnPageCount)
                 .ToListAsync();
-            return _mapper.Map<IList<ReleaseResponse>>(releases);
+            var releasesResponse = _mapper.Map<List<ReleaseResponse>>(releases);
+
+            return new ReleasesPageResponse(releasesResponse, (int)pagesCount);
         }
 
         public async Task Moderate(Guid id, ModerationRequest request)
