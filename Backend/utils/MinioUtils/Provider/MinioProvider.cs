@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using HostMusic.MinioUtils.Models;
 using Minio;
 using Minio.DataModel;
+using Minio.Exceptions;
 
 namespace HostMusic.MinioUtils.Provider;
 
@@ -36,17 +37,12 @@ public class MinioProvider : IMinioProvider
 
     public async Task UpdateFile(UpdateFileRequest request, CancellationToken cancellationToken)
     {
-        var aesEncryption = Aes.Create();
-        aesEncryption.KeySize = 256;
-        aesEncryption.GenerateKey();
-        var ssec = new SSEC(aesEncryption.Key);
-        var putObjectArgs = new PutObjectArgs()
-            .WithBucket(request.BucketName)
-            .WithObject(request.FileName)
-            .WithStreamData(request.Data)
-            .WithContentType(request.ContentType)
-            .WithServerSideEncryption(ssec);
-        await _minioClient.PutObjectAsync(putObjectArgs, cancellationToken);
+        var file = new MinioFile(request.BucketName, request.FileName);
+        if (await Exists(file, cancellationToken))
+        {
+            await DeleteFile(file, cancellationToken);
+        }
+        await UploadFile(request, cancellationToken);
     }
 
     public async Task DeleteFile(MinioFile file, CancellationToken cancellationToken)
@@ -87,5 +83,33 @@ public class MinioProvider : IMinioProvider
                 .WithBucket(bucket);
             await _minioClient.MakeBucketAsync(makeArgs, cancellationToken);
         }
+    }
+
+    private async Task<bool> Exists(MinioFile file, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var statObjectArgs = new StatObjectArgs()
+                .WithBucket(file.BucketName)
+                .WithObject(file.FileName);
+            await _minioClient.StatObjectAsync(statObjectArgs, cancellationToken);
+
+            return true;
+        }
+        catch (MinioException)
+        {
+            return false;
+        }
+    }
+
+    private async Task UploadFile(UpdateFileRequest request, CancellationToken cancellationToken)
+    {
+        var putObjectArgs = new PutObjectArgs()
+            .WithBucket(request.BucketName)
+            .WithObject(request.FileName)
+            .WithObjectSize(request.Data.Length)
+            .WithStreamData(request.Data)
+            .WithContentType(request.ContentType);
+        await _minioClient.PutObjectAsync(putObjectArgs, cancellationToken);
     }
 }

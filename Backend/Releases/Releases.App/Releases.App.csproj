@@ -27,7 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\utils\AmazonS3\AmazonS3.csproj" />
       <ProjectReference Include="..\..\utils\MinioUtils\MinioUtils.csproj" />
       <ProjectReference Include="..\Releases.Core\Releases.Core.csproj" />
       <ProjectReference Include="..\Releases.Data\Releases.Data.csproj" />
@@ -47,10 +46,6 @@
 
     <ItemGroup>
       <Content Remove="Resources\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Resources\files" />
     </ItemGroup>
 
 </Project>

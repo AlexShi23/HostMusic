@@ -2,6 +2,7 @@ namespace HostMusic.Releases.Core.Models
 {
     public class UpdateTrackRequest
     {
+        public Guid Id { get; set; }
         public int Index { get; set; }
         public string Title { get; set; } = null!;
         public string? Subtitle { get; set; }

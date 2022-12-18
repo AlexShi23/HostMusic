@@ -8,7 +8,7 @@ import { TuiDay } from "@taiga-ui/cdk";
 import { TuiNotification, TuiNotificationsService } from '@taiga-ui/core';
 import { TuiFileLike } from "@taiga-ui/kit";
 import { forkJoin, Observable, Subject } from "rxjs";
-import { first, map, switchMap } from "rxjs/operators";
+import { first, switchMap } from "rxjs/operators";
 import * as uuid from "uuid";
 
 @Component({ templateUrl: './add-edit.component.html',
@@ -206,12 +206,7 @@ export class AddEditComponent implements OnInit {
                 this.filesService.deleteFile(this.id, FileType.Cover).subscribe();
             }
 
-            uploadings.push(this.filesService.getPreSignedUrl(releaseId, FileType.Cover, false).pipe(
-                switchMap((url) => {
-                    return this.filesService.uploadFileToPreSignedUrl(url, this.form.controls.cover.value);
-                })
-            ));
-            //uploadings.push(this.filesService.uploadFile(releaseId, this.form.controls.cover.value, FileType.Cover));
+            uploadings.push(this.filesService.uploadFile(releaseId, this.form.controls.cover.value, FileType.Cover));
         }
 
         for (let i = 0; i < this.tracksArray.length; i++) {
@@ -222,8 +217,11 @@ export class AddEditComponent implements OnInit {
                 if (!this.isAddMode && this.trackPaths[i]) {
                     this.filesService.deleteFile(trackId, FileType.Track).subscribe();
                 }
-                uploadings.push(this.filesService.uploadFile(trackId,
-                    this.tracksForm[i].controls.trackPath.value, FileType.Track));
+                uploadings.push(this.filesService.getPreSignedUrl(trackId, FileType.Track, false).pipe(
+                    switchMap((url) => {
+                        return this.filesService.uploadFileToPreSignedUrl(url, this.tracksForm[i].controls.trackPath.value);
+                    })
+                ));
             }
         }
 

@@ -1,26 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text.Json.Serialization;
-using HostMusic.AmazonS3;
 using HostMusic.MinioUtils;
 using HostMusic.Releases.App.Middlewares;
 using HostMusic.Releases.Core;
 using HostMusic.Releases.Data;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
-using tusdotnet;
-using tusdotnet.Interfaces;
-using tusdotnet.Models;
-using tusdotnet.Models.Configuration;
-using tusdotnet.Stores;
 
 namespace HostMusic.Releases.App
 {
@@ -50,7 +36,6 @@ namespace HostMusic.Releases.App
             services.AddData();
             services.AddHttpClient();
             services.AddCors();
-            services.AddAmazonS3(Configuration);
             services.AddMinio(Configuration);
             services.AddControllers().AddJsonOptions(x =>
             {
@@ -97,48 +82,7 @@ namespace HostMusic.Releases.App
                 .SetIsOriginAllowed(origin => true)
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-                .WithExposedHeaders(tusdotnet.Helpers.CorsHelper.GetExposedHeaders())
             );
-
-            app.UseStaticFiles();
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "Resources/files");
-            if(!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
-                RequestPath = new PathString("/Resources")
-            });
-            
-            app.UseTus(httpContext => new DefaultTusConfiguration
-            {
-                Store = new TusDiskStore(Path.Combine(Directory.GetCurrentDirectory(), "Resources", "files")),
-                UrlPath = "/upload",
-                MaxAllowedUploadSizeInBytes = 100 * 1024 * 1024,
-                MaxAllowedUploadSizeInBytesLong = 100 * 1024 * 1024,
-                Events = new Events
-                {
-                    OnFileCompleteAsync = async eventContext =>
-                    {
-                        var file = await eventContext.GetFileAsync();
-
-                        var metadata = await file.GetMetadataAsync(eventContext.CancellationToken);
-                        var fileName = file.Id + "." + metadata["filename"].GetString(System.Text.Encoding.UTF8).Split(".").Last();
-
-                        await using (var createdFile = File.Create(Path.Combine(
-                                         Directory.GetCurrentDirectory(), "Resources", fileName)))
-                        await using (var stream = await file.GetContentAsync(eventContext.CancellationToken))
-                        {
-                            await stream.CopyToAsync(createdFile);
-                        }
-
-                        var terminationStore = (ITusTerminationStore)eventContext.Store;
-                        await terminationStore.DeleteFileAsync(file.Id, eventContext.CancellationToken);
-                    }
-                }
-            });
 
             app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseMiddleware<AuthMiddleware>();
