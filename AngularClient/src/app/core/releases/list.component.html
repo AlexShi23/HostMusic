@@ -47,7 +47,7 @@
                 </thead>
                 <tbody>
                     <tr class="tui-table__tr" *ngFor="let release of releases">
-                        <td class="tui-table__th" routerLink="view/{{release.id}}"><img [src]="this.getFilePath(release.coverPath)"></td>
+                        <td class="tui-table__th" routerLink="view/{{release.id}}"><img [src]="!release.cover ? placeholder : release.cover"></td>
                         <td class="tui-table__th" routerLink="view/{{release.id}}"><b>{{release.artist}}
                             {{this.getFeatText(release.featuring)}}</b> - {{release.title}} <i>{{getSubtitleText(release.subtitle)}}</i></td>
                         <td class="tui-table__th" routerLink="view/{{release.id}}">{{release.type}}</td>

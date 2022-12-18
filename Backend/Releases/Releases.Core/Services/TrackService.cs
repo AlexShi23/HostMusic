@@ -35,13 +35,13 @@ namespace HostMusic.Releases.Core.Services
             var release = _context.Releases.First();
             var track = new Track
             {
+                Id = request.Id,
                 Index = request.Index,
                 Title = request.Title,
                 Subtitle = request.Subtitle,
                 Artist = request.Artist,
                 Featuring = request.Featuring,
                 Explicit = request.Explicit,
-                TrackPath = request.TrackPath,
                 Lyrics = request.Lyrics,
                 NumberOfPlays = 0
             };

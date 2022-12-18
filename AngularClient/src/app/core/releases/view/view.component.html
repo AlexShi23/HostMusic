@@ -23,7 +23,9 @@
 
                 <div *ngIf="release" class="tui-row">
                     <div class="tui-col_6">
-                        <img [src]="this.getFilePath(release.coverPath)">
+                        <tui-loader [showLoader]="!release.cover" size="l">
+                            <img [src]="!release.cover ? placeholder : release.cover">
+                        </tui-loader>
                     </div>
                     <div class="tui-col_6">
                         <h2 style="margin-top: 10px;">Main information</h2>
@@ -55,11 +57,14 @@
                 </div>
                 <div *ngIf="release" class="tui-row">
                     <div class="tui-col_12">
-                        <div class="tui-player tui-space_top-4" *ngFor="let track of release.tracks; index as i">
+                        <div class="tui-player tui-space_top-4" 
+                            *ngFor="let track of release.tracks; index as i"
+                            [class.tui-skeleton]="!track.file"
+                        >
                             <audio
                                 #audio
                                 tuiMedia
-                                [src]="this.getFilePath(track.trackPath)"
+                                [src]="track.file"
                                 [(currentTime)]="currentTime[i]"
                                 [(paused)]="paused[i]"
                             ></audio>

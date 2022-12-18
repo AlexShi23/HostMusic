@@ -1,4 +1,4 @@
-﻿namespace HostMusic.AmazonS3.Models;
+namespace HostMusic.MinioUtils.Models;
 
 public class UpdateFileRequest
 {

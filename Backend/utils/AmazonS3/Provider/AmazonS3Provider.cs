@@ -22,10 +22,10 @@ public class AmazonS3Provider : IAmazonS3Provider
 
     public async Task CreateDefaultBuckets(IEnumerable<string> buckets, CancellationToken cancellationToken)
     {
-        var bucketsList = (await _client.ListBucketsAsync(cancellationToken)).Buckets;
+        var bucketsList = await _client.ListBucketsAsync(cancellationToken);
         foreach (var bucket in buckets)
         {
-            if (bucketsList.Exists(b => b.BucketName == bucket))
+            if (bucketsList.Buckets.Exists(b => b.BucketName == bucket))
             {
                 continue;
             }
@@ -35,7 +35,7 @@ public class AmazonS3Provider : IAmazonS3Provider
 
     public async Task DeleteFile(AmazonFileReference file, CancellationToken cancellationToken)
     {
-        await _client.DeleteObjectAsync(file.BucketName, file.FileId.ToString(), cancellationToken);
+        await _client.DeleteObjectAsync(file.BucketName, file.FileName, cancellationToken);
     }
 
     public async Task<bool> Exists(AmazonFileReference file, CancellationToken cancellationToken)
@@ -44,7 +44,7 @@ public class AmazonS3Provider : IAmazonS3Provider
         {
             await _client.GetObjectMetadataAsync(new GetObjectMetadataRequest
             {
-                Key = file.FileId.ToString(),
+                Key = file.FileName,
                 BucketName = file.BucketName
             }, cancellationToken);
 
@@ -82,21 +82,23 @@ public class AmazonS3Provider : IAmazonS3Provider
 
     public async Task<Stream> GetFileStream(AmazonFileReference file, CancellationToken cancellationToken)
     {
-        var fileObject = await _client.GetObjectAsync(file.BucketName, file.FileId.ToString(), cancellationToken);
+        var fileObject = await _client.GetObjectAsync(file.BucketName, file.FileName, cancellationToken);
         if (fileObject.ResponseStream != null)
         {
             return fileObject.ResponseStream;
         }
         
-        throw new FileNotFoundInS3Exception(file.FileId.ToString());
+        throw new FileNotFoundInS3Exception(file.FileName);
     }
 
-    public async Task UploadFile(AmazonFileReference file, Stream data, string mimeType, CancellationToken cancellationToken)
+    public async Task UploadFile(AmazonFileReference file, Stream data, string mimeType,
+        CancellationToken cancellationToken)
     {
         var transferRequest = new TransferUtilityUploadRequest
         {
             BucketName = file.BucketName,
-            Key = file.FileId.ToString(),
+            Key = file.FileName,
+            ContentType = mimeType,
             InputStream = data,
             StorageClass = S3StorageClass.Standard,
             PartSize = data.Length,
@@ -110,7 +112,7 @@ public class AmazonS3Provider : IAmazonS3Provider
 
     public async Task UpdateFile(UpdateFileRequest request, CancellationToken cancellationToken)
     {
-        var amazonFile = new AmazonFileReference(request.BucketName, request.FileId);
+        var amazonFile = new AmazonFileReference(request.BucketName, request.FileName);
 
         if (await Exists(amazonFile, cancellationToken))
         {
@@ -118,5 +120,17 @@ public class AmazonS3Provider : IAmazonS3Provider
         }
 
         await UploadFile(amazonFile, request.Data, request.ContentType, cancellationToken);
+    }
+
+    public string GetPreSignedUrl(string bucketName, string objectKey, string contentType, double duration)
+    {
+        var request = new GetPreSignedUrlRequest
+        {
+            BucketName = bucketName,
+            Key = objectKey,
+            Expires = DateTime.UtcNow.AddHours(duration),
+            ContentType = contentType
+        };
+        return _client.GetPreSignedURL(request);
     }
 }

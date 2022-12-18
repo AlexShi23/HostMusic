@@ -2,3 +2,4 @@
 export * from './release.service';
 export * from './track.service';
 export * from './upload.service';
+export * from './files.service';

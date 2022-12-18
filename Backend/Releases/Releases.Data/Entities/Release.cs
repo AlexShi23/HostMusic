@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Releases.Primitives;
+using HostMusic.Releases.Primitives;
 
 namespace HostMusic.Releases.Data.Entities
 {
@@ -17,7 +17,6 @@ namespace HostMusic.Releases.Data.Entities
         public string Genre { get; set; } = null!;
         public string? Language { get; set; }
         public string Country { get; set; } = null!;
-        public string CoverPath { get; set; } = null!;
         public List<Track> Tracks { get; set; }
         public TimeSpan Duration { get; set; }
         public bool? Explicit { get; set; }

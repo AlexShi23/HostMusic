@@ -1,3 +1,4 @@
+import { SafeUrl } from "@angular/platform-browser";
 import { ReleaseType } from "./releaseType";
 import { Status } from "./status";
 import { Track } from "./track";
@@ -13,7 +14,7 @@ export class Release {
     featuring?: string;
     genre: string;
     country: string;
-    coverPath: string;
+    cover: SafeUrl;
     tracks: Track[];
     duration: TimeRanges;
     explicit: boolean;

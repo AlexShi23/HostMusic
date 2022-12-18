@@ -3,11 +3,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using HostMusic.AmazonS3;
+using HostMusic.MinioUtils;
 using HostMusic.Releases.App.Middlewares;
 using HostMusic.Releases.Core;
 using HostMusic.Releases.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -32,10 +36,22 @@ namespace HostMusic.Releases.App
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.Limits.MaxRequestBodySize = int.MaxValue;
+            });
+            services.Configure<FormOptions>(x =>
+            {
+                x.ValueLengthLimit = int.MaxValue;
+                x.MultipartBodyLengthLimit = int.MaxValue;
+                x.MultipartHeadersLengthLimit = int.MaxValue;
+            });
             
             services.AddData();
             services.AddHttpClient();
             services.AddCors();
+            services.AddAmazonS3(Configuration);
+            services.AddMinio(Configuration);
             services.AddControllers().AddJsonOptions(x =>
             {
                 x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());

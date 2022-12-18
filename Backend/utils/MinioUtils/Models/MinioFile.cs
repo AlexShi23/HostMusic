@@ -1,11 +1,11 @@
-﻿namespace HostMusic.AmazonS3.Models;
+namespace HostMusic.MinioUtils.Models;
 
-public class AmazonFileReference
+public class MinioFile
 {
     public string BucketName { get; set; }
     public string FileName { get; set; }
     
-    public AmazonFileReference(string bucketName, string fileName)
+    public MinioFile(string bucketName, string fileName)
     {
         BucketName = bucketName;
         FileName = fileName;

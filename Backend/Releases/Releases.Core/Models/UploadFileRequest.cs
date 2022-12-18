@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Releases.Primitives;
+﻿using HostMusic.Releases.Primitives;
+using Microsoft.AspNetCore.Http;
 
 namespace HostMusic.Releases.Core.Models;
 

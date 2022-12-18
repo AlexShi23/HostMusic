@@ -1,14 +1,17 @@
 import { Component, OnInit } from "@angular/core";
-import { Release, Role, Status } from "@app/_models";
-import { AccountService, ReleaseService } from "@app/_services";
+import { FileType, Release, Role } from "@app/_models";
+import { formatDate, getBadge, getFeatText, getSubtitleText } from "@app/common/functions/release.utils";
+import { AccountService, FilesService, ReleaseService } from "@app/_services";
 import { catchError, debounceTime, distinctUntilChanged, first, switchMap } from "rxjs/operators";
 import { environment } from '@environments/environment';
 import { FormControl, FormGroup } from "@angular/forms";
 import { from, of } from "rxjs";
+import { SafeUrl } from "@angular/platform-browser";
 
 @Component({ templateUrl: 'list.component.html',
             styleUrls: ['list.component.less'] })
 export class ListComponent implements OnInit {
+    placeholder = "data:image/jpg;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
     role: Role;
     search = '';
     releases: Release[];
@@ -24,11 +27,13 @@ export class ListComponent implements OnInit {
 
     constructor(
         private releaseService: ReleaseService,
-        private accountService: AccountService) {
+        private accountService: AccountService,
+        private filesService: FilesService) {
             this.accountService.account.subscribe(x => this.role = x.role);
         }
 
     ngOnInit() {
+        this.loading = true;
         this.searchForm.controls.search.valueChanges.pipe(
             debounceTime(700),
             distinctUntilChanged(),
@@ -49,28 +54,24 @@ export class ListComponent implements OnInit {
                     this.releases = resp;
                     length = this.releases.length / 10;
                     this.loading = false;
+                    this.releases.forEach(
+                        (release: Release) => {
+                            this.filesService.getFileUrl(release.id, FileType.Cover, true).subscribe(
+                                (imageUrl: SafeUrl) => {
+                                    release.cover = imageUrl;
+                                }
+                            )
+                        }
+                    );
+                }
             }
-          })
-        
-        this.loading = true;
-        if (this.role == Role.Moderator) {
-            this.releaseService.getAllOnModeration()
-            .pipe(first())
-            .subscribe(releases => {
-                this.releases = releases;
-                length = this.releases.length / 10;
-                this.loading = false;
-            });
-        } else {
-            this.releaseService.getAll()
-            .pipe(first())
-            .subscribe(releases => {
-                this.releases = releases;
-                length = this.releases.length / 10;
-                this.loading = false;
-            });
-        }
+        )
     }
+
+    getBadge = getBadge;
+    formatDate = formatDate;
+    getFeatText = getFeatText;
+    getSubtitleText = getSubtitleText;
  
     goToPage(index: number): void {
         this.index = index;
@@ -79,33 +80,6 @@ export class ListComponent implements OnInit {
 
     getFilePath(filename: string) {
         return `${environment.releasesUrl}/Resources/${filename}`;
-    }
-
-    getFeatText(featuring: string) {
-        return featuring.length > 0 ? `(feat. ${featuring})` : null;
-    }
-
-    getSubtitleText(subtitle: string) {
-        return subtitle.length > 0 ? `(${subtitle})` : null;
-    }
-
-    formatDate(date: Date) {
-        return date.toString().split('T')[0];
-    }
-
-    getBadge(status: Status): string {
-        switch(status) {
-            case Status.Draft:
-                return 'default';
-            case Status.Moderation:
-                return 'primary';
-            case Status.Correcting:
-                return 'error';
-            case Status.Distributed:
-                return 'info';
-            case Status.Published:
-                return 'success';
-        }
     }
 
     showDeleteDialog(id: string): void {

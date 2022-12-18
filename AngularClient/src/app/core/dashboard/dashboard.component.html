@@ -88,9 +88,9 @@
                         <th class="tui-table__th"><b>Status</b></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="!loading">
                     <tr class="tui-table__tr" *ngFor="let release of releases">
-                        <td class="tui-table__th"><img [src]="this.getFilePath(release.coverPath)"></td>
+                        <td class="tui-table__th"><img [src]="!release.cover ? placeholder : release.cover"></td>
                         <td class="tui-table__th"><b>{{release.artist}}
                             {{this.getFeatText(release.featuring)}}</b> - {{release.title}} <i>{{getSubtitleText(release.subtitle)}}</i></td>
                         <td class="tui-table__th"><tui-badge [status]="this.getBadge(release.status)" [value]="release.status"></tui-badge></td>

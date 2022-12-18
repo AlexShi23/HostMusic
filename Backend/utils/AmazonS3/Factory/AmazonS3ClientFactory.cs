@@ -1,4 +1,5 @@
-﻿using Amazon.Runtime;
+﻿using Amazon;
+using Amazon.Runtime;
 using Amazon.S3;
 using Microsoft.Extensions.Options;
 
@@ -18,7 +19,12 @@ public class AmazonS3ClientFactory : IAmazonS3ClientFactory
         var credentials = new BasicAWSCredentials(Settings.AccessKey, Settings.SecretKey);
         var client = new AmazonS3Client(credentials, new AmazonS3Config
         {
-            ServiceURL = Settings.ServiceUrl
+            AuthenticationRegion = "eu-west-2",
+            SignatureVersion = "v4",
+            RegionEndpoint = RegionEndpoint.EUWest2,
+            SignatureMethod = SigningAlgorithm.HmacSHA256,
+            ServiceURL = Settings.ServiceUrl,
+            ForcePathStyle = true
         });
         return client;
     }

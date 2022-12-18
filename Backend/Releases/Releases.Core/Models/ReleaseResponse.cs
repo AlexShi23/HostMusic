@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using HostMusic.Releases.Data.Entities;
-using Releases.Primitives;
+using HostMusic.Releases.Primitives;
 
 namespace HostMusic.Releases.Core.Models
 {
