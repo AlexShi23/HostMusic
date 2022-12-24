@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
     listenings = 0;
     listeners = 0;
     sales = 0;
-    
+
     readonly axisXLabels = ['', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sut' ];
     values: readonly TuiPoint[] = [
         [50, 0],
@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit {
         [300, 0],
         [350, 0],
     ];
- 
+
     readonly stringify = TUI_DEFAULT_STRINGIFY;
 
     constructor(private releaseService: ReleaseService,
@@ -35,10 +35,10 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
         this.loading = true;
-        this.releaseService.getAll()
+        this.releaseService.getAll(1)
             .pipe(first())
-            .subscribe(releases => {
-                this.releases = releases;
+            .subscribe(releasesPage => {
+                this.releases = releasesPage.releases;
                 this.loading = false;
                 this.releases.forEach(
                     (release: Release) => {
@@ -49,8 +49,8 @@ export class DashboardComponent implements OnInit {
                         )
                     }
                 );
-                
-                if (releases.length > 4) {
+
+                if (releasesPage.releases.length > 4) {
                     this.listenings = 1034;
                     this.listeners = 178;
                     this.sales = 123;

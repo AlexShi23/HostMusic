@@ -38,13 +38,13 @@ namespace HostMusic.Releases.App.Controllers
         }
         
         /// <summary>
-        /// Get all releases of user
+        /// Get all releases of user 
         /// </summary>
-        /// <returns>List of the releases.</returns>
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ReleaseResponse>>> GetAll()
+        /// <returns>Page with list of the releases.</returns>
+        [HttpGet("{page:int}")]
+        public async Task<ActionResult<ReleasesPageResponse>> GetAll(int page)
         {
-            var releases = await _releaseService.GetAll(Account.Id);
+            var releases = await _releaseService.GetAll(Account.Id, page);
             return Ok(releases);
         }
 
@@ -92,9 +92,9 @@ namespace HostMusic.Releases.App.Controllers
         /// Search releases
         /// </summary>
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<ReleaseResponse>>> Search([FromQuery] string query)
+        public async Task<ActionResult<ReleasesPageResponse>> Search([FromQuery] string query, [FromQuery] int page)
         {
-            var releases = await _releaseService.Search(query, Account.Id);
+            var releases = await _releaseService.Search(query, Account.Id, page);
             return Ok(releases);
         }
         
@@ -111,14 +111,14 @@ namespace HostMusic.Releases.App.Controllers
         /// <summary>
         /// Get all releases on moderation
         /// </summary>
-        [HttpGet("moderation")]
-        public async Task<ActionResult<IEnumerable<ReleaseResponse>>> GetAllOnModeration()
+        [HttpGet("moderation/{page:int}")]
+        public async Task<ActionResult<ReleasesPageResponse>> GetAllOnModeration(int page)
         {
-            var releases = await _releaseService.GetAllOnModeration();
+            var releases = await _releaseService.GetAllOnModeration(page);
             return Ok(releases);
         }
 
-        private IActionResult? ValidateResponse(ReleaseResponse release)
+        private IActionResult? ValidateResponse(ReleaseResponse? release)
         {
             if (release == null)
                 return NotFound(new { message = "Release not found" });

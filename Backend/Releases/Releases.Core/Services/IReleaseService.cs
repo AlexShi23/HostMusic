@@ -8,12 +8,12 @@ namespace HostMusic.Releases.Core.Services
     public interface IReleaseService
     {
         Guid Create(CreateReleaseRequest request, int creatorId);
-        Task<IEnumerable<ReleaseResponse>> GetAll(int ownerId);
-        Task<IEnumerable<ReleaseResponse>> GetAllOnModeration();
+        Task<ReleasesPageResponse> GetAll(int ownerId, int page);
+        Task<ReleasesPageResponse> GetAllOnModeration(int page);
         Task<ReleaseResponse> GetById(Guid id);
         void Update(Guid id, UpdateReleaseRequest request);
         Task Delete(Guid id);
-        Task<IEnumerable<ReleaseResponse>> Search(string query, int ownerId);
+        Task<ReleasesPageResponse> Search(string query, int ownerId, int page);
         Task Moderate(Guid id, ModerationRequest request);
     }
 }

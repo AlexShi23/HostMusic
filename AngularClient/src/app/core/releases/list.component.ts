@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FileType, Release, Role } from "@app/_models";
+import { FileType, Release, ReleasesPage, Role } from "@app/_models";
 import { formatDate, getBadge, getFeatText, getSubtitleText } from "@app/common/functions/release.utils";
 import { AccountService, FilesService, ReleaseService } from "@app/_services";
 import { catchError, debounceTime, distinctUntilChanged, first, switchMap } from "rxjs/operators";
@@ -15,8 +15,8 @@ export class ListComponent implements OnInit {
     role: Role;
     search = '';
     releases: Release[];
-    length: number = 1;
-    index = 1;
+    pagesCount: number = 1;
+    page = 1;
     loading: boolean;
     deletedReleaseId: string;
     deletedRelease: Release;
@@ -40,42 +40,78 @@ export class ListComponent implements OnInit {
             switchMap(value => {
                 if (value.length > 0) {
                     this.loading = true;
-                    return from(this.releaseService.search(value)).pipe(
+                    this.page = 1;
+                    return from(this.releaseService.search(value, this.page)).pipe(
                         catchError(err => of([]))
                     )
                 } else {
-                    return this.role == Role.Moderator ? 
-                        from(this.releaseService.getAllOnModeration()) :
-                        from(this.releaseService.getAll());
+                    return this.role == Role.Moderator ?
+                        from(this.releaseService.getAllOnModeration(this.page)) :
+                        from(this.releaseService.getAll(this.page));
                 }
             })
             ).subscribe({
-                next: (resp: Release[]) => {
-                    this.releases = resp;
-                    length = this.releases.length / 10;
+                next: (resp: ReleasesPage) => {
+                    this.releases = resp.releases;
+                    this.pagesCount = resp.pagesCount;
                     this.loading = false;
                     this.releases.forEach(
                         (release: Release) => {
                             this.filesService.getFileUrl(release.id, FileType.Cover, true).subscribe(
-                                (imageUrl: SafeUrl) => {
-                                    release.cover = imageUrl;
-                                }
-                            )
+                            (imageUrl: SafeUrl) => {
+                                release.cover = imageUrl;
+                            })
                         }
                     );
-                }
             }
-        )
+          })
+
+        this.loading = true;
+        if (this.role == Role.Moderator) {
+            this.releaseService.getAllOnModeration(this.page)
+            .pipe(first())
+            .subscribe((resp: ReleasesPage) => {
+                this.releases = resp.releases;
+                this.pagesCount = resp.pagesCount;
+                this.loading = false;
+            });
+        } else {
+            this.releaseService.getAll(this.page)
+            .pipe(first())
+            .subscribe(releasesPage => {
+                this.releases = releasesPage.releases;
+                this.pagesCount = releasesPage.pagesCount;
+                this.loading = false;
+            });
+        }
     }
 
     getBadge = getBadge;
     formatDate = formatDate;
     getFeatText = getFeatText;
     getSubtitleText = getSubtitleText;
- 
+
     goToPage(index: number): void {
-        this.index = index;
-        console.info('New page:', index);
+        this.page = index + 1;
+        if (this.searchForm.controls.search.value) {
+            this.releaseService.search(this.searchForm.controls.search.value, this.page)
+                .pipe(first())
+                .subscribe((releasesPage: ReleasesPage) => {
+                    this.releases = releasesPage.releases;
+                    this.pagesCount = releasesPage.pagesCount;
+                    this.loading = false;
+                });
+        } else {
+            this.releaseService.getAll(this.page)
+            .pipe(first())
+            .subscribe(releasesPage => {
+                this.releases = releasesPage.releases;
+                this.pagesCount = releasesPage.pagesCount;
+                this.loading = false;
+            });
+        }
+
+        console.info('New page:', index + 1);
     }
 
     getFilePath(filename: string) {

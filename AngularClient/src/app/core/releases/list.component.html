@@ -70,8 +70,8 @@
         </tui-loader>
     </div>
     <tui-pagination
-        [length]="length"
-        [index]="index"
+        [length]="pagesCount"
+        [index]="page - 1"
         (indexChange)="goToPage($event)"
 ></tui-pagination>
 </div>
