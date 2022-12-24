@@ -55,35 +55,9 @@ export class ListComponent implements OnInit {
                     this.releases = resp.releases;
                     this.pagesCount = resp.pagesCount;
                     this.loading = false;
-                    this.releases.forEach(
-                        (release: Release) => {
-                            this.filesService.getFileUrl(release.id, FileType.Cover, true).subscribe(
-                            (imageUrl: SafeUrl) => {
-                                release.cover = imageUrl;
-                            })
-                        }
-                    );
+                    this.getCovers();
             }
           })
-
-        this.loading = true;
-        if (this.role == Role.Moderator) {
-            this.releaseService.getAllOnModeration(this.page)
-            .pipe(first())
-            .subscribe((resp: ReleasesPage) => {
-                this.releases = resp.releases;
-                this.pagesCount = resp.pagesCount;
-                this.loading = false;
-            });
-        } else {
-            this.releaseService.getAll(this.page)
-            .pipe(first())
-            .subscribe(releasesPage => {
-                this.releases = releasesPage.releases;
-                this.pagesCount = releasesPage.pagesCount;
-                this.loading = false;
-            });
-        }
     }
 
     getBadge = getBadge;
@@ -100,6 +74,7 @@ export class ListComponent implements OnInit {
                     this.releases = releasesPage.releases;
                     this.pagesCount = releasesPage.pagesCount;
                     this.loading = false;
+                    this.getCovers();
                 });
         } else {
             this.releaseService.getAll(this.page)
@@ -108,14 +83,20 @@ export class ListComponent implements OnInit {
                 this.releases = releasesPage.releases;
                 this.pagesCount = releasesPage.pagesCount;
                 this.loading = false;
+                this.getCovers();
             });
         }
-
-        console.info('New page:', index + 1);
     }
 
-    getFilePath(filename: string) {
-        return `${environment.releasesUrl}/Resources/${filename}`;
+    getCovers() {
+        this.releases.forEach(
+            (release: Release) => {
+                this.filesService.getFileUrl(release.id, FileType.Cover, true).subscribe(
+                (imageUrl: SafeUrl) => {
+                    release.cover = imageUrl;
+                })
+            }
+        );
     }
 
     showDeleteDialog(id: string): void {

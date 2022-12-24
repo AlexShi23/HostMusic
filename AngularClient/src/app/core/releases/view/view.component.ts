@@ -1,10 +1,9 @@
-import { Component, Inject, Input, OnInit } from "@angular/core";
+import { Component, Inject, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { first } from "rxjs/operators";
 import { FileType, Release, Role, Status, Track } from "@app/_models";
 import { AccountService, FilesService, ReleaseService } from "@app/_services";
-import { TuiDialogService, TuiNotification, TuiNotificationsService } from "@taiga-ui/core";
-import { environment } from "@environments/environment";
+import { TuiNotification, TuiNotificationsService } from "@taiga-ui/core";
 import { formatDate, getBadge, getFeatText, getSubtitleText } from "@app/common/functions/release.utils";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { SafeUrl } from "@angular/platform-browser";
@@ -30,8 +29,6 @@ export class ViewComponent implements OnInit {
         private accountService: AccountService,
         private releaseService: ReleaseService,
         private filesService: FilesService,
-        @Inject(TuiDialogService)
-        private readonly dialogService: TuiDialogService,
         @Inject(TuiNotificationsService)
         private readonly notificationsService: TuiNotificationsService
     ) {
@@ -72,10 +69,6 @@ export class ViewComponent implements OnInit {
     formatDate = formatDate;
     getFeatText = getFeatText;
     getSubtitleText = getSubtitleText;
-
-    getFilePath(filename: string) {
-        return `${environment.releasesUrl}/Resources/${filename}`;
-    }
 
     getIcon(index: number): string {
         return this.paused[index] ? 'tuiIconPlayLarge' : 'tuiIconPauseLarge';

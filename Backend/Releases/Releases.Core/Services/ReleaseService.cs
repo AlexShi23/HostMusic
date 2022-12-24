@@ -126,7 +126,7 @@ namespace HostMusic.Releases.Core.Services
 
         public async Task<ReleasesPageResponse> Search(string query, int ownerId, int page)
         {
-            const float itemsOnPageCount = 3f;
+            const float itemsOnPageCount = 5f;
             var pagesCount = Math.Ceiling(
                 _context.Releases.Count(r => 
                     r.OwnerId == ownerId &&
