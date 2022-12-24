@@ -41,7 +41,7 @@ namespace HostMusic.Releases.App.Controllers
         /// Get all releases of user 
         /// </summary>
         /// <returns>Page with list of the releases.</returns>
-        [HttpGet("{page:int}")]
+        [HttpGet("all/{page:int}")]
         public async Task<ActionResult<ReleasesPageResponse>> GetAll(int page)
         {
             var releases = await _releaseService.GetAll(Account.Id, page);

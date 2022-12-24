@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Releases.Primitives;
+using HostMusic.Releases.Primitives;
 
 namespace HostMusic.Releases.Core.Models
 {
@@ -15,7 +15,6 @@ namespace HostMusic.Releases.Core.Models
         public string Genre { get; set; } = null!;
         public string? Language { get; set; } = null!;
         public string Country { get; set; } = null!;
-        public string Cover { get; set; } = null!;
         public List<UpdateTrackRequest> Tracks { get; set; }
         public DateTime ReleaseDate { get; set; }
     }

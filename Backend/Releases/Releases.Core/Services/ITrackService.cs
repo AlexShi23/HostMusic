@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using HostMusic.Releases.Core.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace HostMusic.Releases.Core.Services
 {

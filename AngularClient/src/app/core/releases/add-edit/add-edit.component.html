@@ -17,6 +17,12 @@
             >
                 Edit release
             </h3>
+            <tui-loader
+                [showLoader]="this.filesUploading"
+                [overlay]="this.filesUploading"
+                size="l"
+                textContent="Files uploading"
+            >
             <tui-island>
                 <div class="tui-form__row tui-form__row_multi-fields">
                     <div class="tui-form__multi-field">
@@ -91,7 +97,7 @@
                 <div class="tui-form__row tui-form__row_multi-fields">
                     <div *ngIf="!this.isAddMode && this.coverPath != null && !this.form.controls.cover.value" class="tui-form__multi-field">
                         <tui-island>
-                            <img style="width: 100%; height: 100%" [src]="this.getFilePath(this.coverPath)">
+                            <img style="width: 100%; height: 100%" [src]="this.coverPath">
                         </tui-island>
                     </div>
                     <div class="tui-form__multi-field">
@@ -174,66 +180,70 @@
                                 <tui-field-error formControlName="featuring"></tui-field-error>
                             </div>
                         </div>
-                        <div class="tui-form__row tui-form__row_multi-fields">
-                            <div *ngIf="!isAddMode && this.trackPaths[i+1] != null &&
-                                !this.form.get('tracks')['controls'][i].controls.trackPath.value" class="tui-form__multi-field">
-                                <div class="tui-player">
-                                    <audio
-                                        #audio
-                                        tuiMedia
-                                        [src]="this.getFilePath(this.trackPaths[i+1])"
-                                        [(currentTime)]="currentTime[i]"
-                                        [(paused)]="paused[i]"
-                                    ></audio>
-                                    <button
-                                        tuiIconButton
-                                        type="button"
-                                        shape="rounded"
-                                        appearance="secondary"
-                                        title="Play/Pause"
-                                        [icon]="getIcon(i)"
-                                        (click)="toggleState(i)"
-                                    ></button>
-                                    <div>
-                                        <input
-                                            tuiSlider
-                                            type="range"
-                                            class="slider"
-                                            [max]="audio.duration"
-                                            [value]="currentTime[i]"
-                                        />
+                        <tui-loader [showLoader]="this.tracksLoading" size="l" class="tui-space_top-6">
+                            <div class="tui-form__row tui-form__row_multi-fields">
+                                <div *ngIf="!this.tracksLoading && !this.isAddMode && this.trackPaths[i] != null &&
+                                    !this.form.get('tracks')['controls'][i].controls.trackPath.value"
+                                    class="tui-form__multi-field"
+                                >
+                                    <div class="tui-player">
+                                        <audio
+                                            #audio
+                                            tuiMedia
+                                            [src]="this.trackPaths[i]"
+                                            [(currentTime)]="currentTime[i]"
+                                            [(paused)]="paused[i]"
+                                        ></audio>
+                                        <button
+                                            tuiIconButton
+                                            type="button"
+                                            shape="rounded"
+                                            appearance="secondary"
+                                            title="Play/Pause"
+                                            [icon]="getIcon(i)"
+                                            (click)="toggleState(i)"
+                                        ></button>
+                                        <div>
+                                            <input
+                                                tuiSlider
+                                                type="range"
+                                                class="slider"
+                                                [max]="audio.duration"
+                                                [value]="currentTime[i]"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="tui-form__multi-field">
+                                    <tui-input-files
+                                        *ngIf="!trackForm.controls.trackPath.value"
+                                        accept="audio/wav"
+                                        [link] = "'Choose .wav file'"
+                                        [label]="'of the track'"
+                                        [class.tui-skeleton]="skeletonVisible"
+                                        [formControl]="trackForm.controls.trackPath"
+                                        [maxFileSize]="100000000"
+                                        (reject)="onTrackReject($event, i)"
+                                    ></tui-input-files>
+                                    
+                                    <tui-files class="tui-space_top-1">
+                                        <tui-file
+                                            *ngIf="trackForm.controls.trackPath.valueChanges | async as file"
+                                            [file]="file"
+                                            size="l"
+                                            (removed)="removeTrackFile(i)"
+                                        ></tui-file>
+                                    
+                                        <tui-file
+                                            *ngIf="rejectedTrackFiles$[i] | async as file"
+                                            state="error"
+                                            [file]="file"
+                                            (removed)="clearTrackRejected(i)"
+                                        ></tui-file>
+                                    </tui-files>
+                                </div>
                             </div>
-                            <div class="tui-form__multi-field">
-                                <tui-input-files
-                                    *ngIf="!trackForm.controls.trackPath.value"
-                                    accept="audio/wav"
-                                    [link] = "'Choose .wav file'"
-                                    [label]="'of the track'"
-                                    [class.tui-skeleton]="skeletonVisible"
-                                    [formControl]="trackForm.controls.trackPath"
-                                    [maxFileSize]="100000000"
-                                    (reject)="onTrackReject($event, i)"
-                                ></tui-input-files>
-                                
-                                <tui-files class="tui-space_top-1">
-                                    <tui-file
-                                        *ngIf="trackForm.controls.trackPath.valueChanges | async as file"
-                                        [file]="file"
-                                        size="l"
-                                        (removed)="removeTrackFile(i)"
-                                    ></tui-file>
-                                
-                                    <tui-file
-                                        *ngIf="rejectedTrackFiles$[i] | async as file"
-                                        state="error"
-                                        [file]="file"
-                                        (removed)="clearTrackRejected(i)"
-                                    ></tui-file>
-                                </tui-files>
-                            </div>
-                        </div>
+                        </tui-loader>
                         <div class="tui-form__row tui-form__row_multi-fields">
                             <div class="tui-form__multi-field">
                                 <tui-text-area formControlName="lyrics" [class.tui-skeleton]="skeletonVisible">
@@ -283,6 +293,7 @@
                     <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="/releases">Cancel</button>
                 </div>
             </tui-island>
+            </tui-loader>
         </div>
     </div>
 </form>

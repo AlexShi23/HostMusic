@@ -1,4 +1,4 @@
-﻿namespace Releases.Primitives
+﻿namespace HostMusic.Releases.Primitives
 {
     public enum ReleaseType
     {

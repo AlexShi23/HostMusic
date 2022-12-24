@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using HostMusic.Identity.Data.Entities;
-using Microsoft.AspNetCore.Http;
+﻿using HostMusic.Identity.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

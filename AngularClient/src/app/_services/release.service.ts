@@ -26,7 +26,7 @@ export class ReleaseService {
     }
 
     getAll(page: number) {
-        return this.http.get<ReleasesPage>(`${baseUrl}/${page}`);
+        return this.http.get<ReleasesPage>(`${baseUrl}/all/${page}`);
     }
 
     getAllOnModeration(page: number) {

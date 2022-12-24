@@ -2,8 +2,8 @@
 using HostMusic.Releases.Core.Models;
 using HostMusic.Releases.Data;
 using HostMusic.Releases.Data.Entities;
+using HostMusic.Releases.Primitives;
 using Microsoft.EntityFrameworkCore;
-using Releases.Primitives;
 
 namespace HostMusic.Releases.Core.Services
 {
@@ -21,6 +21,7 @@ namespace HostMusic.Releases.Core.Services
         {
             var release = new Release
             {
+                Id = request.Id,
                 Type = request.Type,
                 Status = request.IsDraft ? ReleaseStatus.Draft : ReleaseStatus.Moderation,
                 OwnerId = creatorId,
@@ -30,7 +31,6 @@ namespace HostMusic.Releases.Core.Services
                 Featuring = request.Featuring,
                 Genre = request.Genre,
                 Country = request.Country,
-                CoverPath = request.Cover,
                 ReleaseDate = request.ReleaseDate.ToUniversalTime(),
                 NumberOfTracks = request.Tracks.Count,
                 NumberOfPlays = 0,
@@ -39,14 +39,13 @@ namespace HostMusic.Releases.Core.Services
 
             var tracks = request.Tracks.Select(track => new Track
                 {
-                    Id = Guid.NewGuid(),
+                    Id = track.Id,
                     Index = track.Index,
                     ReleaseId = release.Id,
                     Title = track.Title,
                     Subtitle = track.Subtitle,
                     Artist = track.Artist,
                     Featuring = track.Featuring,
-                    TrackPath = track.TrackPath,
                     Duration = default,
                     Explicit = track.Explicit,
                     Lyrics = track.Lyrics,
@@ -108,8 +107,6 @@ namespace HostMusic.Releases.Core.Services
             if (release != null)
             {
                 _mapper.Map(request, release);
-                if (request.Cover != null)
-                    release.CoverPath = request.Cover;
                 release.UpdatedAt = DateTime.UtcNow;
                 release.Status = request.IsDraft ? ReleaseStatus.Draft : ReleaseStatus.Moderation;
                 _context.Releases.Update(release);
@@ -129,7 +126,7 @@ namespace HostMusic.Releases.Core.Services
 
         public async Task<ReleasesPageResponse> Search(string query, int ownerId, int page)
         {
-            const float itemsOnPageCount = 3f;
+            const float itemsOnPageCount = 5f;
             var pagesCount = Math.Ceiling(
                 _context.Releases.Count(r => 
                     r.OwnerId == ownerId &&

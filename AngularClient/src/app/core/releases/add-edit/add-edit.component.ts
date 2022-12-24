@@ -1,26 +1,27 @@
 import { Component, Inject, OnInit } from "@angular/core";
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { SafeUrl } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
-import { FileStatus, ReleaseService, TrackService, UploadService } from "@app/_services";
-import { environment } from "@environments/environment";
+import { FileType, Track } from "@app/_models";
+import { FilesService, ReleaseService } from "@app/_services";
 import { TuiDay } from "@taiga-ui/cdk";
 import { TuiNotification, TuiNotificationsService } from '@taiga-ui/core';
 import { TuiFileLike } from "@taiga-ui/kit";
-import { Observable, Subject } from "rxjs";
-import { delay, first, share, switchMap } from "rxjs/operators";
+import { forkJoin, Observable, Subject } from "rxjs";
+import { first, switchMap } from "rxjs/operators";
+import * as uuid from "uuid";
 
 @Component({ templateUrl: './add-edit.component.html',
              styleUrls: ['./add-edit.component.less'] })
 export class AddEditComponent implements OnInit {
     form: FormGroup;
-    uploadProgress: Observable<FileStatus[]>;
     skeletonVisible = false;
-    coverPath: string;
-    trackPaths: string[];
-    fileId: string;
+    coverPath: SafeUrl;
+    trackPaths: SafeUrl[];
+    tracksLoading = false;
+    filesUploading = false;
     id: string;
     isAddMode: boolean;
-    tracksCount: number;
     rejectedFiles$ = new Subject<TuiFileLike | null>();
     rejectedTrackFiles$ = new Array<Subject<TuiFileLike | null>>();
     currentDay = TuiDay.currentLocal().append(new TuiDay(0, 0, 1));
@@ -35,7 +36,7 @@ export class AddEditComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private releaseService: ReleaseService,
-        private uploadService: UploadService,
+        private filesService: FilesService,
         private route: ActivatedRoute,
         private router: Router,
         @Inject(TuiNotificationsService)
@@ -47,6 +48,7 @@ export class AddEditComponent implements OnInit {
         this.isAddMode = !this.id;
 
         this.form = this.formBuilder.group({
+            id: [],
             title: ['', Validators.required],
             type: ['Single', Validators.required],
             subtitle: [''],
@@ -58,6 +60,7 @@ export class AddEditComponent implements OnInit {
             cover: [null, this.isAddMode ? Validators.required : null],
             tracks: this.formBuilder.array([
                 this.formBuilder.group({
+                    id: [],
                     index: [],
                     title: ['', Validators.required],
                     subtitle: [''],
@@ -70,46 +73,68 @@ export class AddEditComponent implements OnInit {
             ]),
             isDraft: [false]
         });
-        this.uploadProgress = this.uploadService.uploadProgress;
         this.rejectedTrackFiles$.push(new Subject<TuiFileLike | null>());
 
         if (!this.isAddMode) {
             this.skeletonVisible = true;
+            this.tracksLoading = true;
             this.releaseService.getById(this.id)
                 .pipe(first())
-                .subscribe(x => {
+                .subscribe(release => {
+                    this.tracksLoading = true;
+                    this.trackPaths = new Array<SafeUrl>(release.numberOfTracks).fill(null);
                     this.showSkeleton();
-                    this.coverPath = x.coverPath;
-                    delete x.coverPath;
-                    delete x.numberOfPlays;
-                    delete x.id;
-                    delete x.duration;
-                    delete x.ownerId;
-                    delete x.status;
+                    this.filesService.getFileUrl(release.id, FileType.Cover, false).subscribe({
+                        next: (imageUrl: SafeUrl) => {
+                            this.coverPath = imageUrl;
+                        },
+                        error: () => {
+                            this.coverPath = null;
+                        }
+                    });
 
-                    this.trackPaths = new Array<string>(x.numberOfTracks);
+                    release.tracks.forEach(
+                        (track: Track) => {
+                            this.filesService.getFileUrl(track.id, FileType.Track, false).subscribe({
+                                next: (trackUrl: SafeUrl) => {
+                                    this.trackPaths[track.index - 1] = trackUrl;
+                                    this.tracksLoading = false;
+                                },
+                                error: () => {
+                                    this.trackPaths[track.index - 1] = null;
+                                    this.tracksLoading = false;
+                                }
+                            })
+                        }
+                    );
 
-                    for (let i = 0; i < x.numberOfTracks; i++) {
-                        this.trackPaths.push(x.tracks[i].trackPath)
-                        delete x.tracks[i].id;
-                        delete x.tracks[i].trackPath;
-                        delete x.tracks[i].releaseId;
-                        delete x.tracks[i].duration;
-                        delete x.tracks[i].index;
-                        if (i != x.numberOfTracks - 1)
+                    this.currentTime = new Array<number>(release.numberOfTracks).fill(0);
+                    this.paused = new Array<boolean>(release.numberOfTracks).fill(true);
+
+                    for (let i = 0; i < release.numberOfTracks; i++) {
+                        delete release.tracks[i].releaseId;
+                        delete release.tracks[i].duration;
+                        if (i != release.numberOfTracks - 1)
                             this.addTrack();
                     }
                     
-                    this.currentTime = new Array<number>(x.numberOfTracks).fill(0);
-                    this.paused = new Array<boolean>(x.numberOfTracks).fill(true);
-                    delete x.numberOfTracks;
-                    this.form.patchValue(x);
+                    delete release.numberOfPlays;
+                    delete release.duration;
+                    delete release.ownerId;
+                    delete release.status;
+                    delete release.numberOfTracks;
+
+                    this.form.patchValue(release);
                 });
         }
     }
 
     get tracksArray(): FormArray {
         return this.form.controls.tracks as FormArray;
+    }
+
+    get tracksForm() {
+        return this.form.get('tracks')['controls'];
     }
  
     onReject(file: TuiFileLike | readonly TuiFileLike[]): void {
@@ -125,7 +150,7 @@ export class AddEditComponent implements OnInit {
     }
 
     removeTrackFile(index: number): void {
-        this.form.get('tracks')['controls'][index].controls.trackPath.setValue(null);
+        this.tracksForm[index].controls.trackPath.setValue(null);
     }
  
     clearRejected(): void {
@@ -145,38 +170,68 @@ export class AddEditComponent implements OnInit {
             return;
         }
 
-        this.startSending();
+        this.sendRelease();
     }
 
     saveAsDraft(): void {
         this.form.controls.isDraft.setValue(true);
-        this.startSending();
+        this.sendRelease();
     }
 
-    startSending(): void {
-        if (!this.isAddMode && !this.form.controls.cover.value) {
-            this.form.controls.cover.setValue(this.coverPath);
-            this.createTracks();
-        } else {
-            this.uploadService.uploadFile(this.form.controls.cover.value, this.form.controls.cover.value.name);
-            let id: string;
-            this.uploadProgress.subscribe({
-                next: (vl) => {
-                    if (vl[vl.length - 1].uuid != null) {
-                        id = vl[vl.length - 1].uuid;
-                    }
-                    if (vl[vl.length - 1].progress == 100) {
-                        this.form.controls.cover.setValue(id + '.' + this.form.controls.cover.value.name.split('.').pop());
-                        this.createTracks();
-                    }
+    sendRelease(): void {
+        this.filesUploading = true;
+
+        forkJoin(this.uploadFiles())
+            .subscribe({
+                next: () => {
+                    if (this.isAddMode)
+                        this.createRelease();
+                    else
+                        this.updateRelease();
+                },
+                error: error => { this.notificationsService
+                    .show(error, {
+                        status: TuiNotification.Error
+                    }).subscribe();
                 }
             });
+    }
+
+    uploadFiles(): Observable<any>[] {
+        let uploadings: Observable<any>[] = [];
+        if (this.form.controls.cover.value) {
+            const releaseId = this.isAddMode ? uuid.v4() : this.id;
+            this.form.controls.id.setValue(releaseId);
+            if (this.coverPath) {
+                this.filesService.deleteFile(this.id, FileType.Cover).subscribe();
+            }
+
+            uploadings.push(this.filesService.uploadFile(releaseId, this.form.controls.cover.value, FileType.Cover));
         }
+
+        for (let i = 0; i < this.tracksArray.length; i++) {
+            if (this.tracksForm[i].controls.trackPath.value) {
+                const trackId = this.isAddMode ? uuid.v4() : this.tracksForm[i].controls.id.value;
+                this.tracksForm[i].controls.id.setValue(trackId);
+                this.tracksForm[i].controls.index.setValue(i + 1);
+                if (!this.isAddMode && this.trackPaths[i]) {
+                    this.filesService.deleteFile(trackId, FileType.Track).subscribe();
+                }
+                uploadings.push(this.filesService.getPreSignedUrl(trackId, FileType.Track, false).pipe(
+                    switchMap((url) => {
+                        return this.filesService.uploadFileToPreSignedUrl(url, this.tracksForm[i].controls.trackPath.value);
+                    })
+                ));
+            }
+        }
+
+        return uploadings;
     }
 
     addTrack(): void {
         this.tracksArray.push(
             this.formBuilder.group({
+                id: [],
                 index: [],
                 title: ['', Validators.required],
                 subtitle: [''],
@@ -195,11 +250,12 @@ export class AddEditComponent implements OnInit {
         delete this.rejectedTrackFiles$[index];
     }
 
-    private createRelease() {
+    createRelease() {
         this.releaseService.create(this.form.value)
             .pipe(first())
             .subscribe({
-                next: (id: string) => {
+                next: () => {
+                    this.filesUploading = false;
                     this.notificationsService
                     .show('Релиз успешно создан', {
                         status: TuiNotification.Success
@@ -214,7 +270,7 @@ export class AddEditComponent implements OnInit {
             });
     }
 
-    private updateRelease() {
+    updateRelease() {
         this.releaseService.update(this.id, this.form.value)
             .pipe(first())
             .subscribe({
@@ -231,46 +287,6 @@ export class AddEditComponent implements OnInit {
                     }).subscribe();
                 }
             });
-    }
-
-    private createTracks() {
-        this.uploadTrack(0);
-    }
-
-    private uploadTrack(i: number) {
-        if (i == this.tracksArray.length) {
-            if (this.isAddMode)
-                this.createRelease();
-            else
-                this.updateRelease();
-        }
-
-        this.form.get('tracks')['controls'][i].controls.index.setValue(i + 1);
-
-        if (!this.isAddMode && !this.form.get('tracks')['controls'][i].controls.trackPath.value) {
-            this.form.get('tracks')['controls'][i].controls.trackPath.setValue(this.trackPaths[i + 1]);
-            this.uploadTrack(i + 1);
-        } else {
-            this.uploadService.uploadFile(this.form.get('tracks')['controls'][i].controls.trackPath.value,
-                this.form.get('tracks')['controls'][i].controls.trackPath.value.name);
-            let trackId: string;
-            this.uploadProgress.subscribe({
-                next: (vl) => {
-                    if (vl[vl.length - 1].uuid != null) {
-                        trackId = vl[vl.length - 1].uuid;
-                    }
-                    if (vl[vl.length - 1].progress == 100) {
-                        this.form.get('tracks')['controls'][i].controls.trackPath.setValue(trackId + '.' +
-                            this.form.get('tracks')['controls'][i].controls.trackPath.value.name.split('.').pop());
-                        this.uploadTrack(i + 1);
-                    }
-                }
-            });
-        }
-    }
-
-    getFilePath(filename: string) {
-        return `${environment.releasesUrl}/Resources/${filename}`;
     }
 
     getIcon(index: number): string {

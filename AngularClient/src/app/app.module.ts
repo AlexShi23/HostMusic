@@ -9,7 +9,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor, appInitializer } from './_helpers';
-import { AccountService, ReleaseService, TrackService, UploadService } from './_services';
+import { AccountService, FilesService, ReleaseService, TrackService } from './_services';
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -33,7 +33,8 @@ import { AppComponent } from './app.component';
         TuiDataListModule
     ],
     declarations: [
-        AppComponent],
+        AppComponent
+    ],
     providers: [
         { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AccountService] },
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
@@ -41,7 +42,7 @@ import { AppComponent } from './app.component';
         { provide: TUI_SANITIZER, useClass: NgDompurifySanitizer },
         ReleaseService,
         TrackService,
-        UploadService
+        FilesService,
     ],
     bootstrap: [AppComponent]
 })

@@ -1,3 +1,5 @@
+import { SafeUrl } from "@angular/platform-browser";
+
 export class Track {
     id: string;
     releaseId: string;
@@ -6,7 +8,7 @@ export class Track {
     subtitle?: string;
     artist: string;
     featuring?: string;
-    trackPath: string;
+    file: SafeUrl;
     duration?: TimeRanges;
     explicit: boolean;
     lyrics?: string;

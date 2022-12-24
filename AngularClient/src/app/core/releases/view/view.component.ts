@@ -1,15 +1,17 @@
-import { Component, Inject, Input, OnInit } from "@angular/core";
+import { Component, Inject, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { first } from "rxjs/operators";
-import { Release, Role, Status } from "@app/_models";
-import { AccountService, ReleaseService } from "@app/_services";
-import { TuiDialogService, TuiNotification, TuiNotificationsService } from "@taiga-ui/core";
-import { environment } from "@environments/environment";
+import { FileType, Release, Role, Status, Track } from "@app/_models";
+import { AccountService, FilesService, ReleaseService } from "@app/_services";
+import { TuiNotification, TuiNotificationsService } from "@taiga-ui/core";
+import { formatDate, getBadge, getFeatText, getSubtitleText } from "@app/common/functions/release.utils";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { SafeUrl } from "@angular/platform-browser";
 
 @Component({ templateUrl: './view.component.html',
             styleUrls: ['view.component.less'] })
 export class ViewComponent implements OnInit {
+    placeholder = "data:image/jpg;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
     id: string;
     role: Role;
     release: Release;
@@ -26,8 +28,7 @@ export class ViewComponent implements OnInit {
         private router: Router,
         private accountService: AccountService,
         private releaseService: ReleaseService,
-        @Inject(TuiDialogService)
-        private readonly dialogService: TuiDialogService,
+        private filesService: FilesService,
         @Inject(TuiNotificationsService)
         private readonly notificationsService: TuiNotificationsService
     ) {
@@ -45,14 +46,29 @@ export class ViewComponent implements OnInit {
             .subscribe(release => {
                 this.release = release;
                 this.loading = false;
+                this.filesService.getFileUrl(release.id, FileType.Cover, false).subscribe(
+                    (imageUrl: SafeUrl) => {
+                        release.cover = imageUrl;
+                    }
+                )
                 this.currentTime = new Array<number>(release.numberOfTracks).fill(0);
                 this.paused = new Array<boolean>(release.numberOfTracks).fill(true);
+                this.release.tracks.forEach(
+                    (track: Track) => {
+                        this.filesService.getFileUrl(track.id, FileType.Track, false).subscribe(
+                            (trackUrl: SafeUrl) => {
+                                track.file = trackUrl;
+                            }
+                        )
+                    }
+                );
             });
     }
 
-    getFilePath(filename: string) {
-        return `${environment.releasesUrl}/Resources/${filename}`;
-    }
+    getBadge = getBadge;
+    formatDate = formatDate;
+    getFeatText = getFeatText;
+    getSubtitleText = getSubtitleText;
 
     getIcon(index: number): string {
         return this.paused[index] ? 'tuiIconPlayLarge' : 'tuiIconPauseLarge';
@@ -60,33 +76,6 @@ export class ViewComponent implements OnInit {
  
     toggleState(index: number): void {
         this.paused[index] = !this.paused[index];
-    }
-
-    formatDate(date: Date) {
-        return date.toString().split('T')[0];
-    }
-
-    getFeatText(featuring: string) {
-        return featuring.length > 0 ? `(feat. ${featuring})` : null;
-    }
-
-    getSubtitleText(subtitle: string) {
-        return subtitle.length > 0 ? `(${subtitle})` : null;
-    }
-
-    getBadge(status: Status): string {
-        switch(status) {
-            case Status.Draft:
-                return 'default';
-            case Status.Moderation:
-                return 'primary';
-            case Status.Correcting:
-                return 'error';
-            case Status.Distributed:
-                return 'info';
-            case Status.Published:
-                return 'success';
-        }
     }
 
     isModerationCase(): boolean {
