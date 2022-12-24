@@ -1,8 +1,3 @@
-using System;
-using HostMusic.Releases.Data.Entities;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
 namespace HostMusic.Releases.Core.Models
 {
     public class CreateTrackRequest

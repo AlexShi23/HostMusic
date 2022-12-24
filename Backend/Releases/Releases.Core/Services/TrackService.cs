@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using HostMusic.Releases.Core.Models;
 using HostMusic.Releases.Data;
 using HostMusic.Releases.Data.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace HostMusic.Releases.Core.Services

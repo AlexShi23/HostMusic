@@ -94,5 +94,9 @@ export class ListComponent implements OnInit {
             .subscribe(() => {
                 this.releases = this.releases.filter(x => x.id !== this.deletedReleaseId)
             });
+        this.filesService.deleteFile(this.deletedReleaseId, FileType.Cover).subscribe();
+        this.deletedRelease.tracks.forEach(track => {
+            this.filesService.deleteFile(track.id, FileType.Track).subscribe();
+        });
     }
 }
