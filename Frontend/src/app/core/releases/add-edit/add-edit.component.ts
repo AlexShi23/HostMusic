@@ -5,23 +5,24 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { FileType, Track } from "@app/models";
 import { FilesService, ReleaseService } from "@app/services";
 import { TuiDay } from "@taiga-ui/cdk";
-import { TuiNotification, TuiNotificationsService } from '@taiga-ui/core';
+import { TuiNotification, TuiAlertService } from '@taiga-ui/core';
 import { TuiFileLike } from "@taiga-ui/kit";
-import { forkJoin, Observable, Subject } from "rxjs";
+import { forkJoin, Observable, of, Subject } from "rxjs";
 import { first, switchMap } from "rxjs/operators";
 import * as uuid from "uuid";
 
 @Component({ templateUrl: './add-edit.component.html',
              styleUrls: ['./add-edit.component.less'] })
 export class AddEditComponent implements OnInit {
+    id: string;
     form: FormGroup;
+    isAddMode: boolean;
     skeletonVisible = false;
     coverPath: SafeUrl;
     trackPaths: SafeUrl[];
     tracksLoading = false;
     filesUploading = false;
-    id: string;
-    isAddMode: boolean;
+    needCoverInput = true;
     rejectedFiles$ = new Subject<TuiFileLike | null>();
     rejectedTrackFiles$ = new Array<Subject<TuiFileLike | null>>();
     currentDay = TuiDay.currentLocal().append(new TuiDay(0, 0, 1));
@@ -39,8 +40,8 @@ export class AddEditComponent implements OnInit {
         private filesService: FilesService,
         private route: ActivatedRoute,
         private router: Router,
-        @Inject(TuiNotificationsService)
-        private readonly notificationsService: TuiNotificationsService
+        @Inject(TuiAlertService)
+        private readonly alertService: TuiAlertService,
     ) {}
 
     ngOnInit(): void {
@@ -87,6 +88,7 @@ export class AddEditComponent implements OnInit {
                     this.filesService.getFileUrl(release.id, FileType.Cover, false).subscribe({
                         next: (imageUrl: SafeUrl) => {
                             this.coverPath = imageUrl;
+                            this.needCoverInput = false;
                         },
                         error: () => {
                             this.coverPath = null;
@@ -163,8 +165,8 @@ export class AddEditComponent implements OnInit {
     
     onSubmit(): void {
         if (this.form.invalid) {
-            this.notificationsService
-                .show("Форма заполнена неверно!", {
+            this.alertService
+                .open("Форма заполнена неверно!", {
                     status: TuiNotification.Error
                 }).subscribe();
             return;
@@ -189,8 +191,8 @@ export class AddEditComponent implements OnInit {
                     else
                         this.updateRelease();
                 },
-                error: error => { this.notificationsService
-                    .show(error, {
+                error: error => { this.alertService
+                    .open(error, {
                         status: TuiNotification.Error
                     }).subscribe();
                 }
@@ -198,7 +200,7 @@ export class AddEditComponent implements OnInit {
     }
 
     uploadFiles(): Observable<any>[] {
-        let uploadings: Observable<any>[] = [];
+        let uploadings: Observable<any>[] = [of(1)];
         if (this.form.controls.cover.value) {
             const releaseId = this.isAddMode ? uuid.v4() : this.id;
             this.form.controls.id.setValue(releaseId);
@@ -256,14 +258,14 @@ export class AddEditComponent implements OnInit {
             .subscribe({
                 next: () => {
                     this.filesUploading = false;
-                    this.notificationsService
-                    .show('Релиз успешно создан', {
+                    this.alertService
+                    .open('Релиз успешно создан', {
                         status: TuiNotification.Success
                     }).subscribe()
                     this.router.navigate(['../'], { relativeTo: this.route });
                 },
-                error: error => { this.notificationsService
-                    .show(error, {
+                error: error => { this.alertService
+                    .open(error, {
                         status: TuiNotification.Error
                     }).subscribe();
                 }
@@ -275,14 +277,14 @@ export class AddEditComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: () => {
-                    this.notificationsService
-                    .show('Релиз отредактирован', {
+                    this.alertService
+                    .open('Релиз отредактирован', {
                         status: TuiNotification.Success
                     }).subscribe()
                     this.router.navigate(['../'], { relativeTo: this.route });
                 },
-                error: error => { this.notificationsService
-                    .show(error, {
+                error: error => { this.alertService
+                    .open(error, {
                         status: TuiNotification.Error
                     }).subscribe();
                 }
@@ -299,5 +301,9 @@ export class AddEditComponent implements OnInit {
 
     showSkeleton(): void {
         this.skeletonVisible = !this.skeletonVisible;
+    }
+
+    setNeedCoverInput(): void {
+        this.needCoverInput = true;
     }
 }

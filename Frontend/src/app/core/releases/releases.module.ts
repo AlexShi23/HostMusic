@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TuiInputModule, TuiInputPasswordModule, TuiFieldErrorModule, TuiDataListWrapperModule, TuiSelectModule, TuiPaginationModule,
+import { TuiInputModule, TuiInputPasswordModule, TuiDataListWrapperModule, TuiSelectModule, TuiPaginationModule,
     TuiInputDateModule, TuiFilesModule, TuiInputFilesModule, TuiProgressModule, TuiTextAreaModule, TuiCheckboxLabeledModule, TuiIslandModule,
-    TuiSliderModule, TuiBadgeModule } from '@taiga-ui/kit';
-import { TuiButtonModule, TuiLinkModule, TuiDataListModule, TuiTooltipModule, TuiHintModule, TuiDialogModule, TuiLoaderModule, TuiNotificationModule } from '@taiga-ui/core';
+    TuiSliderModule, TuiBadgeModule, TuiBadgedContentModule } from '@taiga-ui/kit';
+import { TuiButtonModule, TuiLinkModule, TuiDataListModule, TuiTooltipModule, TuiHintModule, TuiDialogModule, TuiLoaderModule,
+    TuiNotificationModule, TuiSvgModule } from '@taiga-ui/core';
 import {TuiMediaModule} from '@taiga-ui/cdk';
 
 import { ReleasesRoutingModule } from './releases-routing.module';
 import { FieldSetItemComponent } from '../../common/components/field-set-item/field-set-item.component'
 import { ListComponent } from './list.component';
 import { AddEditComponent } from './add-edit/add-edit.component';
+import { TrackInputComponent } from './add-edit/track-input/track-input.component';
 import { ViewComponent } from './view/view.component';
 
 @NgModule({
@@ -22,7 +24,6 @@ import { ViewComponent } from './view/view.component';
         TuiButtonModule,
         TuiInputModule,
         TuiInputPasswordModule,
-        TuiFieldErrorModule,
         TuiLinkModule,
         TuiDataListWrapperModule,
         TuiSelectModule,
@@ -42,9 +43,13 @@ import { ViewComponent } from './view/view.component';
         TuiBadgeModule,
         TuiDialogModule,
         TuiLoaderModule,
-        TuiNotificationModule
+        TuiNotificationModule,
+        TuiBadgeModule,
+        TuiBadgedContentModule,
+        TuiSvgModule
     ],
     declarations: [
+        TrackInputComponent,
         FieldSetItemComponent,
         ListComponent,
         AddEditComponent,

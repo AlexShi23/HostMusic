@@ -5,7 +5,7 @@ import { first } from 'rxjs/operators';
 
 import { AccountService} from '@app/services';
 import { MustMatch } from '@app/helpers';
-import { TuiNotification, TuiNotificationsService } from '@taiga-ui/core';
+import { TuiNotification, TuiAlertService } from '@taiga-ui/core';
 
 @Component({ templateUrl: 'add-edit.component.html' })
 export class AddEditComponent implements OnInit {
@@ -20,8 +20,8 @@ export class AddEditComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private accountService: AccountService,
-        @Inject(TuiNotificationsService)
-        private readonly notificationsService: TuiNotificationsService
+        @Inject(TuiAlertService)
+        private readonly alertService: TuiAlertService,
     ) {}
 
     roles = [
@@ -75,14 +75,14 @@ export class AddEditComponent implements OnInit {
         this.accountService.create(this.form.value)
             .pipe(first())
             .subscribe({
-                next: () => { this.notificationsService
-                    .show('Аккаунт успешно создан', {
+                next: () => { this.alertService
+                    .open('Аккаунт успешно создан', {
                         status: TuiNotification.Success
                     }).subscribe()
                     this.router.navigate(['../'], { relativeTo: this.route });
                 },
-                error: error => { this.notificationsService
-                    .show(error, {
+                error: error => { this.alertService
+                    .open(error, {
                         status: TuiNotification.Error
                     }).subscribe();
                 }
@@ -93,14 +93,14 @@ export class AddEditComponent implements OnInit {
         this.accountService.update(this.id, this.form.value)
             .pipe(first())
             .subscribe({
-                next: () => { this.notificationsService
-                    .show('Изменения успешно внесены', {
+                next: () => { this.alertService
+                    .open('Изменения успешно внесены', {
                         status: TuiNotification.Success
                     }).subscribe()
                     this.router.navigate(['../../'], { relativeTo: this.route });
                 },
-                error: error => { this.notificationsService
-                    .show(error, {
+                error: error => { this.alertService
+                    .open(error, {
                         status: TuiNotification.Error
                     }).subscribe();
                 }

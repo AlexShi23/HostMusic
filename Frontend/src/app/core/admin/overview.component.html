@@ -1,7 +1,47 @@
-﻿<div class="p-4">
-    <div class="tui-container">
-        <h1>Admin</h1>
-        <p>This section can only be accessed by administrators.</p>
-        <p><a routerLink="accounts">Manage Accounts</a></p>
+﻿<div class="head-title">
+    <div class="left">
+        <h1>Admin Workstation</h1>
+        <ul class="breadcrumb">
+            <li>
+                <a href="#">Admin</a>
+            </li>
+            <li><i class='bx bx-chevron-right' ></i></li>
+            <li>
+                <a class="active" href="#">Home</a>
+            </li>
+        </ul>
     </div>
 </div>
+
+<ul class="box-info">
+    <li>
+        <button
+            tuiAction
+            icon="tuiIconUsers"
+            class="action"
+            routerLink="accounts"
+        >
+            Управление пользователями, аккаунтами, ролями и доступами
+        </button>
+    <li>
+        <button
+            tuiAction
+            icon="tuiIconChartLarge"
+            class="action"
+            routerLink="accounts"
+            style="width: -webkit-fill-available;"
+        >
+            Метрики, статистика и мониторинг состояния сервиса
+        </button>
+    </li>
+    <li>
+        <button
+            tuiAction
+            icon="tuiIconUsers"
+            class="action"
+            routerLink="accounts"
+        >
+            Управление пользователями и аккаунтами
+        </button>
+    </li>
+</ul>

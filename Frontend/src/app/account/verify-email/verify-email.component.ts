@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 
 import { AccountService } from '@app/services';
-import { TuiNotification, TuiNotificationsService } from '@taiga-ui/core';
+import { TuiNotification, TuiAlertService } from '@taiga-ui/core';
 
 enum EmailStatus {
     Verifying,
@@ -19,8 +19,8 @@ export class VerifyEmailComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private accountService: AccountService,
-        @Inject(TuiNotificationsService)
-        private readonly notificationsService: TuiNotificationsService
+        @Inject(TuiAlertService)
+        private readonly alertService: TuiAlertService,
     ) { }
 
     ngOnInit() {
@@ -32,14 +32,14 @@ export class VerifyEmailComponent implements OnInit {
         this.accountService.verifyEmail(token)
             .pipe(first())
             .subscribe({
-                next: () => { this.notificationsService
-                    .show('Верификация прошла успешно, вы можете войти', {
+                next: () => { this.alertService
+                    .open('Верификация прошла успешно, вы можете войти', {
                         status: TuiNotification.Success
                     }).subscribe()
                     this.router.navigate(['../login'], { relativeTo: this.route });
                 },
-                error: error => { this.notificationsService
-                    .show(error, {
+                error: error => { this.alertService
+                    .open(error, {
                         status: TuiNotification.Error
                     }).subscribe();
                     this.emailStatus = EmailStatus.Failed;

@@ -5,7 +5,7 @@ import { first } from 'rxjs/operators';
 
 import { AccountService } from '@app/services';
 import { MustMatch } from '@app/helpers';
-import { TuiNotification, TuiNotificationsService } from '@taiga-ui/core';
+import { TuiAlertService, TuiNotification } from '@taiga-ui/core';
 
 @Component({ templateUrl: 'update.component.html' })
 export class UpdateComponent implements OnInit {
@@ -20,8 +20,8 @@ export class UpdateComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private accountService: AccountService,
-        @Inject(TuiNotificationsService)
-        private readonly notificationsService: TuiNotificationsService
+        @Inject(TuiAlertService)
+        private readonly alertService: TuiAlertService,
     ) { }
 
     ngOnInit() {
@@ -51,14 +51,14 @@ export class UpdateComponent implements OnInit {
         this.accountService.update(this.account.id, this.form.value)
             .pipe(first())
             .subscribe({
-                next: () => { this.notificationsService
-                    .show('Обновление данных прошло успешно', {
+                next: () => { this.alertService
+                    .open('Обновление данных прошло успешно', {
                         status: TuiNotification.Success
                     }).subscribe()
                     this.router.navigate(['../'], { relativeTo: this.route });
                 },
-                error: error => { this.notificationsService
-                    .show(error, {
+                error: error => { this.alertService
+                    .open(error, {
                         status: TuiNotification.Error
                     }).subscribe();
                 }
@@ -71,8 +71,8 @@ export class UpdateComponent implements OnInit {
             this.accountService.delete(this.account.id)
                 .pipe(first())
                 .subscribe(() => {
-                    this.notificationsService
-                    .show('Аккаунт удалён', {
+                    this.alertService
+                    .open('Аккаунт удалён', {
                         status: TuiNotification.Success
                     }).subscribe()
                 });

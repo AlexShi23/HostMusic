@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { TuiInputModule, TuiInputPasswordModule, TuiFieldErrorModule } from '@taiga-ui/kit';
+import { TuiInputModule, TuiInputPasswordModule } from '@taiga-ui/kit';
 import { TuiButtonModule, TuiLinkModule } from '@taiga-ui/core';
 
 import { ProfileRoutingModule } from './profile-routing.module';
@@ -16,7 +16,6 @@ import { UpdateComponent } from './update.component';
         ProfileRoutingModule,
         TuiInputModule,
         TuiInputPasswordModule,
-        TuiFieldErrorModule,
         TuiButtonModule,
         TuiLinkModule
     ],

@@ -9,19 +9,28 @@
                     <tui-input formControlName="firstName">
                         Имя
                     </tui-input>
-                    <tui-field-error formControlName="firstName"></tui-field-error>
+                    <tui-error
+                        formControlName="firstName"
+                        [error]="[] | tuiFieldError | async"
+                    ></tui-error>
                 </div>
                 <div class="tui-form__multi-field">
                     <tui-input formControlName="lastName">
                         Фамилия
                     </tui-input>
-                    <tui-field-error formControlName="lastName"></tui-field-error>
+                    <tui-error
+                        formControlName="lastName"
+                        [error]="[] | tuiFieldError | async"
+                    ></tui-error>
                 </div>
             </div>
             <div class="tui-form__row tui-form__row_multi-fields">
                 <div class="tui-form__multi-field">
                     <tui-input formControlName="email">Email</tui-input>
-                    <tui-field-error formControlName="email"></tui-field-error>
+                    <tui-error
+                        formControlName="email"
+                        [error]="[] | tuiFieldError | async"
+                    ></tui-error>
                 </div>
                 <div class="tui-form__multi-field">
                     <tui-select formControlName="role">
@@ -43,13 +52,19 @@
                     <tui-input-password formControlName="password">
                         Введите пароль
                     </tui-input-password>
-                    <tui-field-error formControlName="password"></tui-field-error>
+                    <tui-error
+                        formControlName="password"
+                        [error]="[] | tuiFieldError | async"
+                    ></tui-error>
                 </div>
                 <div class="tui-form__multi-field">
                     <tui-input-password formControlName="confirmPassword">
                         Повторите пароль
                     </tui-input-password>
-                    <tui-field-error formControlName="confirmPassword"></tui-field-error>
+                    <tui-error
+                        formControlName="confirmPassword"
+                        [error]="[] | tuiFieldError | async"
+                    ></tui-error>
                 </div>
             </div>
             <div class="tui-form__buttons">

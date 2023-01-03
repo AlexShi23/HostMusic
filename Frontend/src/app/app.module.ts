@@ -1,6 +1,6 @@
 ﻿import { NgDompurifySanitizer } from "@tinkoff/ng-dompurify";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { TuiRootModule, TuiDialogModule, TuiNotificationsModule, TuiButtonModule, TuiThemeNightModule, TuiModeModule, TuiSvgModule, TuiHostedDropdownModule, TuiDataListModule, TUI_SANITIZER } from "@taiga-ui/core";
+import { TuiRootModule, TuiDialogModule, TuiAlertModule, TuiButtonModule, TuiThemeNightModule, TuiModeModule, TuiSvgModule, TuiHostedDropdownModule, TuiDataListModule, TUI_SANITIZER } from "@taiga-ui/core";
 import { TuiTabsModule, TuiAvatarModule, TuiToggleModule } from '@taiga-ui/kit';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -21,7 +21,7 @@ import { AppComponent } from './app.component';
         TuiRootModule,
         BrowserAnimationsModule,
         TuiDialogModule,
-        TuiNotificationsModule,
+        TuiAlertModule,
         TuiTabsModule,
         TuiButtonModule,
         TuiThemeNightModule,

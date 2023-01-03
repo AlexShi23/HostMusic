@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { first } from "rxjs/operators";
 import { FileType, Release, Role, Status, Track } from "@app/models";
 import { AccountService, FilesService, ReleaseService } from "@app/services";
-import { TuiNotification, TuiNotificationsService } from "@taiga-ui/core";
+import { TuiNotification, TuiAlertService } from "@taiga-ui/core";
 import { formatDate, getBadge, getFeatText, getSubtitleText } from "@app/common/functions/release.utils";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { SafeUrl } from "@angular/platform-browser";
@@ -29,8 +29,8 @@ export class ViewComponent implements OnInit {
         private accountService: AccountService,
         private releaseService: ReleaseService,
         private filesService: FilesService,
-        @Inject(TuiNotificationsService)
-        private readonly notificationsService: TuiNotificationsService
+        @Inject(TuiAlertService)
+        private readonly alertService: TuiAlertService,
     ) {
         this.accountService.account.subscribe(x => this.role = x.role);
         this.router.routeReuseStrategy.shouldReuseRoute = () => {
@@ -95,14 +95,14 @@ export class ViewComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: (id: string) => {
-                    this.notificationsService
-                    .show('Релиз прошёл модерацию', {
+                    this.alertService
+                    .open('Релиз прошёл модерацию', {
                         status: TuiNotification.Success
                     }).subscribe()
                     this.router.navigate(['../'], { relativeTo: this.route });
                 },
-                error: error => { this.notificationsService
-                    .show(error, {
+                error: error => { this.alertService
+                    .open(error, {
                         status: TuiNotification.Error
                     }).subscribe();
                 }
@@ -115,14 +115,14 @@ export class ViewComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: (id: string) => {
-                    this.notificationsService
-                    .show('Вы успешно отклонили релиз', {
+                    this.alertService
+                    .open('Вы успешно отклонили релиз', {
                         status: TuiNotification.Success
                     }).subscribe()
                     this.router.navigate(['../'], { relativeTo: this.route });
                 },
-                error: error => { this.notificationsService
-                    .show(error, {
+                error: error => { this.alertService
+                    .open(error, {
                         status: TuiNotification.Error
                     }).subscribe();
                 }

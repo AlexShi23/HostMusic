@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { first, finalize } from 'rxjs/operators';
 
 import { AccountService } from '@app/services';
-import { TuiNotification, TuiNotificationsService } from '@taiga-ui/core';
+import { TuiNotification, TuiAlertService } from '@taiga-ui/core';
 
 @Component({ templateUrl: 'forgot-password.component.html' })
 export class ForgotPasswordComponent {
@@ -12,8 +12,8 @@ export class ForgotPasswordComponent {
 
     constructor(
         private accountService: AccountService,
-        @Inject(TuiNotificationsService)
-        private readonly notificationsService: TuiNotificationsService
+        @Inject(TuiAlertService)
+        private readonly alertService: TuiAlertService,
     ) { }
 
     readonly form = new FormGroup({
@@ -35,12 +35,12 @@ export class ForgotPasswordComponent {
             .pipe(first())
             .pipe(finalize(() => this.loading = false))
             .subscribe({
-                next: () => this.notificationsService
-                    .show('Инструкция по восстановлению пароля отправлена на ваш email', {
+                next: () => this.alertService
+                    .open('Инструкция по восстановлению пароля отправлена на ваш email', {
                         status: TuiNotification.Success
                     }).subscribe(),
-                error: error => {this.notificationsService
-                    .show(error, {
+                error: error => {this.alertService
+                    .open(error, {
                         status: TuiNotification.Error
                     }).subscribe();
                     this.loading = false;

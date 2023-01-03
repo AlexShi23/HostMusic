@@ -5,7 +5,7 @@ import { first } from 'rxjs/operators';
 import { MustMatch } from '@app/helpers';
 
 import { AccountService } from '@app/services';
-import { TuiNotification, TuiNotificationsService } from '@taiga-ui/core';
+import { TuiNotification, TuiAlertService } from '@taiga-ui/core';
 
 @Component({ templateUrl: 'register.component.html' })
 export class RegisterComponent implements OnInit {
@@ -18,8 +18,8 @@ export class RegisterComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private accountService: AccountService,
-        @Inject(TuiNotificationsService)
-        private readonly notificationsService: TuiNotificationsService
+        @Inject(TuiAlertService)
+        private readonly alertService: TuiAlertService,
     ) { }
 
     ngOnInit() {
@@ -51,13 +51,13 @@ export class RegisterComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: () => {
-                    this.notificationsService.show('Регистрация прошла успешно', {
+                    this.alertService.open('Регистрация прошла успешно', {
                         status: TuiNotification.Success
                     }).subscribe();
                     this.router.navigate(['../login'], { relativeTo: this.route });
                 },
-                error: error => { this.notificationsService
-                    .show(error, {
+                error: error => { this.alertService
+                    .open(error, {
                         status: TuiNotification.Error
                     }).subscribe();
                     this.loading = false;

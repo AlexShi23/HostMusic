@@ -80,11 +80,14 @@
                             <div>
                                 <b>{{i+1}}. {{track.artist}} {{this.getFeatText(track.featuring)}}</b> — {{track.title}}
                                 <i>{{getSubtitleText(track.subtitle)}}</i> {{track.explicit ? '🅴' : ''}}
-                                <tui-slider
+                                <input
+                                    tuiSlider
+                                    type="range"
                                     class="slider"
+                                    step="any"
                                     [max]="audio.duration"
                                     [(ngModel)]="currentTime[i]"
-                                ></tui-slider>
+                                />
                             </div>
                         </div>
                     </div>
