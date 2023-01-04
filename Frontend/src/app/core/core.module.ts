@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TuiButtonModule, TuiDataListModule, TuiDialogModule, TuiHostedDropdownModule, TuiModeModule, TuiAlertModule, TuiRootModule, TuiSvgModule, TuiThemeNightModule, TuiLoaderModule } from '@taiga-ui/core';
-import { TuiAvatarModule, TuiTabsModule, TuiToggleModule, TuiBadgeModule } from '@taiga-ui/kit';
+import { TuiButtonModule, TuiDataListModule, TuiDialogModule, TuiHostedDropdownModule, TuiModeModule, TuiAlertModule, TuiRootModule, TuiSvgModule, TuiThemeNightModule, TuiLoaderModule, TuiLinkModule } from '@taiga-ui/core';
+import { TuiAvatarModule, TuiTabsModule, TuiToggleModule, TuiBadgeModule, TuiBreadcrumbsComponent, TuiBreadcrumbsModule } from '@taiga-ui/kit';
 import { TuiLineChartModule, TuiAxesModule } from '@taiga-ui/addon-charts';
 import { CommonModule } from '@angular/common';
 
@@ -33,7 +33,9 @@ import { LayoutComponent } from './layout.component';
         TuiLineChartModule,
         TuiAxesModule,
         TuiLoaderModule,
-        TuiBadgeModule
+        TuiBadgeModule,
+        TuiLinkModule,
+        TuiBreadcrumbsModule
     ],
     declarations: [
         LayoutComponent,

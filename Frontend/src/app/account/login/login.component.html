@@ -3,13 +3,19 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <p>
             <tui-input formControlName="email">Enter email</tui-input>
-            <tui-field-error formControlName="email"></tui-field-error>
+            <tui-error
+                formControlName="email"
+                [error]="[] | tuiFieldError | async"
+            ></tui-error>
         </p>
         <p>
             <tui-input-password formControlName="password">
                 Enter password
             </tui-input-password>
-            <tui-field-error formControlName="password"></tui-field-error>
+            <tui-error
+                formControlName="password"
+                [error]="[] | tuiFieldError | async"
+            ></tui-error>
         </p>
         <p>
             <button tuiButton [disabled]="form.invalid">Sign In</button>

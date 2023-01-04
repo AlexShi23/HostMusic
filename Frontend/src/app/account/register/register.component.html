@@ -3,34 +3,30 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <p>
         <tui-input formControlName="firstName"> Enter your name </tui-input>
-        <tui-field-error formControlName="firstName"></tui-field-error>
+        <tui-error formControlName="firstName" [error]="[] | tuiFieldError | async"></tui-error>
     </p>
     <p>
         <tui-input formControlName="lastName"> Enter your surname </tui-input>
-        <tui-field-error formControlName="lastName"></tui-field-error>
+        <tui-error formControlName="lastName" [error]="[] | tuiFieldError | async"></tui-error>
     </p>
     <p>
         <tui-input formControlName="email"> Enter email </tui-input>
-        <tui-field-error formControlName="email"></tui-field-error>
+        <tui-error formControlName="email" [error]="[] | tuiFieldError | async"></tui-error>
     </p>
     <p>
-        <tui-input-password formControlName="password">
-        Enter password
-        </tui-input-password>
-        <tui-field-error formControlName="password"></tui-field-error>
+        <tui-input-password formControlName="password">Enter password</tui-input-password>
+        <tui-error formControlName="password" [error]="[] | tuiFieldError | async"></tui-error>
     </p>
     <p>
-        <tui-input-password formControlName="confirmPassword">
-        Enter password
-        </tui-input-password>
-        <tui-field-error formControlName="confirmPassword"></tui-field-error>
+        <tui-input-password formControlName="confirmPassword">Enter password</tui-input-password>
+        <tui-error formControlName="confirmPassword" [error]="[] | tuiFieldError | async"></tui-error>
     </p>
     <p>
         <tui-checkbox-labeled formControlName="acceptTerms">
             I agree with the
             <a tuiLink routerLink="">Terms and conditions</a>
         </tui-checkbox-labeled>
-        <tui-field-error formControlName="acceptTerms"></tui-field-error>
+        <tui-error formControlName="acceptTerms" [error]="[] | tuiFieldError | async"></tui-error>
     </p>
     <p>
         <button tuiButton [disabled]="form.invalid">Sign Up</button>

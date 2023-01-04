@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using HostMusic.Releases.App.Authorization;
+﻿using HostMusic.Releases.App.Authorization;
 using HostMusic.Releases.Core.Models;
 using HostMusic.Releases.Core.Services;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HostMusic.Releases.App.Controllers

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { SafeUrl } from '@angular/platform-browser';
 import { FileType } from '@app/models';
 import { FilesService } from '@app/services';
@@ -29,9 +29,7 @@ export class TrackInputComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        console.log(this.form.get('tracks')['controls'][this.index].controls.id);
         let trackId = this.form.get('tracks')['controls'][this.index].controls.id.value;
-        console.log(trackId);
         if (!this.isAddMode && trackId) {
             this.trackLoading = true;
             this.filesService.getFileUrl(trackId, FileType.Track, false).subscribe({
@@ -47,6 +45,15 @@ export class TrackInputComponent implements OnInit {
                 }
             })
         }
+    }
+
+    get tracksArray(): FormArray {
+        return this.form.controls.tracks as FormArray;
+    }
+
+    deleteTrack(index: number): void {
+        this.tracksArray.removeAt(index);
+        delete this.rejectedTrackFile$;
     }
 
     onTrackReject(file: TuiFileLike | readonly TuiFileLike[]): void {

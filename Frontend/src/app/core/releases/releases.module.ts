@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TuiInputModule, TuiInputPasswordModule, TuiDataListWrapperModule, TuiSelectModule, TuiPaginationModule,
     TuiInputDateModule, TuiFilesModule, TuiInputFilesModule, TuiProgressModule, TuiTextAreaModule, TuiCheckboxLabeledModule, TuiIslandModule,
-    TuiSliderModule, TuiBadgeModule, TuiBadgedContentModule } from '@taiga-ui/kit';
+    TuiSliderModule, TuiBadgeModule, TuiBadgedContentModule, TuiFieldErrorPipeModule, TuiBreadcrumbsModule } from '@taiga-ui/kit';
 import { TuiButtonModule, TuiLinkModule, TuiDataListModule, TuiTooltipModule, TuiHintModule, TuiDialogModule, TuiLoaderModule,
-    TuiNotificationModule, TuiSvgModule } from '@taiga-ui/core';
+    TuiNotificationModule, TuiSvgModule, TuiErrorModule } from '@taiga-ui/core';
 import {TuiMediaModule} from '@taiga-ui/cdk';
 
 import { ReleasesRoutingModule } from './releases-routing.module';
@@ -46,7 +46,10 @@ import { ViewComponent } from './view/view.component';
         TuiNotificationModule,
         TuiBadgeModule,
         TuiBadgedContentModule,
-        TuiSvgModule
+        TuiSvgModule,
+        TuiErrorModule,
+        TuiFieldErrorPipeModule,
+        TuiBreadcrumbsModule
     ],
     declarations: [
         TrackInputComponent,

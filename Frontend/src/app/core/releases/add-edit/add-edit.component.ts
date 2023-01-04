@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { SafeUrl } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
-import { FileType, Track } from "@app/models";
+import { FileType } from "@app/models";
 import { FilesService, ReleaseService } from "@app/services";
 import { TuiDay } from "@taiga-ui/cdk";
 import { TuiNotification, TuiAlertService } from '@taiga-ui/core';
@@ -17,18 +17,13 @@ export class AddEditComponent implements OnInit {
     id: string;
     form: FormGroup;
     isAddMode: boolean;
-    skeletonVisible = false;
     coverPath: SafeUrl;
-    trackPaths: SafeUrl[];
-    tracksLoading = false;
+    releaseLoading = false;
     filesUploading = false;
     needCoverInput = true;
     rejectedFiles$ = new Subject<TuiFileLike | null>();
-    rejectedTrackFiles$ = new Array<Subject<TuiFileLike | null>>();
     currentDay = TuiDay.currentLocal().append(new TuiDay(0, 0, 1));
     releaseDate: TuiDay | null = null;
-    currentTime: number[];
-    paused: boolean[];
 
     types = ['Single', 'Album'];
     genres = ['Hip-hop', 'Pop', 'Rock', 'Alternative', 'Indie', 'Electronic', 'Ethnic'];
@@ -74,17 +69,13 @@ export class AddEditComponent implements OnInit {
             ]),
             isDraft: [false]
         });
-        this.rejectedTrackFiles$.push(new Subject<TuiFileLike | null>());
 
         if (!this.isAddMode) {
-            this.skeletonVisible = true;
-            this.tracksLoading = true;
+            this.releaseLoading = true;
             this.releaseService.getById(this.id)
                 .pipe(first())
                 .subscribe(release => {
-                    this.tracksLoading = true;
-                    this.trackPaths = new Array<SafeUrl>(release.numberOfTracks).fill(null);
-                    this.showSkeleton();
+                    this.releaseLoading = false;
                     this.filesService.getFileUrl(release.id, FileType.Cover, false).subscribe({
                         next: (imageUrl: SafeUrl) => {
                             this.coverPath = imageUrl;
@@ -95,31 +86,18 @@ export class AddEditComponent implements OnInit {
                         }
                     });
 
-                    release.tracks.forEach(
-                        (track: Track) => {
-                            this.filesService.getFileUrl(track.id, FileType.Track, false).subscribe({
-                                next: (trackUrl: SafeUrl) => {
-                                    this.trackPaths[track.index - 1] = trackUrl;
-                                    this.tracksLoading = false;
-                                },
-                                error: () => {
-                                    this.trackPaths[track.index - 1] = null;
-                                    this.tracksLoading = false;
-                                }
-                            })
-                        }
-                    );
-
-                    this.currentTime = new Array<number>(release.numberOfTracks).fill(0);
-                    this.paused = new Array<boolean>(release.numberOfTracks).fill(true);
-
                     for (let i = 0; i < release.numberOfTracks; i++) {
                         delete release.tracks[i].releaseId;
                         delete release.tracks[i].duration;
                         if (i != release.numberOfTracks - 1)
                             this.addTrack();
                     }
-                    
+
+                    let date = new Date(release.releaseDate);
+                    let tuiDay = new TuiDay(date.getFullYear(), date.getMonth(), date.getDate())
+                    this.form.controls.releaseDate.setValue(tuiDay);
+
+                    delete release.releaseDate;
                     delete release.numberOfPlays;
                     delete release.duration;
                     delete release.ownerId;
@@ -142,10 +120,6 @@ export class AddEditComponent implements OnInit {
     onReject(file: TuiFileLike | readonly TuiFileLike[]): void {
         this.rejectedFiles$.next(file as TuiFileLike);
     }
-
-    onTrackReject(file: TuiFileLike | readonly TuiFileLike[], index: number): void {
-        this.rejectedTrackFiles$[index].next(file as TuiFileLike);
-    }
  
     removeFile(): void {
         this.form.controls.cover.setValue(null);
@@ -157,10 +131,6 @@ export class AddEditComponent implements OnInit {
  
     clearRejected(): void {
         this.rejectedFiles$.next(null);
-    }
-
-    clearTrackRejected(index: number): void {
-        this.rejectedTrackFiles$[index].next(null);
     }
     
     onSubmit(): void {
@@ -216,9 +186,7 @@ export class AddEditComponent implements OnInit {
                 const trackId = this.isAddMode ? uuid.v4() : this.tracksForm[i].controls.id.value;
                 this.tracksForm[i].controls.id.setValue(trackId);
                 this.tracksForm[i].controls.index.setValue(i + 1);
-                if (!this.isAddMode && this.trackPaths[i]) {
-                    this.filesService.deleteFile(trackId, FileType.Track).subscribe();
-                }
+
                 uploadings.push(this.filesService.getPreSignedUrl(trackId, FileType.Track, false).pipe(
                     switchMap((url) => {
                         return this.filesService.uploadFileToPreSignedUrl(url, this.tracksForm[i].controls.trackPath.value);
@@ -244,12 +212,10 @@ export class AddEditComponent implements OnInit {
                 explicit: [null]
             })
         );
-        this.rejectedTrackFiles$.push(new Subject<TuiFileLike>());
     }
 
     deleteTrack(index: number): void {
         this.tracksArray.removeAt(index);
-        delete this.rejectedTrackFiles$[index];
     }
 
     createRelease() {
@@ -289,18 +255,6 @@ export class AddEditComponent implements OnInit {
                     }).subscribe();
                 }
             });
-    }
-
-    getIcon(index: number): string {
-        return this.paused[index] ? 'tuiIconPlayLarge' : 'tuiIconPauseLarge';
-    }
- 
-    toggleState(index: number): void {
-        this.paused[index] = !this.paused[index];
-    }
-
-    showSkeleton(): void {
-        this.skeletonVisible = !this.skeletonVisible;
     }
 
     setNeedCoverInput(): void {

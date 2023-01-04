@@ -1,6 +1,22 @@
-﻿<h1>Аккаунты</h1>
+﻿<h1 class="tui-text_h3" style="margin: 0;">Accounts</h1>
+<tui-breadcrumbs style="display: contents;">
+    <a
+        *tuiItem
+        tuiLink
+        routerLink="/"
+    >
+        Admin
+    </a>
+    <a
+        *tuiItem
+        tuiLink
+        routerLink="/"
+    >
+        Home
+    </a>
+</tui-breadcrumbs>
 <p>All accounts from secure (admin only) api end point:</p>
-<button tuiButton routerLink="add" size="m">Создать аккаунт</button>
+<button tuiButton routerLink="add" size="m">Create account</button>
 <table class="tui-table tui-space_top-3">
     <thead>
         <tr class="tui-table__tr">

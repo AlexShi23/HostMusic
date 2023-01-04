@@ -1,5 +1,5 @@
 <form class="tui-form__row" [formGroup]="trackForm">
-    <h4 class="tui-text_h4" style="margin: 0"
+    <h4 class="tui-text_h4" style="margin-bottom: 0"
         [class.tui-skeleton]="skeletonVisible"
         [class.tui-skeleton_short]="skeletonVisible"
         [class.tui-skeleton_text]="skeletonVisible"    
@@ -11,13 +11,13 @@
             <tui-input formControlName="title" [class.tui-skeleton]="skeletonVisible">
                 Track title
             </tui-input>
-            <tui-field-error formControlName="title"></tui-field-error>
+            <tui-error [error]="[] | tuiFieldError | async" formControlName="title"></tui-error>
         </div>
         <div class="tui-form__multi-field">
             <tui-input formControlName="subtitle" [class.tui-skeleton]="skeletonVisible">
                 Track subtitle
             </tui-input>
-            <tui-field-error formControlName="subtitle"></tui-field-error>
+            <tui-error [error]="[] | tuiFieldError | async" formControlName="subtitle"></tui-error>
         </div>
     </div>
     <div class="tui-form__row tui-form__row_multi-fields">
@@ -25,13 +25,13 @@
             <tui-input formControlName="artist" [class.tui-skeleton]="skeletonVisible">
                 Artist
             </tui-input>
-            <tui-field-error formControlName="artist"></tui-field-error>
+            <tui-error [error]="[] | tuiFieldError | async" formControlName="artist"></tui-error>
         </div>
         <div class="tui-form__multi-field">
             <tui-input formControlName="featuring" [class.tui-skeleton]="skeletonVisible">
                 Featuring
             </tui-input>
-            <tui-field-error formControlName="featuring"></tui-field-error>
+            <tui-error [error]="[] | tuiFieldError | async" formControlName="featuring"></tui-error>
         </div>
     </div>
     <tui-loader [showLoader]="this.trackLoading" size="l" class="tui-space_top-6">
@@ -115,5 +115,17 @@
         >
             Track has explicit lyrics
         </tui-checkbox-labeled>
+        <button
+            *ngIf="this.tracksArray.length > 1 &&
+                this.form.controls.type.value != 'Single'"
+            tuiButton
+            class="tui-space_left-2"
+            appearance="flat"
+            icon="tuiIconTrashLarge"
+            tuiMode="onLight"
+            type="button"
+            size="l"
+            (click)="deleteTrack(i)"
+        >Delete track</button>
     </div>
 </form>
