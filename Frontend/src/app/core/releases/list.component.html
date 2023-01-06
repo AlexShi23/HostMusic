@@ -54,14 +54,14 @@
                 </thead>
                 <tbody>
                     <tr class="tui-table__tr" *ngFor="let release of releases">
-                        <td class="tui-table__th" routerLink="view/{{release.id}}"><img [src]="!release.cover ? placeholder : release.cover"></td>
-                        <td class="tui-table__th" routerLink="view/{{release.id}}"><b>{{release.artist}}
+                        <td class="tui-table__th" routerLink="{{release.id}}"><img [src]="!release.cover ? placeholder : release.cover"></td>
+                        <td class="tui-table__th" routerLink="{{release.id}}"><b>{{release.artist}}
                             {{this.getFeatText(release.featuring)}}</b> - {{release.title}} <i>{{getSubtitleText(release.subtitle)}}</i></td>
-                        <td class="tui-table__th" routerLink="view/{{release.id}}">{{release.type}}</td>
-                        <td class="tui-table__th" routerLink="view/{{release.id}}">{{this.formatDate(release.releaseDate)}}</td>
-                        <td class="tui-table__th" routerLink="view/{{release.id}}"><tui-badge [status]="this.getBadge(release.status)" [value]="release.status"></tui-badge></td>
+                        <td class="tui-table__th" routerLink="{{release.id}}">{{release.type}}</td>
+                        <td class="tui-table__th" routerLink="{{release.id}}">{{this.formatDate(release.releaseDate)}}</td>
+                        <td class="tui-table__th" routerLink="{{release.id}}"><tui-badge [status]="this.getBadge(release.status)" [value]="release.status"></tui-badge></td>
                         <td class="tui-table__th" style="white-space: nowrap">
-                            <button *ngIf="release.status == 'Draft' || release.status == 'Correcting'" tuiButton routerLink="edit/{{release.id}}" icon="tuiIconDraft" size="s" style="margin-right: 10px;">Edit</button>
+                            <button *ngIf="release.status == 'Draft' || release.status == 'Correcting'" tuiButton routerLink="{{release.id}}/edit" icon="tuiIconDraft" size="s" style="margin-right: 10px;">Edit</button>
                             <button *ngIf="release.status == 'Draft' || release.status == 'Correcting'" tuiButton (click)="showDeleteDialog(release.id)" size="s" icon="tuiIconTrash" appearance="accent">
                                 <span>Delete</span>
                             </button>

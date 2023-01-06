@@ -7,8 +7,8 @@ import { ViewComponent } from './view/view.component';
 const routes: Routes = [
     { path: '', component: ListComponent },
     { path: 'add', component: AddEditComponent },
-    { path: 'view/:id', component: ViewComponent },
-    { path: 'edit/:id', component: AddEditComponent }
+    { path: ':id', component: ViewComponent },
+    { path: ':id/edit', component: AddEditComponent }
 ];
 
 @NgModule({
