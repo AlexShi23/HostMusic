@@ -3,7 +3,7 @@ import { first } from 'rxjs/operators';
 
 import { AccountService } from '@app/services';
 
-@Component({ templateUrl: 'list.component.html' })
+@Component({ templateUrl: 'list.component.html', styleUrls: ['list.component.less'] })
 export class ListComponent implements OnInit {
     accounts: any[];
 
@@ -12,7 +12,7 @@ export class ListComponent implements OnInit {
     ngOnInit() {
         this.accountService.getAll()
             .pipe(first())
-            .subscribe(accounts => this.accounts = accounts);
+            .subscribe(accounts => { this.accounts = accounts });
     }
 
     deleteAccount(id: string) {

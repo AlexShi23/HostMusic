@@ -32,18 +32,6 @@
 	color: var(--tui-primary);
 	pointer-events: unset;
 }
-.head-title .btn-download {
-	height: 36px;
-	padding: 0 16px;
-	border-radius: 36px;
-	background: var(--tui-primary);
-	color: var(--tui-base-02);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	grid-gap: 10px;
-	font-weight: 500;
-}
 
 .box-info {
 	display: grid;
@@ -118,83 +106,58 @@
 	cursor: pointer;
 }
 
-.table-data .order {
+.table-data .releases {
 	flex-grow: 1;
 	flex-basis: 500px;
 	height: 470px;
 }
-.table-data .order table {
+.table-data .releases table {
 	width: 100%;
 	border-collapse: collapse;
 }
 
-.table-data .order table td {
+.table-data .releases table td {
 	padding: 16px 0;
 }
 
-.table-data .order table th {
+.table-data .releases table th {
 	padding-bottom: 12px;
 	font-size: 13px;
 	text-align: left;
 	border-bottom: 1px solid var(--tui-base-03);
 }
-.table-data .order table td {
+.table-data .releases table td {
 	padding: 16px 0;
 }
 
-.table-data .order table td img {
+.table-data .releases table td img {
 	width: 39px;
 	height: 39px;
 	object-fit: cover;
 }
-.table-data .order table tbody tr:hover {
+.table-data .releases table tbody tr:hover {
 	background: var(--tui-base-03);
 }
-.table-data .order table tr td .status {
+.table-data .releases table tr td .status {
 	font-size: 10px;
 	padding: 6px 16px;
 	color: var(--tui-base-02);
 	border-radius: 20px;
 	font-weight: 700;
 }
-.table-data .order table tr td .status.completed {
+.table-data .releases table tr td .status.completed {
 	background: var(--tui-primary);
 }
-.table-data .order table tr td .status.process {
+.table-data .releases table tr td .status.process {
 	background: var(--yellow);
 }
-.table-data .order table tr td .status.pending {
+.table-data .releases table tr td .status.pending {
 	background: var(--orange);
 }
 
-
-.table-data .todo {
+.table-data .graph {
 	flex-grow: 1;
 	flex-basis: 300px;
-}
-.table-data .todo .todo-list {
-	width: 100%;
-}
-.table-data .todo .todo-list li {
-	margin-bottom: 16px;
-	background: var(--tui-base-03);
-	border-radius: 10px;
-	padding: 14px 20px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-.table-data .todo .todo-list li .bx {
-	cursor: pointer;
-}
-.table-data .todo .todo-list li.completed {
-	border-left: 10px solid var(--tui-primary);
-}
-.table-data .todo .todo-list li.not-completed {
-	border-left: 10px solid var(--orange);
-}
-.table-data .todo .todo-list li:last-child {
-	margin-bottom: 0;
 }
 
 .axes {
@@ -211,10 +174,7 @@
 	.table-data .head {
 		min-width: 420px;
 	}
-	.table-data .order table {
-		min-width: 420px;
-	}
-	.table-data .todo .todo-list {
+	.table-data .releases table {
 		min-width: 420px;
 	}
 }
