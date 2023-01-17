@@ -1,4 +1,5 @@
-﻿import { Role } from './role';
+﻿import { SafeUrl } from '@angular/platform-browser';
+import { Role } from './role';
 
 export class Account {
     id: string;
@@ -7,4 +8,5 @@ export class Account {
     email: string;
     role: Role;
     jwtToken?: string;
+    avatar?: SafeUrl;
 }

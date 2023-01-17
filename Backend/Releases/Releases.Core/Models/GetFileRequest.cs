@@ -4,7 +4,7 @@ namespace HostMusic.Releases.Core.Models;
 
 public class GetFileRequest
 {
-    public Guid FileId { get; set; }
+    public string FileId { get; set; } = null!;
     public FileType FileType { get; set; }
     public bool Compressed { get; set; }
 }

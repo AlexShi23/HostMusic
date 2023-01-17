@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TuiInputModule, TuiInputPasswordModule, TuiIslandModule, TuiCheckboxLabeledModule, TuiFieldErrorPipeModule } from '@taiga-ui/kit'
-import { TuiButtonModule, TuiErrorModule, TuiLinkModule } from '@taiga-ui/core';
+import { TuiButtonModule, TuiErrorModule, TuiLinkModule, TuiSvgModule } from '@taiga-ui/core';
 
 import { AccountRoutingModule } from './account-routing.module';
 import { LayoutComponent } from './layout.component';
@@ -24,7 +24,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
         TuiCheckboxLabeledModule,
         TuiLinkModule,
         TuiErrorModule,
-        TuiFieldErrorPipeModule
+        TuiFieldErrorPipeModule,
+        TuiSvgModule
     ],
     declarations: [
         LayoutComponent,

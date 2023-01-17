@@ -1,7 +1,9 @@
 <tui-theme-night *ngIf="nightMode"></tui-theme-night>
 <section [ngClass]="menuClosed ? 'sidebar hide' : 'sidebar'">
     <a routerLink="" class="brand">
-        <i class='bx bxs-smile icon'></i>
+        <i class='bx'>
+            <tui-svg src="../../assets/HostMusic icon blue.svg" class="icon"></tui-svg>
+        </i>
         <span class="text">HostMusic</span>
     </a>
     <ul class="side-menu">
@@ -83,6 +85,7 @@
 				<tui-avatar
 					text="a a"
 					size="s"
+                    [avatarUrl]="this.account.avatar ?? null"
 					[rounded]="true"
 				></tui-avatar>
 			</button>

@@ -3,25 +3,33 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AccountService } from '@app/services';
+import { AccountService, FilesService } from '@app/services';
 import { MustMatch } from '@app/helpers';
 import { TuiAlertService, TuiNotification } from '@taiga-ui/core';
+import { Subject } from 'rxjs';
+import { TuiFileLike } from '@taiga-ui/kit';
+import { SafeUrl } from '@angular/platform-browser';
+import { FileType } from '@app/models';
 
-@Component({ templateUrl: 'update.component.html' })
-export class UpdateComponent implements OnInit {
+@Component({ templateUrl: 'edit.component.html' })
+export class EditComponent implements OnInit {
     account = this.accountService.accountValue;
     form: FormGroup;
     loading = false;
     submitted = false;
     deleting = false;
+    avatar: SafeUrl;
+    needAvatarInput = true;
+    rejectedFiles$ = new Subject<TuiFileLike | null>();
 
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
         private accountService: AccountService,
+        private filesService: FilesService,
         @Inject(TuiAlertService)
-        private readonly alertService: TuiAlertService,
+        private readonly alertService: TuiAlertService
     ) { }
 
     ngOnInit() {
@@ -30,24 +38,41 @@ export class UpdateComponent implements OnInit {
             lastName: [this.account.lastName, Validators.required],
             email: [this.account.email, [Validators.required, Validators.email]],
             password: ['', [Validators.minLength(6)]],
-            confirmPassword: ['']
+            confirmPassword: [''],
+            avatar: [null]
         }, {
             validator: MustMatch('password', 'confirmPassword')
         });
-    }
 
-    // convenience getter for easy access to form fields
-    get f() { return this.form.controls; }
+        this.filesService.getFileUrl(this.account.id, FileType.Avatar, false).subscribe(
+            (imageUrl: SafeUrl) => {
+                this.avatar = imageUrl;
+                this.needAvatarInput = false;
+            }
+        )
+    }
 
     onSubmit() {
         this.submitted = true;
 
-        // stop here if form is invalid
         if (this.form.invalid) {
             return;
         }
 
         this.loading = true;
+        if (this.form.controls.avatar.value) {
+            this.filesService.uploadFile(this.account.id, this.form.controls.avatar.value, FileType.Avatar).subscribe(
+                () => {
+                    this.updateAccount();
+                }
+            );
+        } else {
+            this.updateAccount();
+        }
+    }
+
+    updateAccount() {
+        delete this.form.controls.avatar;
         this.accountService.update(this.account.id, this.form.value)
             .pipe(first())
             .subscribe({
@@ -77,5 +102,21 @@ export class UpdateComponent implements OnInit {
                     }).subscribe()
                 });
         }
+    }
+
+    onReject(file: TuiFileLike | readonly TuiFileLike[]): void {
+        this.rejectedFiles$.next(file as TuiFileLike);
+    }
+
+    clearRejected(): void {
+        this.rejectedFiles$.next(null);
+    }
+
+    removeFile(): void {
+        this.form.controls.avatar.setValue(null);
+    }
+
+    setNeedAvatarInput(): void {
+        this.needAvatarInput = true;
     }
 }

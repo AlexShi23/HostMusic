@@ -5,7 +5,7 @@ namespace HostMusic.Releases.Core.Models;
 
 public class UploadFileRequest
 {
-    public Guid FileId { get; set; }
+    public string FileId { get; set; } = null!;
     public FileType FileType { get; set; }
     public IFormFile FileData { get; set; } = null!;
 }

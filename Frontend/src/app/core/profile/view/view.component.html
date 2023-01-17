@@ -1,0 +1,25 @@
+﻿<div class="tui-row tui-row_sme">
+    <div class="center-container">
+        <tui-island size="l">
+            <div class="tui-row">
+                <div class="tui-col_3">
+                    <tui-avatar
+                        [avatarUrl]="this.avatar"
+                        text="{{account.firstName}} {{account.lastName}}"
+                        size="xl"
+                        class="tui-space_top-1"
+                        [rounded]="true"
+                    ></tui-avatar>
+                </div>
+                <div class="tui-col_9">
+                    <h1>Your Profile</h1>
+                    <p>
+                        <strong>Name: </strong> {{account.firstName}} {{account.lastName}}<br/>
+                        <strong>Email: </strong> {{account.email}}
+                    </p>
+                    <p><a tuiLink routerLink="edit">Edit Profile</a></p>
+                </div>
+            </div>
+        </tui-island>
+    </div>
+</div>
