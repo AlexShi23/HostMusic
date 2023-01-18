@@ -1,0 +1,132 @@
+<div class="tui-row tui-row_sme">
+    <div class="center-container tui-col_6">
+        <div class="between">
+            <h3 class="tui-text_h3" style="margin-top: 0;">Release card</h3>
+            <button
+                tuiIconButton
+                type="button"
+                size="m"
+                appearance="secondary"
+                title="Play/Pause"
+                icon="tuiIconEditLarge"
+                style="margin-bottom: auto;"
+                routerLink="/releases/{{id}}/edit"
+            ></button>
+        </div>
+        <tui-loader [showLoader]="loading" size="l">
+            <tui-island size="l">
+                <tui-notification *ngIf="release && isCorrectingCase()" status="error" class="tui-space_bottom-5">
+                    Your release was declined. Moderator's comment: 
+                    <b>{{release.moderationComment}}.</b>
+                    Сorrect this remark and send the release for review again.
+                </tui-notification>
+
+                <div *ngIf="release" class="tui-row">
+                    <div class="tui-col_6">
+                        <tui-loader [showLoader]="!release.cover" size="l">
+                            <img [src]="!release.cover ? placeholder : release.cover">
+                        </tui-loader>
+                    </div>
+                    <div class="tui-col_6">
+                        <h2 style="margin-top: 10px;">Main information</h2>
+                        <field-set-item class="tui-form__row" title="Title">
+                            <div>{{this.release.title}}</div>
+                        </field-set-item>
+                        <field-set-item class="tui-form__row" title="Subtitle">
+                            <div>{{this.release.subtitle}}</div>
+                        </field-set-item>
+                        <field-set-item class="tui-form__row" title="Artist">
+                            <div>{{this.release.artist}}</div>
+                        </field-set-item>
+                        <field-set-item class="tui-form__row" title="Featuring">
+                            <div>{{this.release.featuring}}</div>
+                        </field-set-item>
+                        <field-set-item class="tui-form__row" title="Genre">
+                            <div>{{this.release.genre}}</div>
+                        </field-set-item>
+                        <field-set-item class="tui-form__row" title="Country">
+                            <div>{{this.release.country}}</div>
+                        </field-set-item>
+                        <field-set-item class="tui-form__row"title="Release date">
+                            <div>{{this.formatDate(this.release.releaseDate)}}</div>
+                        </field-set-item>
+                        <field-set-item class="tui-form__row"title="Status">
+                            <tui-badge [status]="this.getBadge(release.status)" [value]="release.status"></tui-badge>
+                        </field-set-item>
+                    </div>
+                </div>
+                <div *ngIf="release" class="tui-row">
+                    <div class="tui-col_12">
+                        <div class="tui-player tui-space_top-4" 
+                            *ngFor="let track of release.tracks; index as i"
+                            [class.tui-skeleton]="!track.file"
+                        >
+                            <audio
+                                #audio
+                                tuiMedia
+                                [src]="track.file"
+                                [(currentTime)]="currentTime[i]"
+                                [(paused)]="paused[i]"
+                            ></audio>
+                            <button
+                                tuiIconButton
+                                type="button"
+                                shape="rounded"
+                                appearance="secondary"
+                                title="Play/Pause"
+                                [icon]="getIcon(i)"
+                                (click)="toggleState(i)"
+                            ></button>
+                            <div>
+                                <b>{{i+1}}. {{track.artist}} {{this.getFeatText(track.featuring)}}</b> — {{track.title}}
+                                <i>{{getSubtitleText(track.subtitle)}}</i> {{track.explicit ? '🅴' : ''}}
+                                <input
+                                    tuiSlider
+                                    type="range"
+                                    class="slider"
+                                    step="any"
+                                    [max]="audio.duration"
+                                    [(ngModel)]="currentTime[i]"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="release && isModerationCase()" class="tui-form__buttons between">
+                    <button tuiButton icon="tuiIconLikeLarge" class="tui-form__button" (click)="this.approveRelease()">Moderation passed</button>
+                    <button tuiButton appearance="accent" icon="tuiIconDislikeLarge" type="button" (click)="this.showModerationDialog()" class="tui-form__button">Moderation failed</button>
+                </div>
+            </tui-island>
+        </tui-loader>
+    </div>
+</div>
+
+<ng-template
+    let-observer
+    [tuiDialogOptions]="{label: 'Moderation failed', size: 'm'}"
+    [(tuiDialog)]="dialogOpen"
+>
+    <form
+        [formGroup]="moderationForm"
+        (ngSubmit)="observer.complete()"
+    >
+        <p>Explain why this release is not suitable for publication</p>
+        <tui-text-area
+            tuiAutoFocus
+            formControlName="moderationComment"
+        >
+            Your comment
+        </tui-text-area>
+        <p>
+            <button
+                tuiButton
+                appearance="accent"
+                icon="tuiIconDislikeLarge"
+                (click)="this.declineRelease()"
+                type="submit"
+            >
+                Decline
+            </button>
+        </p>
+    </form>
+</ng-template>

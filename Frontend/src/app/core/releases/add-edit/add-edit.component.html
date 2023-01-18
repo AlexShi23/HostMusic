@@ -1,0 +1,213 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="tui-row tui-row_sme">
+        <div class="center-container tui-col_8">
+            <h3 *ngIf="isAddMode" class="tui-text_h3"
+                [class.tui-skeleton]="releaseLoading"
+                [class.tui-skeleton_short]="releaseLoading"
+                [class.tui-skeleton_text]="releaseLoading"
+                style="margin-top: 0;"
+            >
+                Create release
+            </h3>
+            <h3 *ngIf="!isAddMode" class="tui-text_h3"
+                [class.tui-skeleton]="releaseLoading"
+                [class.tui-skeleton_short]="releaseLoading"
+                [class.tui-skeleton_text]="releaseLoading"
+                style="margin-top: 0;"
+            >
+                Edit release
+            </h3>
+            <tui-loader
+                [showLoader]="this.filesUploading"
+                [overlay]="this.filesUploading"
+                size="l"
+                textContent="Files uploading"
+            >
+                <tui-island>
+                    <div class="tui-row">
+                        <div class="tui-col_4" style="padding-right: 0;">
+                            <div *ngIf="this.needCoverInput" style="height: 100%;">
+                                <tui-input-files
+                                    *ngIf="!this.form.controls.cover.value"
+                                    accept="image/*"
+                                    [class.tui-skeleton]="releaseLoading"
+                                    [link] = "'Choose file'"
+                                    [label]="'of release cover'"
+                                    style="height: 100%;"
+                                    [formControl]="this.form.controls.cover"
+                                    (reject)="onReject($event)"
+                                ></tui-input-files>
+                                
+                                <tui-files class="tui-space_top-1" style="height: 100%">
+                                    <tui-file
+                                        class="fileinput"
+                                        *ngIf="this.form.controls.cover.valueChanges | async as file"
+                                        [file]="file"
+                                        size="l"
+                                        style="height: 92%; display: block;"
+                                        (removed)="removeFile()"
+                                    ></tui-file>
+                                
+                                    <tui-file
+                                        *ngIf="rejectedFiles$ | async as file"
+                                        state="error"
+                                        [file]="file"
+                                        (removed)="clearRejected()"
+                                    ></tui-file>
+                                </tui-files>
+                            </div>
+
+                            <div
+                                *ngIf="!this.isAddMode && this.coverPath != null && !this.form.controls.cover.value &&
+                                    !this.needCoverInput"
+                                class="tui-form__row tui-form__row_multi-fields"
+                            >
+                                <div class="tui-form__multi-field">
+                                    <tui-badged-content
+                                        [contentTop]="customBadge"
+                                        size="l"
+                                    >
+                                        <tui-island>
+                                            <img style="width: 100%; height: 100%" [src]="this.coverPath">
+                                        </tui-island>
+                                    </tui-badged-content>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tui-col_8">
+                            <div class="tui-form__row tui-form__row_multi-fields">
+                                <div class="tui-form__multi-field">
+                                    <tui-input formControlName="title" [class.tui-skeleton]="releaseLoading">
+                                        Release title
+                                    </tui-input>
+                                    <tui-error [error]="[] | tuiFieldError | async" formControlName="title"></tui-error>
+                                </div>
+                                <div class="tui-form__multi-field">
+                                    <tui-select formControlName="type" [class.tui-skeleton]="releaseLoading">
+                                        Type
+                                        <input tuiTextfield placeholder="Choose release type"/>
+                                        <tui-data-list-wrapper
+                                            *tuiDataList
+                                            [items]="types"
+                                        ></tui-data-list-wrapper>
+                                    </tui-select>
+                                    <tui-error [error]="[] | tuiFieldError | async" formControlName="type"></tui-error>
+                                </div>
+                            </div>
+                            <div class="tui-form__row tui-form__row_multi-fields">
+                                <div class="tui-form__multi-field">
+                                    <tui-input formControlName="subtitle" [class.tui-skeleton]="releaseLoading">Subtitle</tui-input>
+                                    <tui-error [error]="[] | tuiFieldError | async" formControlName="subtitle"></tui-error>
+                                </div>
+                                <div class="tui-form__multi-field">
+                                    <tui-input formControlName="artist" [class.tui-skeleton]="releaseLoading">Artist</tui-input>
+                                    <tui-error [error]="[] | tuiFieldError | async" formControlName="artist"></tui-error>
+                                </div>
+                            </div>
+                            <div class="tui-form__row tui-form__row_multi-fields">
+                                <div class="tui-form__multi-field">
+                                    <tui-input formControlName="featuring" [class.tui-skeleton]="releaseLoading">Featuring</tui-input>
+                                    <tui-error [error]="[] | tuiFieldError | async" formControlName="featuring"></tui-error>
+                                </div>
+                                <div class="tui-form__multi-field">
+                                    <tui-select formControlName="genre" [class.tui-skeleton]="releaseLoading">
+                                        Genre
+                                        <input tuiTextfield placeholder="Choose the main genre"/>
+                                        <tui-data-list-wrapper
+                                            *tuiDataList
+                                            [items]="genres"
+                                        ></tui-data-list-wrapper>
+                                    </tui-select>
+                                    <tui-error [error]="[] | tuiFieldError | async" formControlName="genre"></tui-error>
+                                </div>
+                            </div>
+                            <div class="tui-form__row tui-form__row_multi-fields">
+                                <div class="tui-form__multi-field">
+                                    <tui-select formControlName="country" [class.tui-skeleton]="releaseLoading">
+                                        Country
+                                        <input tuiTextfield placeholder="Choose the country"/>
+                                        <tui-data-list-wrapper
+                                            *tuiDataList
+                                            [items]="countries"
+                                        ></tui-data-list-wrapper>
+                                    </tui-select>
+                                    <tui-error [error]="[] | tuiFieldError | async" formControlName="country"></tui-error>
+                                </div>
+                                <div class="tui-form__multi-field">
+                                    <tui-input-date
+                                        formControlName="releaseDate"
+                                        [class.tui-skeleton]="releaseLoading"
+                                        [(ngModel)]="releaseDate"
+                                        [min]="currentDay"
+                                    >
+                                        Choose a publishing date
+                                    </tui-input-date>
+                                    <tui-error [error]="[] | tuiFieldError | async" formControlName="releaseDate"></tui-error>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tui-row">
+                        <div class="tui-col_12">
+                            <h3 *ngIf="isAddMode" class="tui-text_h3" style="margin-bottom: 0;"
+                                [class.tui-skeleton]="releaseLoading"
+                                [class.tui-skeleton_short]="releaseLoading"
+                                [class.tui-skeleton_text]="releaseLoading"
+                            >
+                                Add track(s)
+                            </h3>
+                            <h3 *ngIf="!isAddMode" class="tui-text_h3" style="margin-bottom: 0;"
+                                [class.tui-skeleton]="releaseLoading"
+                                [class.tui-skeleton_short]="releaseLoading"
+                                [class.tui-skeleton_text]="releaseLoading"
+                            >
+                                Edit track(s)
+                            </h3>
+                            
+                            <ng-container *ngFor="let trackForm of tracksArray.controls; index as i">
+                                <track-input
+                                    *ngIf="!this.releaseLoading"
+                                    [isAddMode]="this.isAddMode"
+                                    [releaseLoading]="this.releaseLoading"
+                                    [index]="i"
+                                    [form]="this.form"
+                                    [trackForm]="trackForm"
+                                >
+                                </track-input>
+                            </ng-container>
+
+                            <button
+                                *ngIf="this.form.controls.type.value != 'Single'"
+                                tuiButton
+                                appearance="secondary"
+                                class="tui-space_top-3"
+                                type="button"
+                                size="l"
+                                icon="tuiIconPlusLarge"
+                                (click)="addTrack()"
+                            >
+                                Add track
+                            </button>
+
+                            <div class="tui-form__buttons">
+                                <button tuiButton type="submit" class="tui-form__button">Send to moderation</button>
+                                <button tuiButton appearance="accent" type="button" (click)="saveAsDraft()" class="tui-form__button">Save as draft</button>
+                                <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="/releases">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </tui-island>
+            </tui-loader>
+        </div>
+    </div>
+</form>
+
+<ng-template #customBadge>
+    <tui-badge
+        [hoverable]="true"
+        status="neutral"
+        (click)="setNeedCoverInput()"
+    >
+        <tui-svg src="tuiIconCloseLarge"></tui-svg>
+    </tui-badge>
+</ng-template>

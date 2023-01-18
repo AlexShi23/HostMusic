@@ -1,0 +1,54 @@
+﻿<div class="head-title">
+    <div class="left">
+        <h1>Admin Workstation</h1>
+        <tui-breadcrumbs style="display: contents;">
+            <a
+                *tuiItem
+                tuiLink
+                routerLink="/"
+            >
+                Admin
+            </a>
+            <a
+                *tuiItem
+                tuiLink
+                routerLink="/"
+            >
+                Home
+            </a>
+        </tui-breadcrumbs>
+    </div>
+</div>
+
+<ul class="box-info">
+    <li>
+        <button
+            tuiAction
+            icon="tuiIconUsers"
+            class="action"
+            routerLink="accounts"
+        >
+            Управление пользователями, аккаунтами, ролями и доступами
+        </button>
+    <li>
+        <button
+            tuiAction
+            icon="tuiIconChartLarge"
+            class="action"
+            routerLink="accounts"
+            style="width: -webkit-fill-available;"
+        >
+            Метрики, статистика и мониторинг состояния сервиса
+        </button>
+    </li>
+    <li>
+        <button
+            tuiAction
+            icon="tuiIconUsers"
+            class="action"
+            routerLink="accounts"
+        >
+            Управление пользователями и аккаунтами
+        </button>
+    </li>
+</ul>

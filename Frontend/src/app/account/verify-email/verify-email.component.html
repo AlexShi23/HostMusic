@@ -1,0 +1,9 @@
+﻿<tui-island class="with-shadow">
+    <h1 class="title" style="text-align: center;">Email confirmation</h1>
+    <div *ngIf="emailStatus == EmailStatus.Verifying">
+        Верификация...
+    </div>
+    <div *ngIf="emailStatus == EmailStatus.Failed">
+        Верификация не удалась, вы можете подтвердить свой аккаунт, используя страницу <a routerLink="../forgot-password">восстановления пароля</a>.
+    </div>
+</tui-island>

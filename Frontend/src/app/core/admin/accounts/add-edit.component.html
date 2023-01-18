@@ -1,0 +1,76 @@
+﻿<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="tui-row tui-row_sme">
+        <div class=" tui-col_3"></div>
+        <div class=" tui-col_6">
+            <h3 *ngIf="isAddMode" class="tui-text_h3">Создать аккаунт</h3>
+            <h3 *ngIf="!isAddMode" class="tui-text_h3">Редактировать аккаунт</h3>
+            <div class="tui-form__row tui-form__row_multi-fields">
+                <div class="tui-form__multi-field">
+                    <tui-input formControlName="firstName">
+                        Имя
+                    </tui-input>
+                    <tui-error
+                        formControlName="firstName"
+                        [error]="[] | tuiFieldError | async"
+                    ></tui-error>
+                </div>
+                <div class="tui-form__multi-field">
+                    <tui-input formControlName="lastName">
+                        Фамилия
+                    </tui-input>
+                    <tui-error
+                        formControlName="lastName"
+                        [error]="[] | tuiFieldError | async"
+                    ></tui-error>
+                </div>
+            </div>
+            <div class="tui-form__row tui-form__row_multi-fields">
+                <div class="tui-form__multi-field">
+                    <tui-input formControlName="email">Email</tui-input>
+                    <tui-error
+                        formControlName="email"
+                        [error]="[] | tuiFieldError | async"
+                    ></tui-error>
+                </div>
+                <div class="tui-form__multi-field">
+                    <tui-select formControlName="role">
+                        Роль
+                        <input tuiTextfield placeholder="Choose your hero" />
+                        <tui-data-list-wrapper
+                            *tuiDataList
+                            [items]="roles"
+                        ></tui-data-list-wrapper>
+                    </tui-select>
+                </div>
+            </div>
+            <div *ngIf="!isAddMode">
+                <h3 class="tui-form__header">Поменять пароль</h3>
+                <p>Оставьте поле пустым, чтобы сохранить тот же пароль</p>
+            </div>
+            <div class="tui-form__row tui-form__row_multi-fields">
+                <div class="tui-form__multi-field">
+                    <tui-input-password formControlName="password">
+                        Введите пароль
+                    </tui-input-password>
+                    <tui-error
+                        formControlName="password"
+                        [error]="[] | tuiFieldError | async"
+                    ></tui-error>
+                </div>
+                <div class="tui-form__multi-field">
+                    <tui-input-password formControlName="confirmPassword">
+                        Повторите пароль
+                    </tui-input-password>
+                    <tui-error
+                        formControlName="confirmPassword"
+                        [error]="[] | tuiFieldError | async"
+                    ></tui-error>
+                </div>
+            </div>
+            <div class="tui-form__buttons">
+                <button tuiButton type="submit" class="tui-form__button">Сохранить</button>
+                <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="../">Отмена</button>
+            </div>
+        </div>
+    </div>
+</form>

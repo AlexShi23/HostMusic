@@ -1,0 +1,60 @@
+﻿<div class="head-title">
+    <div class="left">
+        <h1 class="tui-text_h3">Accounts</h1>
+        <tui-breadcrumbs style="display: contents;">
+            <a
+                *tuiItem
+                tuiLink
+                routerLink="/admin"
+            >
+                Admin
+            </a>
+            <a
+                *tuiItem
+                tuiLink
+            >
+                Accounts
+            </a>
+        </tui-breadcrumbs>
+    </div>
+    <button tuiButton routerLink="add" size="m" icon="tuiIconPlusLarge">Create account</button>
+</div>
+
+<table class="tui-table tui-space_top-3">
+    <thead>
+        <tr class="tui-table__tr">
+            <th class="tui-table__th"><b>Avatar</b></th>
+            <th class="tui-table__th"><b>Name</b></th>
+            <th class="tui-table__th"><b>Email</b></th>
+            <th class="tui-table__th"><b>Role</b></th>
+            <th class="tui-table__th" style="width:10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="tui-table__tr" *ngFor="let account of accounts">
+            <td class="tui-table__th">
+                <tui-avatar
+                    text="{{account.firstName}} {{account.lastName}}"
+                    size="s"
+                    [rounded]="true"
+                    [avatarUrl]="account.avatar ?? null"
+                ></tui-avatar>
+            </td>
+            <td class="tui-table__th">{{account.firstName}} {{account.lastName}}</td>
+            <td class="tui-table__th">{{account.email}}</td>
+            <td class="tui-table__th">{{account.role}}</td>
+            <td class="tui-table__th" style="white-space: nowrap">
+                <button tuiButton routerLink="edit/{{account.id}}" icon="tuiIconDraft" size="s">Edit</button>
+                <button tuiButton (click)="deleteAccount(account.id)" size="s" icon="tuiIconTrash" class="tui-space_left-2" appearance="accent">
+                    <span *ngIf="account.isDeleting" class="spinner-border spinner-border-sm"></span>
+                    <span *ngIf="!account.isDeleting">Delete</span>
+                </button>
+            </td>
+        </tr>
+        <tr class="tui-table__tr" *ngIf="!accounts">
+            <td colspan="4" class="text-center">
+                <span class="spinner-border spinner-border-lg align-center"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>

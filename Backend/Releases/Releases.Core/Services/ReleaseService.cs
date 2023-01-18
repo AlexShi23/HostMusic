@@ -107,6 +107,7 @@ namespace HostMusic.Releases.Core.Services
             if (release != null)
             {
                 _mapper.Map(request, release);
+                release.ReleaseDate = release.ReleaseDate.ToUniversalTime();
                 release.UpdatedAt = DateTime.UtcNow;
                 release.Status = request.IsDraft ? ReleaseStatus.Draft : ReleaseStatus.Moderation;
                 _context.Releases.Update(release);

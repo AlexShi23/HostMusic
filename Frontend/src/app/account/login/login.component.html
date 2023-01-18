@@ -1,0 +1,31 @@
+﻿<div>
+    <img class="center-logo" src="../../assets/HostMusicLogo_color.svg">
+</div>
+<tui-island class="with-shadow">
+    <h1 class="title" style="text-align: center;">Sign In</h1>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <p>
+            <tui-input formControlName="email">Enter email</tui-input>
+            <tui-error
+                formControlName="email"
+                [error]="[] | tuiFieldError | async"
+            ></tui-error>
+        </p>
+        <p>
+            <tui-input-password formControlName="password">
+                Enter password
+            </tui-input-password>
+            <tui-error
+                formControlName="password"
+                [error]="[] | tuiFieldError | async"
+            ></tui-error>
+        </p>
+        <p>
+            <button tuiButton [disabled]="form.invalid">Sign In</button>
+            <button tuiButton appearance="flat" routerLink="../register" class="tui-space_left-3">Register</button>
+        </p>
+        <p style="text-align: center;">
+            <a tuiLink routerLink="../forgot-password">Forgot password?</a>
+        </p>
+    </form>
+</tui-island>
