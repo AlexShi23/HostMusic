@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 
 import { AccountService } from '@app/services';
 import { TuiNotification, TuiAlertService } from '@taiga-ui/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({ templateUrl: 'login.component.html' })
 export class LoginComponent implements OnInit {
@@ -18,8 +19,8 @@ export class LoginComponent implements OnInit {
         private router: Router,
         private accountService: AccountService,
         @Inject(TuiAlertService)
-        private readonly alertService: TuiAlertService,
-    ) { }
+        private readonly alertService: TuiAlertService
+    ) {}
 
     ngOnInit() {
         this.form = this.formBuilder.group({

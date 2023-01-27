@@ -11,8 +11,20 @@ import { RegisterComponent } from './register/register.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { TuiLanguageSwitcherModule } from "../common/language-switcher/language-switcher.module";
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { httpTranslateLoader } from '@app/app.module';
 
 @NgModule({
+    declarations: [
+        LayoutComponent,
+        LoginComponent,
+        RegisterComponent,
+        VerifyEmailComponent,
+        ForgotPasswordComponent,
+        ResetPasswordComponent
+    ],
     imports: [
         CommonModule,
         ReactiveFormsModule,
@@ -25,15 +37,15 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
         TuiLinkModule,
         TuiErrorModule,
         TuiFieldErrorPipeModule,
-        TuiSvgModule
-    ],
-    declarations: [
-        LayoutComponent,
-        LoginComponent,
-        RegisterComponent,
-        VerifyEmailComponent,
-        ForgotPasswordComponent,
-        ResetPasswordComponent
+        TuiSvgModule,
+        TuiLanguageSwitcherModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: httpTranslateLoader,
+                deps: [HttpClient]
+            }
+        }),
     ]
 })
 export class AccountModule { }
