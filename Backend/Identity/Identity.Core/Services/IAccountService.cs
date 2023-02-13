@@ -1,22 +1,14 @@
-﻿using System.Collections.Generic;
-using HostMusic.Identity.Core.Models;
+﻿using HostMusic.Identity.Core.Models.Requests;
+using HostMusic.Identity.Core.Models.Responses;
 
-namespace HostMusic.Identity.Core.Services
+namespace HostMusic.Identity.Core.Services;
+
+public interface IAccountService
 {
-    public interface IAccountService
-    {
-        AuthenticateResponse Authenticate(AuthenticateRequest model, string ipAddress);
-        AuthenticateResponse RefreshToken(string token, string ipAddress);
-        void RevokeToken(string token, string ipAddress);
-        void Register(RegisterRequest model, string origin);
-        void VerifyEmail(string token);
-        void ForgotPassword(ForgotPasswordRequest model, string origin);
-        void ValidateResetToken(ValidateResetTokenRequest model);
-        void ResetPassword(ResetPasswordRequest model);
-        IEnumerable<AccountResponse> GetAll();
-        AccountResponse GetById(int id);
-        AccountResponse Create(CreateRequest model);
-        AccountResponse Update(int id, UpdateRequest model);
-        void Delete(int id);
-    }
+    Task<IEnumerable<AccountResponse>> GetAllAccounts();
+    Task<AccountResponse> GetAccount(int id);
+    Task CreateAccount(CreateRequest request);
+    Task<AccountResponse> UpdateAccount(int id, UpdateRequest request);
+    Task<AccountResponse> UpdateAccountByAdmin(int id, UpdateByAdminRequest request);
+    Task DeleteAccount(int id);
 }

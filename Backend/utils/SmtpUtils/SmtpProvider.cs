@@ -17,7 +17,7 @@ namespace SmtpUtils
             _options = options.Value;
         }
         
-        public Task SendEmailAsync(string email, string subject, string message)
+        public async Task SendEmailAsync(string email, string subject, string message)
         {
             var letter = new MimeMessage
             {
@@ -27,8 +27,7 @@ namespace SmtpUtils
             };
             letter.From.Add(letter.Sender);
             letter.To.Add(MailboxAddress.Parse(email));
-            _client.SendAsync(letter);
-            return Task.FromResult(true);
+            await _client.SendAsync(letter);
         }
     }
 }

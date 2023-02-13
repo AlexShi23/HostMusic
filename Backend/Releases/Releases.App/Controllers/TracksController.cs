@@ -19,15 +19,6 @@ namespace HostMusic.Releases.App.Controllers
         {
             _trackService = trackService;
         }
-        
-        public static Account Account => new()
-        {
-            Id = 1,
-            Email = "123@mail.ru",
-            FirstName = "aaa",
-            LastName = "bbb",
-            Role = Role.Admin
-        };
 
         /// <summary>
         /// Get track by id

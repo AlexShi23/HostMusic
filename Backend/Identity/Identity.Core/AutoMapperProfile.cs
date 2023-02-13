@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using HostMusic.Identity.Core.Models;
+using HostMusic.Identity.Core.Models.Requests;
+using HostMusic.Identity.Core.Models.Responses;
 using HostMusic.Identity.Data.Entities;
 
 namespace HostMusic.Identity.Core
@@ -10,24 +11,15 @@ namespace HostMusic.Identity.Core
         {
             CreateMap<Account, AccountResponse>();
 
-            CreateMap<Account, AuthenticateResponse>();
+            CreateMap<Account, LoginResponse>();
 
             CreateMap<RegisterRequest, Account>();
-
+            
             CreateMap<CreateRequest, Account>();
 
-            CreateMap<UpdateRequest, Account>()
-                .ForAllMembers(x => x.Condition(
-                    (src, dest, prop) =>
-                    {
-                        if (prop == null)
-                            return false;
-                        if (prop is string && string.IsNullOrEmpty((string)prop))
-                            return false;
-                        
-                        return x.DestinationMember.Name != "Role" || src.Role != null;
-                    }
-                ));
+            CreateMap<UpdateRequest, Account>();
+
+            CreateMap<UpdateByAdminRequest, Account>();
         }
     }
 }

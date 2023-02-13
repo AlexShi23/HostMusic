@@ -6,20 +6,11 @@
             <h3 *ngIf="!isAddMode" class="tui-text_h3">Редактировать аккаунт</h3>
             <div class="tui-form__row tui-form__row_multi-fields">
                 <div class="tui-form__multi-field">
-                    <tui-input formControlName="firstName">
-                        Имя
+                    <tui-input formControlName="nickname">
+                        Никнейм
                     </tui-input>
                     <tui-error
-                        formControlName="firstName"
-                        [error]="[] | tuiFieldError | async"
-                    ></tui-error>
-                </div>
-                <div class="tui-form__multi-field">
-                    <tui-input formControlName="lastName">
-                        Фамилия
-                    </tui-input>
-                    <tui-error
-                        formControlName="lastName"
+                        formControlName="nickname"
                         [error]="[] | tuiFieldError | async"
                     ></tui-error>
                 </div>
@@ -43,33 +34,9 @@
                     </tui-select>
                 </div>
             </div>
-            <div *ngIf="!isAddMode">
-                <h3 class="tui-form__header">Поменять пароль</h3>
-                <p>Оставьте поле пустым, чтобы сохранить тот же пароль</p>
-            </div>
-            <div class="tui-form__row tui-form__row_multi-fields">
-                <div class="tui-form__multi-field">
-                    <tui-input-password formControlName="password">
-                        Введите пароль
-                    </tui-input-password>
-                    <tui-error
-                        formControlName="password"
-                        [error]="[] | tuiFieldError | async"
-                    ></tui-error>
-                </div>
-                <div class="tui-form__multi-field">
-                    <tui-input-password formControlName="confirmPassword">
-                        Повторите пароль
-                    </tui-input-password>
-                    <tui-error
-                        formControlName="confirmPassword"
-                        [error]="[] | tuiFieldError | async"
-                    ></tui-error>
-                </div>
-            </div>
             <div class="tui-form__buttons">
                 <button tuiButton type="submit" class="tui-form__button">Сохранить</button>
-                <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="../">Отмена</button>
+                <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="../../">Отмена</button>
             </div>
         </div>
     </div>

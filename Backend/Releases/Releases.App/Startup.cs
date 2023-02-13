@@ -4,8 +4,10 @@ using HostMusic.MinioUtils;
 using HostMusic.Releases.App.Middlewares;
 using HostMusic.Releases.Core;
 using HostMusic.Releases.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace HostMusic.Releases.App
@@ -35,6 +37,27 @@ namespace HostMusic.Releases.App
             
             services.AddData();
             services.AddHttpClient();
+            
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    RequireExpirationTime = true,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "MyVeryOwnIssuer",
+                    ValidAudience = "https://localhost:4200",
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        System.Text.Encoding.UTF8.GetBytes("MyVeryOwnSecurityKey"))
+                };
+            });
+            
             services.AddCors();
             services.AddMinio(Configuration);
             services.AddControllers().AddJsonOptions(x =>
@@ -85,7 +108,8 @@ namespace HostMusic.Releases.App
             );
 
             app.UseMiddleware<ErrorHandlerMiddleware>();
-            app.UseMiddleware<AuthMiddleware>();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(x => x.MapControllers());
         }
     }
