@@ -34,13 +34,13 @@
         <tr class="tui-table__tr" *ngFor="let account of accounts">
             <td class="tui-table__th">
                 <tui-avatar
-                    text="{{account.firstName}} {{account.lastName}}"
+                    text="{{account.nickname}}"
                     size="s"
                     [rounded]="true"
                     [avatarUrl]="account.avatar ?? null"
                 ></tui-avatar>
             </td>
-            <td class="tui-table__th">{{account.firstName}} {{account.lastName}}</td>
+            <td class="tui-table__th">{{account.nickname}}</td>
             <td class="tui-table__th">{{account.email}}</td>
             <td class="tui-table__th">{{account.role}}</td>
             <td class="tui-table__th" style="white-space: nowrap">

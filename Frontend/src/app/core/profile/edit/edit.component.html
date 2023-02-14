@@ -1,7 +1,7 @@
 ﻿<form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="tui-row tui-row_sme">
-        <div class=" tui-col_3"></div>
-        <div class=" tui-col_6">
+        <div class="tui-col_3"></div>
+        <div class="tui-col_6">
             <h3 class="tui-text_h3">
                 {{ 'EditProfile' | translate }}
             </h3>
@@ -36,7 +36,7 @@
                             [formControl]="this.form.controls.avatar"
                             (reject)="onReject($event)"
                         ></tui-input-files>
-                        
+
                         <tui-files class="tui-space_top-1" style="height: 100%">
                             <tui-file
                                 class="fileinput"
@@ -46,7 +46,7 @@
                                 style="height: 82%;"
                                 (removed)="removeFile()"
                             ></tui-file>
-                        
+
                             <tui-file
                                 *ngIf="rejectedFiles$ | async as file"
                                 state="error"
@@ -72,7 +72,7 @@
                         </div>
                     </div>
                     <div class="tui-form__row">
-                        <tui-input formControlName="email">{{ 'Email' | translate }}</tui-input>
+                        <tui-input formControlName="email">Email</tui-input>
                         <tui-error formControlName="email" [error]="[] | tuiFieldError | async"></tui-error>
                     </div>
                 </div>

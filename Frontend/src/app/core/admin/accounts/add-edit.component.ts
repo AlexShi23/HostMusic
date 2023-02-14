@@ -35,14 +35,9 @@ export class AddEditComponent implements OnInit {
         this.isAddMode = !this.id;
 
         this.form = this.formBuilder.group({
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
+            nickname: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
             role: ['', Validators.required],
-            password: ['', [Validators.minLength(6), this.isAddMode ? Validators.required : Validators.nullValidator]],
-            confirmPassword: ['']
-        }, {
-            validator: MustMatch('password', 'confirmPassword')
         });
 
         if (!this.isAddMode) {
@@ -58,7 +53,6 @@ export class AddEditComponent implements OnInit {
     onSubmit() {
         this.submitted = true;
 
-        // stop here if form is invalid
         if (this.form.invalid) {
             return;
         }
@@ -90,7 +84,7 @@ export class AddEditComponent implements OnInit {
     }
 
     private updateAccount() {
-        this.accountService.update(this.id, this.form.value)
+        this.accountService.updateByAdmin(this.id, this.form.value)
             .pipe(first())
             .subscribe({
                 next: () => { this.alertService

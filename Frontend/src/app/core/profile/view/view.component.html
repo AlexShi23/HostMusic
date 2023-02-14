@@ -5,7 +5,7 @@
                 <div class="tui-col_3">
                     <tui-avatar
                         [avatarUrl]="this.avatar"
-                        text="{{account.firstName}} {{account.lastName}}"
+                        text="{{account.nickname}}"
                         size="xl"
                         class="tui-space_top-1"
                         [rounded]="true"
@@ -18,6 +18,26 @@
                         <strong>{{ 'Email' | translate }}: </strong> {{account.email}}
                     </p>
                     <p><a tuiLink routerLink="edit">{{ 'EditProfile' | translate }}</a></p>
+                    <p style="margin-bottom: 0;">
+                        <a
+                            tuiLink
+                            routerLink="edit"
+                            icon="tuiIconEdit"
+                            iconAlign="left"
+                        >
+                            Edit Profile
+                        </a>
+                    </p>
+                    <p style="margin-top: 0;">
+                        <a
+                            tuiLink
+                            routerLink="change-password"
+                            icon="tuiIconLock"
+                            iconAlign="left"
+                        >
+                            Change password
+                        </a>
+                    </p>
                 </div>
             </div>
         </tui-island>

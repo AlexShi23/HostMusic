@@ -1,6 +1,8 @@
-﻿using HostMusic.Releases.App.Authorization;
+﻿using System.Security.Claims;
+using HostMusic.Releases.App.Authorization;
 using HostMusic.Releases.Core.Models;
 using HostMusic.Releases.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HostMusic.Releases.App.Controllers
@@ -16,7 +18,7 @@ namespace HostMusic.Releases.App.Controllers
             _releaseService = releaseService;
         }
 
-        public Account Account => (Account)HttpContext.Items["Account"];
+        private int AccountId => int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
         /// <summary>
         /// Get release by id
@@ -28,7 +30,8 @@ namespace HostMusic.Releases.App.Controllers
             var release = await _releaseService.GetById(id);
             if (release == null)
                 return NotFound(new { message = "Release not found" });
-            if (release.OwnerId == Account.Id || Account.Role is Role.Admin or Role.Moderator)
+            if (release.OwnerId == AccountId || User.IsInRole(Role.Admin.ToString())
+                                             || User.IsInRole(Role.Moderator.ToString()))
                 return Ok(release);
             return Unauthorized(new { message = "Unauthorized" });
         }
@@ -40,7 +43,7 @@ namespace HostMusic.Releases.App.Controllers
         [HttpGet("all/{page:int}")]
         public async Task<ActionResult<ReleasesPageResponse>> GetAll(int page)
         {
-            var releases = await _releaseService.GetAll(Account.Id, page);
+            var releases = await _releaseService.GetAll(AccountId, page);
             return Ok(releases);
         }
 
@@ -50,7 +53,7 @@ namespace HostMusic.Releases.App.Controllers
         [HttpPost]
         public ActionResult<Guid> Create(CreateReleaseRequest request)
         {
-            var releaseId = _releaseService.Create(request, Account.Id);
+            var releaseId = _releaseService.Create(request, AccountId);
             return Ok(releaseId);
         }
 
@@ -90,13 +93,14 @@ namespace HostMusic.Releases.App.Controllers
         [HttpGet("search")]
         public async Task<ActionResult<ReleasesPageResponse>> Search([FromQuery] string query, [FromQuery] int page)
         {
-            var releases = await _releaseService.Search(query, Account.Id, page);
+            var releases = await _releaseService.Search(query, AccountId, page);
             return Ok(releases);
         }
         
         /// <summary>
         /// Moderate release
         /// </summary>
+        [Authorize(Roles = "Moderator")]
         [HttpPatch("{id:guid}/moderate")]
         public async Task<IActionResult> ModerateRelease(Guid id, ModerationRequest request)
         {
@@ -107,6 +111,7 @@ namespace HostMusic.Releases.App.Controllers
         /// <summary>
         /// Get all releases on moderation
         /// </summary>
+        [Authorize(Roles = "Moderator")]
         [HttpGet("moderation/{page:int}")]
         public async Task<ActionResult<ReleasesPageResponse>> GetAllOnModeration(int page)
         {
@@ -118,7 +123,7 @@ namespace HostMusic.Releases.App.Controllers
         {
             if (release == null)
                 return NotFound(new { message = "Release not found" });
-            if (release.OwnerId != Account.Id && Account.Role is Role.User)
+            if (release.OwnerId != AccountId && User.IsInRole(Role.User.ToString()))
                 return StatusCode(StatusCodes.Status403Forbidden);
             return null;
         }

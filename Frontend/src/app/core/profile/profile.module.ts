@@ -9,6 +9,7 @@ import { ProfileRoutingModule } from './profile-routing.module';
 import { LayoutComponent } from './layout.component';
 import { ViewComponent } from './view/view.component';
 import { EditComponent } from './edit/edit.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
@@ -34,7 +35,8 @@ import { TranslateModule } from '@ngx-translate/core';
     declarations: [
         LayoutComponent,
         ViewComponent,
-        EditComponent
+        EditComponent,
+        ChangePasswordComponent
     ]
 })
 export class ProfileModule { }

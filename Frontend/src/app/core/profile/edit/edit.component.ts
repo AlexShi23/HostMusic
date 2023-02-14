@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AccountService, FilesService } from '@app/services';
-import { MustMatch } from '@app/helpers';
 import { TuiAlertService, TuiNotification } from '@taiga-ui/core';
 import { Subject } from 'rxjs';
 import { TuiFileLike } from '@taiga-ui/kit';
@@ -34,14 +33,9 @@ export class EditComponent implements OnInit {
 
     ngOnInit() {
         this.form = this.formBuilder.group({
-            firstName: [this.account.firstName, Validators.required],
-            lastName: [this.account.lastName, Validators.required],
+            nickname: [this.account.nickname, Validators.required],
             email: [this.account.email, [Validators.required, Validators.email]],
-            password: ['', [Validators.minLength(6)]],
-            confirmPassword: [''],
             avatar: [null]
-        }, {
-            validator: MustMatch('password', 'confirmPassword')
         });
 
         this.filesService.getFileUrl(this.account.id, FileType.Avatar, false).subscribe(
@@ -72,7 +66,7 @@ export class EditComponent implements OnInit {
     }
 
     updateAccount() {
-        delete this.form.controls.avatar;
+        delete this.form.value.avatar;
         this.accountService.update(this.account.id, this.form.value)
             .pipe(first())
             .subscribe({
