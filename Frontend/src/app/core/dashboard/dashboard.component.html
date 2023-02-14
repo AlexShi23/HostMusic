@@ -1,20 +1,20 @@
 <div class="head-title">
     <div class="left">
-        <h1>Dashboard</h1>
+        <h1>{{ 'Dashboard' | translate }}</h1>
         <tui-breadcrumbs style="display: contents;">
             <a
                 *tuiItem
                 tuiLink
                 routerLink="/"
             >
-                Dashboard
+                {{ 'Dashboard' | translate }}
             </a>
             <a
                 *tuiItem
                 tuiLink
                 routerLink="/"
             >
-                Home
+                {{ 'Home' | translate }}
             </a>
         </tui-breadcrumbs>
     </div>
@@ -25,7 +25,7 @@
         icon="tuiIconPlusLarge"
         routerLink="releases/add"
     >
-        New release
+        {{ 'NewRelease' | translate }}
     </button>
 </div>
 
@@ -34,21 +34,21 @@
         <i class='bx bx-headphone'></i>
         <span class="text">
             <h3>{{this.listenings}}</h3>
-            <p>Listenings</p>
+            <p>{{ 'Listenings' | translate }}</p>
         </span>
     </li>
     <li>
         <i class='bx bxs-group' ></i>
         <span class="text">
             <h3>{{this.listeners}}</h3>
-            <p>Listeners</p>
+            <p>{{ 'Listeners' | translate }}</p>
         </span>
     </li>
     <li>
         <i class='bx bxs-dollar-circle' ></i>
         <span class="text">
             <h3>${{this.sales}}</h3>
-            <p>Total Sales</p>
+            <p>{{ 'TotalSales' | translate }}</p>
         </span>
     </li>
 </ul>
@@ -56,7 +56,7 @@
 <div class="table-data">
     <div class="graph">
         <div class="head">
-            <h3>Listeners</h3>
+            <h3>{{ 'ListenersCount' | translate }}</h3>
         </div>
         <tui-axes
             class="axes"
@@ -80,16 +80,16 @@
     </div>
     <div class="releases">
         <div class="head">
-            <h3>Recent releases</h3>
+            <h3>{{ 'RecentReleases' | translate }}</h3>
             <i class="bx bx-search" routerLink="releases"></i>
         </div>
         <tui-loader [showLoader]="loading" size="l">
             <table class="tui-table">
                 <thead>
                     <tr class="tui-table__tr">
-                        <th class="tui-table__th" style="width:10%"><b>Cover</b></th>
-                        <th class="tui-table__th"><b>Release</b></th>
-                        <th class="tui-table__th"><b>Status</b></th>
+                        <th class="tui-table__th" style="width:10%"><b>{{ 'Cover' | translate }}</b></th>
+                        <th class="tui-table__th"><b>{{ 'Release' | translate }}</b></th>
+                        <th class="tui-table__th"><b>{{ 'Status' | translate }}</b></th>
                     </tr>
                 </thead>
                 <tbody *ngIf="!loading">

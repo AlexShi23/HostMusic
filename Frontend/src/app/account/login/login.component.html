@@ -2,10 +2,10 @@
     <img class="center-logo" src="../../assets/HostMusicLogo_color.svg">
 </div>
 <tui-island class="with-shadow">
-    <h1 class="title" style="text-align: center;"> {{ 'SignIn' | translate }} </h1>
+    <h1 class="title" style="text-align: center;"> {{ 'Identity.SignIn' | translate }} </h1>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <p>
-            <tui-input formControlName="email">{{ 'EnterEmail' | translate }}</tui-input>
+            <tui-input formControlName="email">{{ 'Identity.EnterEmail' | translate }}</tui-input>
             <tui-error
                 formControlName="email"
                 [error]="[] | tuiFieldError | async"
@@ -13,7 +13,7 @@
         </p>
         <p>
             <tui-input-password formControlName="password">
-                {{ 'EnterPassword' | translate }}
+                {{ 'Identity.EnterPassword' | translate }}
             </tui-input-password>
             <tui-error
                 formControlName="password"
@@ -21,12 +21,12 @@
             ></tui-error>
         </p>
         <p>
-            <button tuiButton [disabled]="form.invalid">{{ 'SignIn' | translate }}</button>
-            <button tuiButton appearance="flat" routerLink="../register" class="tui-space_left-3">{{ 'Register' | translate }}</button>
+            <button tuiButton [disabled]="form.invalid">{{ 'Identity.SignIn' | translate }}</button>
+            <button tuiButton appearance="flat" routerLink="../register" class="tui-space_left-3">{{ 'Identity.Register' | translate }}</button>
         </p>
         <p style="text-align: center;">
-            <a tuiLink routerLink="../forgot-password">{{ 'ForgotPassword' | translate }}</a>
+            <a tuiLink routerLink="../forgot-password">{{ 'Identity.ForgotPassword' | translate }}</a>
         </p>
-        <tui-language-switcher>{{ 'Language' | translate }}</tui-language-switcher>
     </form>
+    <tui-language-switcher>{{ 'Language' | translate }}</tui-language-switcher>
 </tui-island>

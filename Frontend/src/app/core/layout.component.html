@@ -12,7 +12,7 @@
                 <i class='bx'>
 					<tui-svg src="tuiIconStructureLarge" class="icon"></tui-svg>
 				</i>
-                <span class="text">Dashboard</span>
+                <span class="text">{{ 'Dashboard' | translate }}</span>
             </a>
         </li>
         <li routerLinkActive="active">
@@ -20,7 +20,7 @@
                 <i class='bx'>
 					<tui-svg src="tuiIconMusicLarge" class="icon"></tui-svg>
 				</i>
-                <span class="text">Releases</span>
+                <span class="text">{{ 'Releases' | translate }}</span>
             </a>
         </li>
         <li>
@@ -28,19 +28,19 @@
                 <i class='bx'>
 					<tui-svg src="tuiIconChartLineLarge" class="icon"></tui-svg>
 				</i>
-                <span class="text">Statistics</span>
+                <span class="text">{{ 'Statistics' | translate }}</span>
             </a>
         </li>
         <li>
             <a href="#">
                 <i class='bx bx-wallet bx-sm'></i>
-                <span class="text">Royalty</span>
+                <span class="text">{{ 'Royalty' | translate }}</span>
             </a>
         </li>
         <li routerLinkActive="active">
             <a routerLink="/profile">
                 <i class='bx bx-user bx-sm'></i>
-                <span class="text">Profile</span>
+                <span class="text">{{ 'Profile' | translate }}</span>
             </a>
         </li>
     </ul>
@@ -50,7 +50,7 @@
                 <i class='bx'>
 					<tui-svg src="tuiIconSettingsLarge" class="icon"></tui-svg>
 				</i>
-                <span class="text">Admin</span>
+                <span class="text">{{ 'Admin' | translate }}</span>
             </a>
         </li>
         <li (click)="logout()">
@@ -58,7 +58,7 @@
                 <i class='bx'>
 					<tui-svg src="tuiIconLogoutLarge" class="icon"></tui-svg>
 				</i>
-                <span class="text">Logout</span>
+                <span class="text">{{ 'Logout' | translate }}</span>
             </a>
         </li>
     </ul>
@@ -67,7 +67,7 @@
 <section id="navbar">
 	<nav>
 		<tui-svg src="tuiIconMenuLarge" class="icon" (click)="changeMenuClosed()"></tui-svg>
-        <label for="theme" class="themeLabel">Night mode</label>
+        <label for="theme" class="themeLabel">{{ 'NightMode' | translate }}</label>
         <form [formGroup]="themeForm">
             <tui-toggle
                 formControlName="theme"
@@ -78,12 +78,13 @@
 			<i class='bx bxs-bell' ></i>
 		</a>
 		<tui-hosted-dropdown
-			tuiDropdownAlign="left"
-			[content]="dropdown"
+            #dropdown
+			tuiDropdownAlign="right"
+			[content]="content"
 		>
 			<button tuiButton type="button" size="s" appearance="flat" [iconRight]="icon">
 				<tui-avatar
-					text="a a"
+					[text]="this.account.firstName + ' ' + this.account.lastName"
 					size="s"
                     [avatarUrl]="this.account.avatar ?? null"
 					[rounded]="true"
@@ -97,12 +98,6 @@
 				[class.icon_rotated]="open"
 			></tui-svg>
 		</ng-template>
-		<ng-template #dropdown>
-			<tui-data-list style="overflow-y: hidden;">
-				<button tuiOption routerLink="/profile">Profile</button>
-				<button tuiOption [icon]="tuiIconLogoutLarge" (click)="logout()">Logout</button>
-			</tui-data-list>
-		</ng-template>
 	</nav>
 </section>
 
@@ -111,3 +106,50 @@
         <router-outlet></router-outlet>
     </main>
 </section>
+
+<ng-template
+    #content
+    let-activeZone
+>
+    <tui-data-list
+        tuiDataListDropdownManager
+        [tuiActiveZoneParent]="activeZone"
+        style="overflow-y: hidden;"
+        size="l"
+    >
+        <button tuiOption routerLink="/profile">{{ 'Profile' | translate }}</button>
+        <button
+            tuiOption
+            tuiDropdownSided
+            tuiDropdownAlign="left"
+            [tuiDropdownManual]="false"
+            [tuiDropdown]="language"
+        >
+            {{ 'Language' | translate }}
+        </button>
+        <button tuiOption [icon]="tuiIconLogoutLarge" (click)="logout()">{{ 'Logout' | translate }}</button>
+    </tui-data-list>
+</ng-template>
+
+<ng-template
+    #language
+>
+    <tui-data-list
+        role="menu"
+        [tuiActiveZoneParent]="activeZone"
+    >
+        <button
+            *ngFor="let name of names"
+            tuiOption
+            [attr.aria-checked]="languageMatch(name)"
+            [value]="name | titlecase"
+            (click)="switchLanguage(name)"
+        >
+            {{ name | titlecase }}
+            <tui-svg
+                *ngIf="languageMatch(name)"
+                src="tuiIconCheckLarge"
+            ></tui-svg>
+        </button>
+    </tui-data-list>
+</ng-template>

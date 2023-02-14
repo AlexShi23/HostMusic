@@ -40,6 +40,7 @@ import { httpTranslateLoader } from '@app/app.module';
         TuiSvgModule,
         TuiLanguageSwitcherModule,
         TranslateModule.forRoot({
+            defaultLanguage: 'ru',
             loader: {
                 provide: TranslateLoader,
                 useFactory: httpTranslateLoader,

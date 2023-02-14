@@ -9,6 +9,7 @@ import { ProfileRoutingModule } from './profile-routing.module';
 import { LayoutComponent } from './layout.component';
 import { ViewComponent } from './view/view.component';
 import { EditComponent } from './edit/edit.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -27,7 +28,8 @@ import { EditComponent } from './edit/edit.component';
         TuiInputFilesModule,
         TuiBadgeModule,
         TuiBadgedContentModule,
-        TuiSvgModule
+        TuiSvgModule,
+        TranslateModule.forChild()
     ],
     declarations: [
         LayoutComponent,

@@ -1,8 +1,110 @@
 {
-    "SignIn": "Войти",
-    "EnterEmail": "Введите email",
-    "EnterPassword": "Введите пароль",
-    "Register": "Регистрация",
-    "ForgotPassword": "Забыли пароль?",
-    "Language": "Язык"
-}
+    "Identity": {
+        "SignIn": "Войти",
+        "EnterEmail": "Введите email",
+        "EnterPassword": "Введите пароль",
+        "Register": "Регистрация",
+        "ForgotPassword": "Забыли пароль?"
+    },
+
+    "Registration": {
+        "EnterName": "Введите ваше имя",
+        "EnterSurname": "Введите вашу фамилию",
+        "RepeatPassword": "Повторите пароль",
+        "IAgree": "Я согласен с ",
+        "TermsAndConditions": "Правилами и условиями",
+        "SignUp": "Создать"
+    },
+
+    "Language": "Язык",
+    "Reset": "Восстановить",
+    "Cancel": "Отмена",
+
+    "ResetPassword": {
+        "NewPassword": "Новый пароль",
+        "TokenChecking": "Проверка токена...",
+        "TokenCheckingFailed": "Проверка токена не удалась. Если срок действия токена истек, вы можете получить новый на странице "
+    },
+
+    "VerifyEmail": {
+        "EmailConfirmation": "Подтверждение email",
+        "Verification": "Верификация...",
+        "VerificationFailed": "Проверка не удалась. Вы можете подтвердить свой аккаунт на странице ",
+        "ResetPassword": "Восстановление пароля"
+    },
+
+    "Dashboard": "Панель управления",
+    "Releases": "Релизы",
+    "Statistics": "Статистика",
+    "Royalty": "Финансы",
+    "Profile": "Профиль",
+    "Admin": "Администратор",
+    "Logout": "Выйти",
+    "NightMode": "Темная тема",
+
+    "Home": "Главная",
+    "NewRelease": "Новый релиз",
+    "Listenings": "прослушиваний",
+    "Listeners": "слушателей",
+    "ListenersCount": "Количество слушателей",
+    "TotalSales": "сумма продаж",
+    "RecentReleases": "Недавние релизы",
+    "Cover": "Обложка",
+    "Release": "Релиз",
+    "Status": "Статус",
+
+    "Search": "Поиск",
+    "Type": "Тип",
+    "Date": "Дата",
+    "Edit": "Изменить",
+    "Delete": "Удалить",
+
+    "CreateRelease": "Создать релиз",
+    "EditRelease": "Редактировать релиз",
+    "ChoozeFile": "Выбрать файл",
+    "OfReleaseCover": "для обложки релиза",
+    "ReleaseTitle": "Название релиза",
+    "ReleaseType": "Тип релиза",
+    "Subtitle": "Подзаголовок",
+    "Artist": "Артист",
+    "Featuring": "Совместно с",
+    "Genre": "Жанр",
+    "Country": "Страна",
+    "ChoozePublisingDate": "Выберите дату публикации",
+    "AddTracks": "Добавить трек(и)",
+    "EditTracks": "Редактировать трек(и)",
+    "Track": "Трек",
+    "TrackTitle": "Название трека",
+    "TrackSubtitle": "Track subtitle",
+    "ChoozeWavFile": "Выберите .wav файл",
+    "OfTheTrack": "трека",
+    "TypeLyrics": "Введите текст трека",
+    "HasExplicit": "Трек содержит нецензурную лексику",
+    "AddTrack": "Добавить трек",
+    "DeleteTrack": "Удалить трек",
+    "SendToModeration": "Отправить на модерацию",
+    "SaveAsDraft": "Сохранить черновик",
+
+    "ReleaseCard": "Страница релиза",
+    "MainInformation": "Основная информация",
+    "Title": "Название",
+    "ReleaseDate": "Дата публикации",
+    "ReleaseDeclained": "Ваш релиз был отклонен. Комментарий модератора: ",
+    "CorrectRemark": "Исправьте эти замечания и отправьте релиз на проверку заново.",
+    "ModerationPassed": "Принять релиз",
+    "ModerationFailed": "Отклонить релиз",
+    "ExplainWhyReleaseIncorrect": "Объясните почему данный релиз не подходит для публикации",
+    "Comment": "Комментарий",
+    "Decline": "Отклонить",
+
+    "YourProfile": "Профиль",
+    "Name": "Имя",
+    "Surname": "Фамилия",
+    "Email": "Email",
+    "EditProfile": "Редактировать профиль",
+
+    "ChangePassword": "Сменить пароль",
+    "LeaveFieldEmpty": "Оставьте поле пустым, чтобы оставить парольь прежним",
+    "Save": "Сохранить",
+    "DeleteAccount": "Удалить аккаунт"
+}  

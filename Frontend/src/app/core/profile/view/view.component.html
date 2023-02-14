@@ -12,12 +12,12 @@
                     ></tui-avatar>
                 </div>
                 <div class="tui-col_9">
-                    <h1>Your Profile</h1>
+                    <h1>{{ 'YourProfile' | translate }}</h1>
                     <p>
-                        <strong>Name: </strong> {{account.firstName}} {{account.lastName}}<br/>
-                        <strong>Email: </strong> {{account.email}}
+                        <strong>{{ 'Name' | translate }}: </strong> {{account.firstName}} {{account.lastName}}<br/>
+                        <strong>{{ 'Email' | translate }}: </strong> {{account.email}}
                     </p>
-                    <p><a tuiLink routerLink="edit">Edit Profile</a></p>
+                    <p><a tuiLink routerLink="edit">{{ 'EditProfile' | translate }}</a></p>
                 </div>
             </div>
         </tui-island>

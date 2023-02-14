@@ -1,20 +1,20 @@
 <div class="head-title">
     <div class="left">
-        <h1>Releases</h1>
+        <h1>{{ 'Releases' | translate }}</h1>
         <tui-breadcrumbs style="display: contents;">
             <a
                 *tuiItem
                 tuiLink
                 routerLink="/"
             >
-                Releases
+                {{ 'Releases' | translate }}
             </a>
             <a
                 *tuiItem
                 tuiLink
                 routerLink="/"
             >
-                Home
+                {{ 'Home' | translate }}
             </a>
         </tui-breadcrumbs>
     </div>
@@ -25,7 +25,7 @@
         icon="tuiIconPlusLarge"
         routerLink="add"
     >
-        New release
+        {{ 'NewRelease' | translate }}
     </button>
 </div>
 
@@ -37,18 +37,18 @@
                 [(ngModel)]="search"
                 formControlName="search"
                 >
-                Search
+                {{ 'Search' | translate }}
             </tui-input>
         </form>
         <tui-loader [showLoader]="loading" size="l">
             <table class="tui-table tui-space_top-3">
                 <thead>
                     <tr class="tui-table__tr">
-                        <th class="tui-table__th" style="width:10%"><b>Cover</b></th>
-                        <th class="tui-table__th"><b>Release</b></th>
-                        <th class="tui-table__th"><b>Type</b></th>
-                        <th class="tui-table__th"><b>Date</b></th>
-                        <th class="tui-table__th"><b>Status</b></th>
+                        <th class="tui-table__th" style="width:10%"><b>{{ 'Cover' | translate }}</b></th>
+                        <th class="tui-table__th"><b>{{ 'Release' | translate }}</b></th>
+                        <th class="tui-table__th"><b>{{ 'Type' | translate }}</b></th>
+                        <th class="tui-table__th"><b>{{ 'Date' | translate }}</b></th>
+                        <th class="tui-table__th"><b>{{ 'Status' | translate }}</b></th>
                         <th class="tui-table__th" style="width:10%"></th>
                     </tr>
                 </thead>
@@ -61,9 +61,23 @@
                         <td class="tui-table__th" routerLink="{{release.id}}">{{this.formatDate(release.releaseDate)}}</td>
                         <td class="tui-table__th" routerLink="{{release.id}}"><tui-badge [status]="this.getBadge(release.status)" [value]="release.status"></tui-badge></td>
                         <td class="tui-table__th" style="white-space: nowrap">
-                            <button *ngIf="release.status == 'Draft' || release.status == 'Correcting'" tuiButton routerLink="{{release.id}}/edit" icon="tuiIconDraft" size="s" style="margin-right: 10px;">Edit</button>
-                            <button *ngIf="release.status == 'Draft' || release.status == 'Correcting'" tuiButton (click)="showDeleteDialog(release.id)" size="s" icon="tuiIconTrash" appearance="accent">
-                                <span>Delete</span>
+                            <button
+                                *ngIf="release.status == 'Draft' || release.status == 'Correcting'"
+                                tuiButton
+                                icon="tuiIconDraft"
+                                size="s"
+                                routerLink="{{release.id}}/edit"
+                                style="margin-right: 10px;"
+                            >
+                                {{ 'Edit' | translate }}
+                            </button>
+                            <button *ngIf="release.status == 'Draft' || release.status == 'Correcting'"
+                                tuiButton
+                                size="s"
+                                icon="tuiIconTrash" appearance="accent"
+                                (click)="showDeleteDialog(release.id)"
+                            >
+                                <span>{{ 'Delete' | translate }}</span>
                             </button>
                         </td>
                     </tr>

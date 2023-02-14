@@ -14,7 +14,7 @@ import {TuiCountryIsoCode, TuiLanguageName, TuiLanguageSwitcher} from '@taiga-ui
 export class TuiLanguageSwitcherComponent {
     private readonly path = this.iconsPath('tuiIcon').replace('tuiIcon.svg#tuiIcon', '');
  
-    readonly language = new FormControl(tuiCapitalizeFirstLetter('russian'));
+    readonly language: FormControl;
  
     readonly flags: Map<TuiLanguageName, TuiCountryIsoCode> = new Map([
         ['russian', TuiCountryIsoCode.RU],
@@ -31,7 +31,22 @@ export class TuiLanguageSwitcherComponent {
         public translate: TranslateService
     ) {
         translate.addLangs(['en', 'ru']);
-        translate.setDefaultLang('ru');
+        let localStorageLanguage = localStorage.getItem('locale');
+        if (localStorageLanguage) {
+            translate.setDefaultLang(localStorageLanguage);
+            translate.use(localStorageLanguage);
+
+            if (localStorageLanguage == 'en') {
+                this.language = new FormControl(tuiCapitalizeFirstLetter('english'));
+            } else {
+                this.language = new FormControl(tuiCapitalizeFirstLetter('russian'));
+            }
+        } else {
+            translate.setDefaultLang('ru');
+            this.language = new FormControl(tuiCapitalizeFirstLetter('russian'));
+            translate.use('ru');
+            localStorage.setItem('locale', 'ru');
+        }
     }
  
     getFlagPath(code?: TuiCountryIsoCode): string | null {
@@ -41,5 +56,6 @@ export class TuiLanguageSwitcherComponent {
     switchLanguage(name: string) {
         this.switcher.setLanguage(name);
         this.translate.use(name.slice(0, 2));
+        localStorage.setItem('locale', name.slice(0, 2));
     }
 }

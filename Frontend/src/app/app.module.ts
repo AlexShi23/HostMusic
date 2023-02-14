@@ -37,7 +37,6 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
         TuiToggleModule,
         TuiHostedDropdownModule,
         TuiDataListModule,
-        //TuiLanguageSwitcherModule,
         TranslateModule.forRoot({
             loader: {
               provide: TranslateLoader,

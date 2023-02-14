@@ -4,18 +4,18 @@
         [class.tui-skeleton_short]="skeletonVisible"
         [class.tui-skeleton_text]="skeletonVisible"    
     >
-        Track №{{index+1}}
+        {{ 'Track' | translate }} №{{index+1}}
     </h4>
     <div class="tui-form__row tui-form__row_multi-fields">
         <div class="tui-form__multi-field">
             <tui-input formControlName="title" [class.tui-skeleton]="skeletonVisible">
-                Track title
+                {{ 'Title' | translate }}
             </tui-input>
             <tui-error [error]="[] | tuiFieldError | async" formControlName="title"></tui-error>
         </div>
         <div class="tui-form__multi-field">
             <tui-input formControlName="subtitle" [class.tui-skeleton]="skeletonVisible">
-                Track subtitle
+                {{ 'Subtitle' | translate }}
             </tui-input>
             <tui-error [error]="[] | tuiFieldError | async" formControlName="subtitle"></tui-error>
         </div>
@@ -23,13 +23,13 @@
     <div class="tui-form__row tui-form__row_multi-fields">
         <div class="tui-form__multi-field">
             <tui-input formControlName="artist" [class.tui-skeleton]="skeletonVisible">
-                Artist
+                {{ 'Artist' | translate }}
             </tui-input>
             <tui-error [error]="[] | tuiFieldError | async" formControlName="artist"></tui-error>
         </div>
         <div class="tui-form__multi-field">
             <tui-input formControlName="featuring" [class.tui-skeleton]="skeletonVisible">
-                Featuring
+                {{ 'Featuring' | translate }}
             </tui-input>
             <tui-error [error]="[] | tuiFieldError | async" formControlName="featuring"></tui-error>
         </div>
@@ -73,8 +73,8 @@
                 <tui-input-files
                     *ngIf="!trackForm.controls.trackPath.value"
                     accept="audio/wav"
-                    [link] = "'Choose .wav file'"
-                    [label]="'of the track'"
+                    link = "{{ 'ChoozeWavFile' | translate }}"
+                    label="{{ 'OfTheTrack' | translate }}"
                     [class.tui-skeleton]="skeletonVisible"
                     [formControl]="trackForm.controls.trackPath"
                     [maxFileSize]="100000000"
@@ -102,7 +102,7 @@
     <div class="tui-form__row tui-form__row_multi-fields">
         <div class="tui-form__multi-field">
             <tui-text-area formControlName="lyrics" [class.tui-skeleton]="skeletonVisible">
-                Type a lyrics of the track
+                {{ 'TypeLyrics' | translate }}
             </tui-text-area>
         </div>
     </div>
@@ -113,7 +113,7 @@
             size="l"
             class="tui-space_bottom-3"
         >
-            Track has explicit lyrics
+            {{ 'HasExplicit' | translate }}
         </tui-checkbox-labeled>
         <button
             *ngIf="this.tracksArray.length > 1 &&
@@ -126,6 +126,8 @@
             type="button"
             size="l"
             (click)="deleteTrack(i)"
-        >Delete track</button>
+        >
+            {{ 'DeleteTrack' | translate }}
+        </button>
     </div>
 </form>

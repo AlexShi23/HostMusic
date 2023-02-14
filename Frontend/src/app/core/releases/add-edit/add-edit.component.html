@@ -7,7 +7,7 @@
                 [class.tui-skeleton_text]="releaseLoading"
                 style="margin-top: 0;"
             >
-                Create release
+                {{ 'CreateRelease' | translate }}
             </h3>
             <h3 *ngIf="!isAddMode" class="tui-text_h3"
                 [class.tui-skeleton]="releaseLoading"
@@ -15,7 +15,7 @@
                 [class.tui-skeleton_text]="releaseLoading"
                 style="margin-top: 0;"
             >
-                Edit release
+                {{ 'EditRelease' | translate }}
             </h3>
             <tui-loader
                 [showLoader]="this.filesUploading"
@@ -31,8 +31,8 @@
                                     *ngIf="!this.form.controls.cover.value"
                                     accept="image/*"
                                     [class.tui-skeleton]="releaseLoading"
-                                    [link] = "'Choose file'"
-                                    [label]="'of release cover'"
+                                    link = "{{ 'ChoozeFile' | translate }}"
+                                    label="{{ 'OfReleaseCover' | translate }}"
                                     style="height: 100%;"
                                     [formControl]="this.form.controls.cover"
                                     (reject)="onReject($event)"
@@ -78,13 +78,13 @@
                             <div class="tui-form__row tui-form__row_multi-fields">
                                 <div class="tui-form__multi-field">
                                     <tui-input formControlName="title" [class.tui-skeleton]="releaseLoading">
-                                        Release title
+                                        {{ 'ReleaseTitle' | translate }}
                                     </tui-input>
                                     <tui-error [error]="[] | tuiFieldError | async" formControlName="title"></tui-error>
                                 </div>
                                 <div class="tui-form__multi-field">
                                     <tui-select formControlName="type" [class.tui-skeleton]="releaseLoading">
-                                        Type
+                                        {{ 'ReleaseType' | translate }}
                                         <input tuiTextfield placeholder="Choose release type"/>
                                         <tui-data-list-wrapper
                                             *tuiDataList
@@ -96,22 +96,22 @@
                             </div>
                             <div class="tui-form__row tui-form__row_multi-fields">
                                 <div class="tui-form__multi-field">
-                                    <tui-input formControlName="subtitle" [class.tui-skeleton]="releaseLoading">Subtitle</tui-input>
+                                    <tui-input formControlName="subtitle" [class.tui-skeleton]="releaseLoading">{{ 'Subtitle' | translate }}</tui-input>
                                     <tui-error [error]="[] | tuiFieldError | async" formControlName="subtitle"></tui-error>
                                 </div>
                                 <div class="tui-form__multi-field">
-                                    <tui-input formControlName="artist" [class.tui-skeleton]="releaseLoading">Artist</tui-input>
+                                    <tui-input formControlName="artist" [class.tui-skeleton]="releaseLoading">{{ 'Artist' | translate }}</tui-input>
                                     <tui-error [error]="[] | tuiFieldError | async" formControlName="artist"></tui-error>
                                 </div>
                             </div>
                             <div class="tui-form__row tui-form__row_multi-fields">
                                 <div class="tui-form__multi-field">
-                                    <tui-input formControlName="featuring" [class.tui-skeleton]="releaseLoading">Featuring</tui-input>
+                                    <tui-input formControlName="featuring" [class.tui-skeleton]="releaseLoading">{{ 'Featuring' | translate }}</tui-input>
                                     <tui-error [error]="[] | tuiFieldError | async" formControlName="featuring"></tui-error>
                                 </div>
                                 <div class="tui-form__multi-field">
                                     <tui-select formControlName="genre" [class.tui-skeleton]="releaseLoading">
-                                        Genre
+                                        {{ 'Genre' | translate }}
                                         <input tuiTextfield placeholder="Choose the main genre"/>
                                         <tui-data-list-wrapper
                                             *tuiDataList
@@ -124,7 +124,7 @@
                             <div class="tui-form__row tui-form__row_multi-fields">
                                 <div class="tui-form__multi-field">
                                     <tui-select formControlName="country" [class.tui-skeleton]="releaseLoading">
-                                        Country
+                                        {{ 'Country' | translate }}
                                         <input tuiTextfield placeholder="Choose the country"/>
                                         <tui-data-list-wrapper
                                             *tuiDataList
@@ -140,7 +140,7 @@
                                         [(ngModel)]="releaseDate"
                                         [min]="currentDay"
                                     >
-                                        Choose a publishing date
+                                        {{ 'ChoozePublisingDate' | translate }}
                                     </tui-input-date>
                                     <tui-error [error]="[] | tuiFieldError | async" formControlName="releaseDate"></tui-error>
                                 </div>
@@ -154,14 +154,14 @@
                                 [class.tui-skeleton_short]="releaseLoading"
                                 [class.tui-skeleton_text]="releaseLoading"
                             >
-                                Add track(s)
+                                {{ 'AddTracks' | translate }}
                             </h3>
                             <h3 *ngIf="!isAddMode" class="tui-text_h3" style="margin-bottom: 0;"
                                 [class.tui-skeleton]="releaseLoading"
                                 [class.tui-skeleton_short]="releaseLoading"
                                 [class.tui-skeleton_text]="releaseLoading"
                             >
-                                Edit track(s)
+                                {{ 'EditTracks' | translate }}
                             </h3>
                             
                             <ng-container *ngFor="let trackForm of tracksArray.controls; index as i">
@@ -186,13 +186,19 @@
                                 icon="tuiIconPlusLarge"
                                 (click)="addTrack()"
                             >
-                                Add track
+                                {{ 'AddTrack' | translate }}
                             </button>
 
                             <div class="tui-form__buttons">
-                                <button tuiButton type="submit" class="tui-form__button">Send to moderation</button>
-                                <button tuiButton appearance="accent" type="button" (click)="saveAsDraft()" class="tui-form__button">Save as draft</button>
-                                <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="/releases">Cancel</button>
+                                <button tuiButton type="submit" class="tui-form__button">
+                                    {{ 'SendToModeration' | translate }}
+                                </button>
+                                <button tuiButton appearance="accent" type="button" (click)="saveAsDraft()" class="tui-form__button">
+                                    {{ 'SaveAsDraft' | translate }}
+                                </button>
+                                <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="/releases">
+                                    {{ 'Cancel' | translate }}
+                                </button>
                             </div>
                         </div>
                     </div>

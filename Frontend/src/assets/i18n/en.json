@@ -1,8 +1,112 @@
 {
-    "SignIn": "Sign In",
-    "EnterEmail": "Enter email",
-    "EnterPassword": "Enter password",
-    "Register": "Register",
-    "ForgotPassword": "Forgot password?",
-    "Language": "Language"
+    "Identity": {
+        "SignIn": "Sign In",
+        "EnterEmail": "Enter email",
+        "EnterPassword": "Enter password",
+        "Register": "Register",
+        "ForgotPassword": "Forgot password?"
+    },
+
+    "Registration": {
+        "EnterName": "Enter your name",
+        "EnterSurname": "Enter your surname",
+        "RepeatPassword": "Repeat password",
+        "IAgree": "I agree with the ",
+        "TermsAndConditions": "Terms and conditions",
+        "SignUp": "Sign Up"
+    },
+
+    "Language": "Language",
+    "Reset": "Reset",
+    "Cancel": "Cancel",
+
+    "ResetPassword": {
+        "NewPassword": "New password",
+        "TokenChecking": "Token checking...",
+        "TokenCheckingFailed": "Token checking failed. If token expaired, you can get new token on page "
+    },
+
+    "VerifyEmail": {
+        "EmailConfirmation": "Email confirmation",
+        "Verification": "Verification...",
+        "VerificationFailed": "Verification failed. You can confirm your account using page ",
+        "ResetPassword": "Reset password"
+    },
+
+    "Dashboard": "Dashboard",
+    "Releases": "Releases",
+    "Statistics": "Statistics",
+    "Royalty": "Royalty",
+    "Profile": "Profile",
+    "Admin": "Admin",
+    "Logout": "Logout",
+    "NightMode": "Night mode",
+
+    "Home": "Home",
+    "NewRelease": "New release",
+    "Listenings": "Listenings",
+    "Listeners": "Listeners",
+    "ListenersCount": "Listeners",
+    "TotalSales": "Total Sales",
+    "RecentReleases": "Recent releases",
+    "Cover": "Cover",
+    "Release": "Release",
+    "Status": "Status",
+
+    
+    "Search": "Search",
+    "Type": "Type",
+    "Date": "Date",
+    "Edit": "Edit",
+    "Delete": "Delete",
+
+    "CreateRelease": "Create release",
+    "EditRelease": "Edit release",
+    "ChoozeFile": "Chooze file",
+    "OfReleaseCover": "of release cover",
+    "ReleaseTitle": "Release title",
+    "ReleaseType": "Type",
+    "Subtitle": "Subtitle",
+    "Artist": "Artist",
+    "Featuring": "Featuring",
+    "Genre": "Genre",
+    "Country": "Country",
+    "ChoozePublisingDate": "Chooze a publishing date",
+    "AddTracks": "Add track(s)",
+    "EditTracks": "Edit tracks(s)",
+    "Track": "Track",
+    "TrackTitle": "Track title",
+    "TrackSubtitle": "Track subtitle",
+    "ChoozeWavFile": "Chooze .wav file",
+    "OfTheTrack": "of the track",
+    "TypeLyrics": "Type a lyrics of the track",
+    "HasExplicit": "Track has explicit lyrics",
+    "AddTrack": "Add track",
+    "DeleteTrack": "Delete track",
+    "SendToModeration": "Send to moderation",
+    "SaveAsDraft": "Save as draft",
+
+    "ReleaseCard": "Release card",
+    "MainInformation": "Main information",
+    "Title": "Title",
+    "ReleaseDate": "Release date",
+    "ReleaseWasDeclained": "Your release was declined. Moderator's comment: ",
+    "CorrectRemark": "Сorrect this remark and send the release for review again.",
+    "ModerationPassed": "Moderation passed",
+    "ModerationFailed": "Moderation failed",
+    "ExplainWhyReleaseIncorrect": "Explain why this release is not suitable for publication",
+    "Comment": "Comment",
+    "Decline": "Decline",
+
+
+    "YourProfile": "Your Profile",
+    "Name": "Name",
+    "Surname": "Surname",
+    "Email": "Email",
+    "EditProfile": "Edit profile",
+
+    "ChangePassword": "Change password",
+    "LeaveFieldEmpty": "Leave the field empty to keep the same password",
+    "Save": "Save",
+    "DeleteAccount": "Delete account"
 }

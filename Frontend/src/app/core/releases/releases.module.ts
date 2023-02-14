@@ -14,6 +14,9 @@ import { ListComponent } from './list.component';
 import { AddEditComponent } from './add-edit/add-edit.component';
 import { TrackInputComponent } from './add-edit/track-input/track-input.component';
 import { ViewComponent } from './view/view.component';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { httpTranslateLoader } from '@app/app.module';
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
     imports: [
@@ -49,7 +52,8 @@ import { ViewComponent } from './view/view.component';
         TuiSvgModule,
         TuiErrorModule,
         TuiFieldErrorPipeModule,
-        TuiBreadcrumbsModule
+        TuiBreadcrumbsModule,
+        TranslateModule.forChild()
     ],
     declarations: [
         TrackInputComponent,
