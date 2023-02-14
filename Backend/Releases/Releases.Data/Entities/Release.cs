@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using HostMusic.Releases.Primitives;
+﻿using HostMusic.Releases.Primitives;
 
 namespace HostMusic.Releases.Data.Entities
 {

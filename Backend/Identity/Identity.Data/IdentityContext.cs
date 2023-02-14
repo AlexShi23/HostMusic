@@ -1,13 +1,13 @@
 ﻿using HostMusic.Identity.Data.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace HostMusic.Identity.Data
 {
-    public class IdentityContext : DbContext
+    public class IdentityContext : IdentityDbContext<Account, IdentityRole<int>, int>
     {
-        public DbSet<Account> Accounts { get; set; } = null!;
-
         private readonly IConfiguration _configuration;
 
         public IdentityContext(IConfiguration configuration)

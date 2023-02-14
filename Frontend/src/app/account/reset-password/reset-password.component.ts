@@ -18,6 +18,7 @@ export class ResetPasswordComponent implements OnInit {
     TokenStatus = TokenStatus;
     tokenStatus = TokenStatus.Validating;
     token = null;
+    id = null;
     form: FormGroup;
     loading = false;
     submitted = false;
@@ -40,11 +41,12 @@ export class ResetPasswordComponent implements OnInit {
         });
 
         const token = this.route.snapshot.queryParams['token'];
+        this.id = this.route.snapshot.queryParams['id'];
 
         // remove token from url to prevent http referer leakage
         this.router.navigate([], { relativeTo: this.route, replaceUrl: true });
 
-        this.accountService.validateResetToken(token)
+        this.accountService.validateResetToken(this.id, token)
             .pipe(first())
             .subscribe({
                 next: () => {
@@ -57,19 +59,17 @@ export class ResetPasswordComponent implements OnInit {
             });
     }
 
-    // convenience getter for easy access to form fields
     get f() { return this.form.controls; }
 
     onSubmit() {
         this.submitted = true;
 
-        // stop here if form is invalid
         if (this.form.invalid) {
             return;
         }
 
         this.loading = true;
-        this.accountService.resetPassword(this.token, this.f.password.value, this.f.confirmPassword.value)
+        this.accountService.resetPassword(this.id, this.token, this.f.password.value, this.f.confirmPassword.value)
             .pipe(first())
             .subscribe({
                 next: () => {

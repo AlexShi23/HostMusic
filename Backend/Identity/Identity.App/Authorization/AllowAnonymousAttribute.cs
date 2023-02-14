@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace HostMusic.Identity.App.Authorization;
 
-namespace HostMusic.Identity.App.Authorization
+[AttributeUsage(AttributeTargets.Method)]
+public class AllowAnonymousAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Method)]
-    public class AllowAnonymousAttribute : Attribute
-    {
-    }
 }
