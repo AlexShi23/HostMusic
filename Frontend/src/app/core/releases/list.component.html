@@ -99,24 +99,26 @@
 
 <ng-template
     let-observer
-    [tuiDialogOptions]="$any({ label: 'Do you really want to remove this release?', size: 's' })"
+    [tuiDialogOptions]="$any({ label: 'DeleteReleaseQuestion' | translate, size: 's' })"
     [(tuiDialog)]="open"
 >
-    <p style="margin-bottom: 0.5rem;">Release "{{this.deletedRelease.artist}} - {{this.deletedRelease.title}}" will be deleted</p>
+    <p style="margin-bottom: 0.5rem;">
+        {{ 'Release' | translate }} "{{this.deletedRelease.artist}} - {{this.deletedRelease.title}}" {{ 'WillBeDeleted' | translate }}
+    </p>
     <div>
         <button
             tuiButton
             appearance="accent"
             (click)="this.deleteRelease(); observer.complete()"
         >
-            Yes
+            {{ 'Delete' | translate }}
         </button>
         <button
             tuiButton
             style="margin-left: 10px;"
             (click)="observer.complete()"
         >
-            Cancel
+            {{ 'Cancel' | translate }}  
         </button>
     </div>
 </ng-template>

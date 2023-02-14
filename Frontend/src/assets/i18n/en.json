@@ -8,8 +8,7 @@
     },
 
     "Registration": {
-        "EnterName": "Enter your name",
-        "EnterSurname": "Enter your surname",
+        "EnterName": "Enter username",
         "RepeatPassword": "Repeat password",
         "IAgree": "I agree with the ",
         "TermsAndConditions": "Terms and conditions",
@@ -59,6 +58,8 @@
     "Date": "Date",
     "Edit": "Edit",
     "Delete": "Delete",
+    "WillBeDeleted": "will be deleted.",
+    "DeleteReleaseQuestion": "Do you really want to remove this release?",
 
     "CreateRelease": "Create release",
     "EditRelease": "Edit release",
@@ -101,7 +102,7 @@
 
     "YourProfile": "Your Profile",
     "Name": "Name",
-    "Surname": "Surname",
+    "Nickname": "Nickname",
     "Email": "Email",
     "EditProfile": "Edit profile",
 

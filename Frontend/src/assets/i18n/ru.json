@@ -8,8 +8,7 @@
     },
 
     "Registration": {
-        "EnterName": "Введите ваше имя",
-        "EnterSurname": "Введите вашу фамилию",
+        "EnterName": "Введите имя пользователя",
         "RepeatPassword": "Повторите пароль",
         "IAgree": "Я согласен с ",
         "TermsAndConditions": "Правилами и условиями",
@@ -58,6 +57,8 @@
     "Date": "Дата",
     "Edit": "Изменить",
     "Delete": "Удалить",
+    "WillBeDeleted": "будет удалён.",
+    "DeleteReleaseQuestion": "Вы действительно хотите удалить этот релиз?",
 
     "CreateRelease": "Создать релиз",
     "EditRelease": "Редактировать релиз",
@@ -99,7 +100,7 @@
 
     "YourProfile": "Профиль",
     "Name": "Имя",
-    "Surname": "Фамилия",
+    "Nickname": "Никнейм",
     "Email": "Email",
     "EditProfile": "Редактировать профиль",
 

@@ -59,38 +59,16 @@
                 <div class="tui-col_9">
                     <div class="tui-form__row tui-form__row_multi-fields">
                         <div class="tui-form__multi-field">
-                            <tui-input formControlName="firstName">
-                                {{ 'Name' | translate }}
+                            <tui-input formControlName="nickname">
+                                {{ 'Nickname' | translate }}
                             </tui-input>
-                            <tui-error formControlName="firstName" [error]="[] | tuiFieldError | async"></tui-error>
-                        </div>
-                        <div class="tui-form__multi-field">
-                            <tui-input formControlName="lastName">
-                                {{ 'Surname' | translate }}
-                            </tui-input>
-                            <tui-error formControlName="lastName" [error]="[] | tuiFieldError | async"></tui-error>
+                            <tui-error formControlName="nickname" [error]="[] | tuiFieldError | async"></tui-error>
                         </div>
                     </div>
                     <div class="tui-form__row">
                         <tui-input formControlName="email">Email</tui-input>
                         <tui-error formControlName="email" [error]="[] | tuiFieldError | async"></tui-error>
                     </div>
-                </div>
-            </div>
-            <h3 class="tui-form__header">{{ 'ChangePassword' | translate }}</h3>
-            <p>{{ 'LeaveFieldEmpty' | translate }}</p>
-            <div class="tui-form__row tui-form__row_multi-fields">
-                <div class="tui-form__multi-field">
-                    <tui-input-password formControlName="password">
-                        {{ 'Identity.EnterPassword' | translate }}
-                    </tui-input-password>
-                    <tui-error formControlName="password" [error]="[] | tuiFieldError | async"></tui-error>
-                </div>
-                <div class="tui-form__multi-field">
-                    <tui-input-password formControlName="confirmPassword">
-                        {{ 'Registration.RepeatPassword' | translate }}
-                    </tui-input-password>
-                    <tui-error formControlName="confirmPassword" [error]="[] | tuiFieldError | async"></tui-error>
                 </div>
             </div>
             <div class="tui-form__buttons">
