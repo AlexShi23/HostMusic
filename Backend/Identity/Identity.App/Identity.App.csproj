@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
@@ -6,7 +6,8 @@
         <Nullable>enable</Nullable>
         <AssemblyName>HostMusic.Identity.App</AssemblyName>
         <RootNamespace>HostMusic.Identity.App</RootNamespace>
-    </PropertyGroup>
+      <UserSecretsId>hostmusic-identity</UserSecretsId>
+  </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
       <DocumentationFile>bin\Debug\HostMusic.Identity.App.xml</DocumentationFile>

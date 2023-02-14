@@ -51,10 +51,10 @@ namespace HostMusic.Releases.App
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "MyVeryOwnIssuer",
-                    ValidAudience = "https://localhost:4200",
+                    ValidIssuer = Configuration["JwtSettings:Issuer"],
+                    ValidAudience = Configuration["JwtSettings:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(
-                        System.Text.Encoding.UTF8.GetBytes("MyVeryOwnSecurityKey"))
+                        System.Text.Encoding.UTF8.GetBytes(Configuration["JwtSettings:SecurityKey"]))
                 };
             });
             
