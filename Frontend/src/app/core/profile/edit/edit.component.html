@@ -3,7 +3,7 @@
         <div class="tui-col_3"></div>
         <div class="tui-col_6">
             <h3 class="tui-text_h3">
-                Edit profile
+                {{ 'EditProfile' | translate }}
             </h3>
             <div class="tui-row">
                 <div class="tui-col_3" style="padding-right: 0;">
@@ -36,7 +36,7 @@
                             [formControl]="this.form.controls.avatar"
                             (reject)="onReject($event)"
                         ></tui-input-files>
-                        
+
                         <tui-files class="tui-space_top-1" style="height: 100%">
                             <tui-file
                                 class="fileinput"
@@ -46,7 +46,7 @@
                                 style="height: 82%;"
                                 (removed)="removeFile()"
                             ></tui-file>
-                        
+
                             <tui-file
                                 *ngIf="rejectedFiles$ | async as file"
                                 state="error"
@@ -60,7 +60,7 @@
                     <div class="tui-form__row tui-form__row_multi-fields">
                         <div class="tui-form__multi-field">
                             <tui-input formControlName="nickname">
-                                Nickname
+                                {{ 'Nickname' | translate }}
                             </tui-input>
                             <tui-error formControlName="nickname" [error]="[] | tuiFieldError | async"></tui-error>
                         </div>
@@ -72,9 +72,15 @@
                 </div>
             </div>
             <div class="tui-form__buttons">
-                <button tuiButton type="submit" class="tui-form__button">Save</button>
-                <button tuiButton appearance="accent" type="button" (click)="onDelete()" class="tui-form__button" [disabled]="deleting">Delete account</button>
-                <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="../">Cancel</button>
+                <button tuiButton type="submit" class="tui-form__button">
+                    {{ 'Save' | translate }}
+                </button>
+                <button tuiButton appearance="accent" type="button" (click)="onDelete()" class="tui-form__button" [disabled]="deleting">
+                    {{ 'DeleteAccount' | translate }}
+                </button>
+                <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="../">
+                    {{ 'Cancel' | translate }}
+                </button>
             </div>
         </div>
     </div>

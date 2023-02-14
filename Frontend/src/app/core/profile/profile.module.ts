@@ -10,6 +10,7 @@ import { LayoutComponent } from './layout.component';
 import { ViewComponent } from './view/view.component';
 import { EditComponent } from './edit/edit.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
         TuiInputFilesModule,
         TuiBadgeModule,
         TuiBadgedContentModule,
-        TuiSvgModule
+        TuiSvgModule,
+        TranslateModule.forChild()
     ],
     declarations: [
         LayoutComponent,

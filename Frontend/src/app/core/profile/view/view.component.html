@@ -12,19 +12,19 @@
                     ></tui-avatar>
                 </div>
                 <div class="tui-col_9">
-                    <h1>Your Profile</h1>
+                    <h1>{{ 'YourProfile' | translate }}</h1>
                     <p>
-                        <strong>Nickname: </strong> {{account.nickname}} <br/>
-                        <strong>Email: </strong> {{account.email}}
+                        <strong>{{ 'Nickname' | translate }}: </strong> {{account.nickname}}<br/>
+                        <strong>{{ 'Email' | translate }}: </strong> {{account.email}}
                     </p>
                     <p style="margin-bottom: 0;">
-                        <a 
-                            tuiLink 
+                        <a
+                            tuiLink
                             routerLink="edit"
                             icon="tuiIconEdit"
                             iconAlign="left"
                         >
-                            Edit Profile
+                            {{ 'EditProfile' | translate }}
                         </a>
                     </p>
                     <p style="margin-top: 0;">
@@ -34,7 +34,7 @@
                             icon="tuiIconLock"
                             iconAlign="left"
                         >
-                            Change password
+                            {{ 'ChangePassword' | translate }}
                         </a>
                     </p>
                 </div>

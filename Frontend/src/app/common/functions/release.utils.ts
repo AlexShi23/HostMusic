@@ -12,6 +12,8 @@ export function getBadge(status: Status): string {
             return 'info';
         case Status.Published:
             return 'success';
+        case Status.ModerationDone:
+            return 'info';
     }
 
     return '';
