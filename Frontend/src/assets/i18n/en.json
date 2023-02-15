@@ -52,7 +52,7 @@
     "Release": "Release",
     "Status": "Status",
 
-    
+
     "Search": "Search",
     "Type": "Type",
     "Date": "Date",
@@ -91,6 +91,8 @@
     "MainInformation": "Main information",
     "Title": "Title",
     "ReleaseDate": "Release date",
+    "ViewText": "View text of the track",
+    "TrackText": "Text of the track",
     "ReleaseWasDeclained": "Your release was declined. Moderator's comment: ",
     "CorrectRemark": "Сorrect this remark and send the release for review again.",
     "ModerationPassed": "Moderation passed",

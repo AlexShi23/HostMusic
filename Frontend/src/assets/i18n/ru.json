@@ -76,7 +76,7 @@
     "EditTracks": "Редактировать трек(и)",
     "Track": "Трек",
     "TrackTitle": "Название трека",
-    "TrackSubtitle": "Track subtitle",
+    "TrackSubtitle": "Подзаголовок трека",
     "ChoozeWavFile": "Выберите .wav файл",
     "OfTheTrack": "трека",
     "TypeLyrics": "Введите текст трека",
@@ -90,6 +90,8 @@
     "MainInformation": "Основная информация",
     "Title": "Название",
     "ReleaseDate": "Дата публикации",
+    "ViewText": "Посмотреть текст трека",
+    "TrackText": "Текст трека",
     "ReleaseDeclained": "Ваш релиз был отклонен. Комментарий модератора: ",
     "CorrectRemark": "Исправьте эти замечания и отправьте релиз на проверку заново.",
     "ModerationPassed": "Принять релиз",
@@ -108,4 +110,4 @@
     "LeaveFieldEmpty": "Оставьте поле пустым, чтобы оставить парольь прежним",
     "Save": "Сохранить",
     "DeleteAccount": "Удалить аккаунт"
-}  
+}

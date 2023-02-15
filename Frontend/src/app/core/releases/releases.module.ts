@@ -53,7 +53,8 @@ import { HttpClient } from '@angular/common/http';
         TuiErrorModule,
         TuiFieldErrorPipeModule,
         TuiBreadcrumbsModule,
-        TranslateModule.forChild()
+        TranslateModule.forChild(),
+        TuiHintModule
     ],
     declarations: [
         TrackInputComponent,

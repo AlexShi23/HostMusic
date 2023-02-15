@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TuiFieldErrorPipeModule, TuiInputModule, TuiInputPasswordModule, TuiIslandModule, TuiAvatarModule,
     TuiFilesModule, TuiInputFilesModule, TuiBadgedContentModule, TuiBadgeModule } from '@taiga-ui/kit';
-import { TuiButtonModule, TuiErrorModule, TuiLinkModule, TuiSvgModule } from '@taiga-ui/core';
+import { TuiButtonModule, TuiErrorModule, TuiLinkModule, TuiLoaderModule, TuiSvgModule } from '@taiga-ui/core';
 
 import { ProfileRoutingModule } from './profile-routing.module';
 import { LayoutComponent } from './layout.component';
@@ -30,7 +30,8 @@ import { TranslateModule } from '@ngx-translate/core';
         TuiBadgeModule,
         TuiBadgedContentModule,
         TuiSvgModule,
-        TranslateModule.forChild()
+        TranslateModule.forChild(),
+        TuiLoaderModule
     ],
     declarations: [
         LayoutComponent,

@@ -7,7 +7,6 @@
                 type="button"
                 size="m"
                 appearance="secondary"
-                title="Play/Pause"
                 icon="tuiIconEditLarge"
                 style="margin-bottom: auto;"
                 routerLink="/releases/{{id}}/edit"
@@ -56,8 +55,8 @@
                     </div>
                 </div>
                 <div *ngIf="release" class="tui-row">
-                    <div class="tui-col_12">
-                        <div class="tui-player tui-space_top-4" 
+                    <div class="tui-col_10" style="padding-right: 0;">
+                        <div class="tui-player tui-space_top-4"
                             *ngFor="let track of release.tracks; index as i"
                             [class.tui-skeleton]="!track.file"
                         >
@@ -91,6 +90,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="tui-col_1">
+                        <button
+                            tuiIconButton
+                            class="tui-space_top-4"
+                            type="button"
+                            size="l"
+                            appearance="secondary"
+                            icon="tuiIconFontLarge"
+                            tuiHint="{{ 'ViewText' | translate }}"
+                            tuiHintDescribe
+                            (click)="this.showTextDialog()"
+                        ></button>
+                    </div>
                 </div>
                 <div *ngIf="release && isModerationCase()" class="tui-form__buttons between">
                     <button tuiButton icon="tuiIconLikeLarge" class="tui-form__button" (click)="this.approveRelease()">
@@ -107,8 +119,16 @@
 
 <ng-template
     let-observer
+    [tuiDialogOptions]="{label: 'TrackText' | translate, size: 'm'}"
+    [(tuiDialog)]="textDialogOpen"
+>
+
+</ng-template>
+
+<ng-template
+    let-observer
     [tuiDialogOptions]="{label: 'ModerationFailed' | translate, size: 'm'}"
-    [(tuiDialog)]="dialogOpen"
+    [(tuiDialog)]="moderationDialogOpen"
 >
     <form
         [formGroup]="moderationForm"

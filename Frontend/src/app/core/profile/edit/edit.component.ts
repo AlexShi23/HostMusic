@@ -66,6 +66,11 @@ export class EditComponent implements OnInit {
     }
 
     updateAccount() {
+        if (this.form.value.nickname === this.account.nickname && this.form.value.email === this.account.email) {
+            this.router.navigate(['../'], { relativeTo: this.route });
+            return;
+        }
+
         delete this.form.value.avatar;
         this.accountService.update(this.account.id, this.form.value)
             .pipe(first())

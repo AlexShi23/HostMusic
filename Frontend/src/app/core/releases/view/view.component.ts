@@ -17,7 +17,8 @@ export class ViewComponent implements OnInit {
     release: Release;
     currentTime: number[];
     paused: boolean[];
-    dialogOpen = false;
+    textDialogOpen = false;
+    moderationDialogOpen = false;
     moderationForm = new FormGroup({
         moderationComment: new FormControl(``, Validators.required),
     });
@@ -73,7 +74,7 @@ export class ViewComponent implements OnInit {
     getIcon(index: number): string {
         return this.paused[index] ? 'tuiIconPlayLarge' : 'tuiIconPauseLarge';
     }
- 
+
     toggleState(index: number): void {
         this.paused[index] = !this.paused[index];
     }
@@ -86,8 +87,12 @@ export class ViewComponent implements OnInit {
         return this.release.status === Status.Correcting;
     }
 
+    showTextDialog(): void {
+        this.textDialogOpen = true;
+    }
+
     showModerationDialog(): void {
-        this.dialogOpen = true;
+        this.moderationDialogOpen = true;
     }
 
     approveRelease(): void {

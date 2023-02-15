@@ -5,83 +5,90 @@
             <h3 class="tui-text_h3">
                 {{ 'EditProfile' | translate }}
             </h3>
-            <div class="tui-row">
-                <div class="tui-col_3" style="padding-right: 0;">
-                    <div style="height: 100%; width: 100%;"
-                        *ngIf="this.avatar != null && !this.form.controls.avatar.value && !this.needAvatarInput"
-                    >
-                        <tui-badged-content
-                            [contentTop]="customBadge"
-                            size="l"
-                            style="height: 100%; width: 100%;"
+            <tui-loader
+                [showLoader]="this.loading"
+                [overlay]="this.loading"
+                size="l"
+                textContent="Files uploading"
+            >
+                <div class="tui-row">
+                    <div class="tui-col_3" style="padding-right: 0;">
+                        <div style="height: 100%; width: 100%;"
+                            *ngIf="this.avatar != null && !this.form.controls.avatar.value && !this.needAvatarInput"
                         >
-                            <tui-avatar
-                                style="height: 90%; width: 100%;"
-                                size="xl"
-                                text="ab hh"
-                                class="tui-space_top-1"
-                                [rounded]="true"
-                                [avatarUrl]="this.avatar"
-                            ></tui-avatar>
-                        </tui-badged-content>
-                    </div>
-                    <div *ngIf="this.needAvatarInput" style="height: 100%;">
-                        <tui-input-files
-                            *ngIf="!this.form.controls.avatar.value"
-                            accept="image/*"
-                            [class.tui-skeleton]="releaseLoading"
-                            [link] = "'Choose file'"
-                            [label]="'of avatar'"
-                            style="height: 100%;"
-                            [formControl]="this.form.controls.avatar"
-                            (reject)="onReject($event)"
-                        ></tui-input-files>
-
-                        <tui-files class="tui-space_top-1" style="height: 100%">
-                            <tui-file
-                                class="fileinput"
-                                *ngIf="this.form.controls.avatar.valueChanges | async as file"
-                                [file]="file"
+                            <tui-badged-content
+                                [contentTop]="customBadge"
                                 size="l"
-                                style="height: 82%;"
-                                (removed)="removeFile()"
-                            ></tui-file>
+                                style="height: 100%; width: 100%;"
+                            >
+                                <tui-avatar
+                                    style="height: 90%; width: 100%;"
+                                    size="xl"
+                                    text="ab hh"
+                                    class="tui-space_top-1"
+                                    [rounded]="true"
+                                    [avatarUrl]="this.avatar"
+                                ></tui-avatar>
+                            </tui-badged-content>
+                        </div>
+                        <div *ngIf="this.needAvatarInput" style="height: 100%;">
+                            <tui-input-files
+                                *ngIf="!this.form.controls.avatar.value"
+                                accept="image/*"
+                                [class.tui-skeleton]="releaseLoading"
+                                [link] = "'Choose file'"
+                                [label]="'of avatar'"
+                                style="height: 100%;"
+                                [formControl]="this.form.controls.avatar"
+                                (reject)="onReject($event)"
+                            ></tui-input-files>
 
-                            <tui-file
-                                *ngIf="rejectedFiles$ | async as file"
-                                state="error"
-                                [file]="file"
-                                (removed)="clearRejected()"
-                            ></tui-file>
-                        </tui-files>
-                    </div>
-                </div>
-                <div class="tui-col_9">
-                    <div class="tui-form__row tui-form__row_multi-fields">
-                        <div class="tui-form__multi-field">
-                            <tui-input formControlName="nickname">
-                                {{ 'Nickname' | translate }}
-                            </tui-input>
-                            <tui-error formControlName="nickname" [error]="[] | tuiFieldError | async"></tui-error>
+                            <tui-files class="tui-space_top-1" style="height: 100%">
+                                <tui-file
+                                    class="fileinput"
+                                    *ngIf="this.form.controls.avatar.valueChanges | async as file"
+                                    [file]="file"
+                                    size="l"
+                                    style="height: 82%;"
+                                    (removed)="removeFile()"
+                                ></tui-file>
+
+                                <tui-file
+                                    *ngIf="rejectedFiles$ | async as file"
+                                    state="error"
+                                    [file]="file"
+                                    (removed)="clearRejected()"
+                                ></tui-file>
+                            </tui-files>
                         </div>
                     </div>
-                    <div class="tui-form__row">
-                        <tui-input formControlName="email">Email</tui-input>
-                        <tui-error formControlName="email" [error]="[] | tuiFieldError | async"></tui-error>
+                    <div class="tui-col_9">
+                        <div class="tui-form__row tui-form__row_multi-fields">
+                            <div class="tui-form__multi-field">
+                                <tui-input formControlName="nickname">
+                                    {{ 'Nickname' | translate }}
+                                </tui-input>
+                                <tui-error formControlName="nickname" [error]="[] | tuiFieldError | async"></tui-error>
+                            </div>
+                        </div>
+                        <div class="tui-form__row">
+                            <tui-input formControlName="email">Email</tui-input>
+                            <tui-error formControlName="email" [error]="[] | tuiFieldError | async"></tui-error>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="tui-form__buttons">
-                <button tuiButton type="submit" class="tui-form__button">
-                    {{ 'Save' | translate }}
-                </button>
-                <button tuiButton appearance="accent" type="button" (click)="onDelete()" class="tui-form__button" [disabled]="deleting">
-                    {{ 'DeleteAccount' | translate }}
-                </button>
-                <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="../">
-                    {{ 'Cancel' | translate }}
-                </button>
-            </div>
+                <div class="tui-form__buttons">
+                    <button tuiButton type="submit" class="tui-form__button">
+                        {{ 'Save' | translate }}
+                    </button>
+                    <button tuiButton appearance="accent" type="button" (click)="onDelete()" class="tui-form__button" [disabled]="deleting">
+                        {{ 'DeleteAccount' | translate }}
+                    </button>
+                    <button tuiButton appearance="flat" type="button" class="tui-form__button" routerLink="../">
+                        {{ 'Cancel' | translate }}
+                    </button>
+                </div>
+            </tui-loader>
         </div>
     </div>
 </form>
