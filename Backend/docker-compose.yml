@@ -1,11 +1,23 @@
-version: "3.9"
+version: "3.7"
 services:
-  web:
-    build: .
+  identity:
+    build:
+      context: .
+      dockerfile: Dockerfile_identity
     ports:
       - "5000:5000"
     depends_on:
       - postgres
+
+  releases:
+    build:
+      context: .
+      dockerfile: Dockerfile_releases
+    ports:
+      - "5283:5283"
+    depends_on:
+      - postgres
+      - minio
 
   postgres:
     image: postgres:13.3

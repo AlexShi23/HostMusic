@@ -1,11 +1,11 @@
 #!/bin/bash
 
 set -e
-run_cmd="dotnet run --no-build --urls http://0.0.0.0:5000 -v d"
+run_cmd="dotnet run --no-build --project Releases/Releases.App/Releases.App.csproj --urls http://0.0.0.0:5283 -v d"
 
 export PATH="$PATH:/root/.dotnet/tools"
 
-cd ./Identity/Identity.Data/
+cd Releases/Releases.Data/
 
 until dotnet ef database update; do
     >&2 echo "Migrations executing"

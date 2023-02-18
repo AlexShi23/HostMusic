@@ -139,7 +139,6 @@
       }
     }
   },
-  "defaultProject": "hostmusic",
   "cli": {
     "analytics": false
   }
