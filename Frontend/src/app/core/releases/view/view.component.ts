@@ -18,6 +18,7 @@ export class ViewComponent implements OnInit {
     currentTime: number[];
     paused: boolean[];
     textDialogOpen = false;
+    textDialogIndex = 0;
     moderationDialogOpen = false;
     moderationForm = new FormGroup({
         moderationComment: new FormControl(``, Validators.required),
@@ -87,7 +88,8 @@ export class ViewComponent implements OnInit {
         return this.release.status === Status.Correcting;
     }
 
-    showTextDialog(): void {
+    showTextDialog(index: number): void {
+        this.textDialogIndex = index;
         this.textDialogOpen = true;
     }
 

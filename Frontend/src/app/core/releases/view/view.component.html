@@ -93,6 +93,7 @@
                     <div class="tui-col_1">
                         <button
                             tuiIconButton
+                            *ngFor="let track of release.tracks; index as i"
                             class="tui-space_top-4"
                             type="button"
                             size="l"
@@ -100,7 +101,7 @@
                             icon="tuiIconFontLarge"
                             tuiHint="{{ 'ViewText' | translate }}"
                             tuiHintDescribe
-                            (click)="this.showTextDialog()"
+                            (click)="this.showTextDialog(i)"
                         ></button>
                     </div>
                 </div>
@@ -122,7 +123,7 @@
     [tuiDialogOptions]="{label: 'TrackText' | translate, size: 'm'}"
     [(tuiDialog)]="textDialogOpen"
 >
-
+    <p class="track-lyrics">{{ this.release.tracks[this.textDialogIndex].lyrics }}</p>
 </ng-template>
 
 <ng-template
