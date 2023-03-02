@@ -20,3 +20,6 @@ WebApiDatabase.db
 
 # Mac OS files
 .DS_Store
+
+# secrets
+secrets.json
