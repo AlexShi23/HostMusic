@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-run_cmd="dotnet run --no-build --project Identity/Identity.App/Identity.App.csproj --environment Production --urls https://0.0.0.0:5001 -v d"
+run_cmd="dotnet run --no-build --project Identity.App/Identity.App.csproj --environment Production --urls https://0.0.0.0:5001 -v d"
 
 export PATH="$PATH:/root/.dotnet/tools"
 
