@@ -1,5 +1,4 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using System.Reflection;
 
 namespace HostMusic.Releases.App
 {
@@ -12,9 +11,18 @@ namespace HostMusic.Releases.App
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var config = new ConfigurationBuilder()
+                .AddCommandLine(args)
+                .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
+                .AddJsonFile($"appsettings.{environment}.json",
+                    true, true)
+                .Build();
+            
             return Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(x => 
+                .ConfigureWebHostDefaults(x =>
                 {
+                    x.UseConfiguration(config);
                     x.UseStartup<Startup>();
                 });
         }

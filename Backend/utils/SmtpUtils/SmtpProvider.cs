@@ -8,12 +8,10 @@ namespace SmtpUtils
 {
     public class SmtpProvider : ISmtpProvider
     {
-        private readonly SmtpClient _client;
         private readonly SmtpOptions _options;
 
-        public SmtpProvider(SmtpClient client, IOptions<SmtpOptions> options)
+        public SmtpProvider(IOptions<SmtpOptions> options)
         {
-            _client = client;
             _options = options.Value;
         }
         
@@ -27,7 +25,12 @@ namespace SmtpUtils
             };
             letter.From.Add(letter.Sender);
             letter.To.Add(MailboxAddress.Parse(email));
-            await _client.SendAsync(letter);
+            
+            using var client = new SmtpClient();
+            await client.ConnectAsync(_options.Address, _options.Port);
+            await client.AuthenticateAsync(_options.Username, _options.Password);
+            await client.SendAsync(letter);
+            await client.DisconnectAsync(true);
         }
     }
 }

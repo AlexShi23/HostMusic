@@ -1,0 +1,75 @@
+version: "3.7"
+services:
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  nginx:
+    build:
+      context: ./Frontend/
+    restart: unless-stopped
+    volumes:
+      - ./data/nginx:/etc/nginx/conf.d
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    ports:
+      - "80:80"
+      - "443:443"
+      - "9000:9000"
+      - "9001:9001"
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+    depends_on:
+      - identity
+      - releases
+
+  identity:
+    build:
+      context: ./Backend/
+      dockerfile: Dockerfile_identity
+    ports:
+      - "5001:5001"
+    depends_on:
+      - postgres
+
+  releases:
+    build:
+      context: ./Backend/
+      dockerfile: Dockerfile_releases
+    ports:
+      - "7283:7283"
+    depends_on:
+      - postgres
+      - minio
+
+  postgres:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "hostmusic_db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "root"
+    ports:
+      - "5432:5432"
+
+  minio:
+    image: minio/minio:latest
+    command: server --console-address ":9001" /data/
+    expose:
+      - "9000"
+      - "9001"
+    environment:
+      MINIO_ROOT_USER: ozontech
+      MINIO_ROOT_PASSWORD: minio123
+    volumes:
+      - minio-storage:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+volumes:
+  minio-storage:

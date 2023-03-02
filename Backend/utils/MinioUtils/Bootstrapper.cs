@@ -19,6 +19,8 @@ public static class Bootstrapper
             var client = new MinioClient()
                 .WithEndpoint(options.ServiceUrl.Split('/').Last())
                 .WithCredentials(options.AccessKey, options.SecretKey)
+                .WithRegion("us-east-1")
+                .WithSSL()
                 .Build();
             return client;
         });
