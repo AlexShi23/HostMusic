@@ -260,7 +260,7 @@ public class AuthService : IAuthService
         string message;
         if (!string.IsNullOrEmpty(origin))
         {
-            var verifyUrl = $"{origin}/account/verify-email?token={token}&id={id}";
+            var verifyUrl = $"{_configuration["HostMusicUrl:Url"]}/account/verify-email?token={token}&id={id}";
             message = $@"<p>Please click the below link to verify your email address:</p>
                             <p><a href=""{verifyUrl}"">{verifyUrl}</a></p>";
         }
@@ -273,7 +273,7 @@ public class AuthService : IAuthService
 
         await _smtpProvider.SendEmailAsync(
             email,
-            "Sign-up Verification API - Verify Email",
+            "HostMusic - Verify Email",
             $@"<h4>Verify Email</h4>
                         <p>Thanks for registering!</p>
                         {message}"
@@ -285,7 +285,7 @@ public class AuthService : IAuthService
         string message;
         if (!string.IsNullOrEmpty(origin))
         {
-            var resetUrl = $"{origin}/account/reset-password?token={token}&id={id}";
+            var resetUrl = $"{_configuration["HostMusicUrl:Url"]}/account/reset-password?token={token}&id={id}";
             message =
                 $@"<p>Please click the below link to reset your password, the link will be valid for 1 day:</p>
                             <p><a href=""{resetUrl}"">{resetUrl}</a></p>";
@@ -299,7 +299,7 @@ public class AuthService : IAuthService
 
         await _smtpProvider.SendEmailAsync(
             email,
-            "Sign-up Verification API - Reset Password",
+            "HostMusic - Reset Password",
             $@"<h4>Reset Password Email</h4>
                         {message}"
         );
